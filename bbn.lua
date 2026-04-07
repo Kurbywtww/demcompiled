@@ -1,1659 +1,5 @@
 
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.ChaseThemes-Killer
--- Decompiled with Velocity Script Decompiler
-workspace:FindFirstChild("LobbyMusic").Volume = 0
-local v_u_1 = -1
-local v_u_2 = 0
-for v3 = 1, 4 do
-    game:GetService("TweenService"):Create(script.Parent:WaitForChild("Phases"):FindFirstChild(v3), TweenInfo.new(0), {
-        ["PlaybackSpeed"] = 1
-    }):Play()
-end
-game:GetService("RunService").Stepped:Connect(function()
-    -- upvalues: (ref) v_u_1, (ref) v_u_2
-    if workspace.GAME.STOP_MUSIC.Value == true then
-        for _, v4 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v4:FindFirstChild("Phases") then
-                for v5 = 1, 4 do
-                    game:GetService("TweenService"):Create(script.Parent:FindFirstChild("Phases"):FindFirstChild(v5), TweenInfo.new(0.25), {
-                        ["Volume"] = 0
-                    }):Play()
-                end
-            end
-        end
-        v_u_1 = -1
-        return
-    elseif workspace.GAME.STOP_MUSIC_ALL.Value == true then
-        for _, v6 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v6:FindFirstChild("Phases") then
-                for v7 = 1, 6 do
-                    if v6:WaitForChild("Phases"):FindFirstChild(v7) then
-                        game:GetService("TweenService"):Create(v6:FindFirstChild("Phases"):FindFirstChild(v7), TweenInfo.new(0.25), {
-                            ["Volume"] = 0
-                        }):Play()
-                    end
-                end
-            end
-        end
-        v_u_1 = 0
-        return
-    elseif game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then
-        for v8 = 1, 6 do
-            if script.Parent:WaitForChild("Phases"):FindFirstChild(v8) then
-                game:GetService("TweenService"):Create(script.Parent:WaitForChild("Phases"):FindFirstChild(v8), TweenInfo.new(0.5), {
-                    ["PlaybackSpeed"] = 0
-                }):Play()
-            end
-        end
-        v_u_1 = -1
-        return
-    else
-        if workspace:FindFirstChild("MAPS"):FindFirstChild("GAME MAP"):FindFirstChild("Music") then
-            local v9 = workspace:FindFirstChild("MAPS"):FindFirstChild("GAME MAP"):FindFirstChild("Music")
-            if v_u_1 > 0 then
-                game:GetService("TweenService"):Create(v9, TweenInfo.new(0.5), {
-                    ["Volume"] = 0
-                }):Play()
-            else
-                game:GetService("TweenService"):Create(v9, TweenInfo.new(0.5), {
-                    ["Volume"] = v9:GetAttribute("Volume")
-                }):Play()
-            end
-        end
-        local v10 = false
-        for _, v11 in workspace.PLAYERS.ALIVE:GetChildren() do
-            if v11:FindFirstChild("HumanoidRootPart") and (v11:FindFirstChild("HumanoidRootPart").Position - script.Parent:FindFirstChild("HumanoidRootPart").Position).Magnitude <= 15 then
-                v10 = true
-            end
-        end
-        if script.Parent:HasTag("INVISIBILE") or (script.Parent:HasTag("TRUE_UNDETECTABLE") or not script.Parent:HasTag("COMBAT") and v10 ~= true) then
-            v_u_2 = 0
-            for v12 = 1, 4 do
-                game:GetService("TweenService"):Create(script.Parent:FindFirstChild("Phases"):FindFirstChild(v12), TweenInfo.new(0.5), {
-                    ["Volume"] = 0
-                }):Play()
-                game:GetService("TweenService"):Create(script.Parent:FindFirstChild("Phases"):FindFirstChild(v12), TweenInfo.new(0.5), {
-                    ["PlaybackSpeed"] = 0
-                }):Play()
-            end
-        else
-            if v_u_2 ~= 4 then
-                script.Parent:WaitForChild("Phases"):FindFirstChild("4").TimePosition = 0
-            end
-            v_u_2 = 4
-            for v13 = 1, 4 do
-                if v13 ~= 4 then
-                    game:GetService("TweenService"):Create(script.Parent:FindFirstChild("Phases"):FindFirstChild(v13), TweenInfo.new(0), {
-                        ["Volume"] = 0
-                    }):Play()
-                end
-            end
-            game:GetService("TweenService"):Create(script.Parent:FindFirstChild("Phases"):FindFirstChild("4"), TweenInfo.new(0), {
-                ["PlaybackSpeed"] = 1
-            }):Play()
-            game:GetService("TweenService"):Create(script.Parent:FindFirstChild("Phases"):FindFirstChild("4"), TweenInfo.new(0), {
-                ["Volume"] = script.Parent:FindFirstChild("Phases"):FindFirstChild("3"):GetAttribute("VOLUME_MAX")
-            }):Play()
-        end
-    end
-end)
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.Input
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("UserInputService")
-local v_u_2 = game:GetService("Players").LocalPlayer
-local v_u_3 = v_u_2.Character
-local v_u_4 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Input")
-local v_u_5 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Keybinds"))
-task.spawn(function()
-    repeat
-        local v6 = pcall(function()
-            game:GetService("StarterGui"):SetCore("ResetButtonCallback", false)
-        end)
-        task.wait(1)
-    until v6
-end)
-local v_u_7 = false
-local v_u_8 = false
-v1.InputBegan:Connect(function(p9, p10)
-    -- upvalues: (copy) v_u_5, (ref) v_u_8, (copy) v_u_2, (ref) v_u_7, (copy) v_u_4
-    if p10 then
-        return
-    elseif table.find(v_u_5.Run, p9.KeyCode) then
-        v_u_8 = true
-        if v_u_2:GetAttribute("HoldToRun") then
-            v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-        else
-            v_u_7 = not v_u_7
-            v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-        end
-    elseif table.find(v_u_5.M1, p9.UserInputType) or table.find(v_u_5.M1, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 1 })
-        return
-    elseif table.find(v_u_5.Q, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 2 })
-        return
-    elseif table.find(v_u_5.E, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 3 })
-    elseif table.find(v_u_5.R, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 4 })
-    end
-end)
-v1.InputEnded:Connect(function(p11, p12)
-    -- upvalues: (copy) v_u_5, (copy) v_u_2, (copy) v_u_4, (ref) v_u_8
-    if p12 then
-        return
-    elseif table.find(v_u_5.Run, p11.KeyCode) then
-        if v_u_2:GetAttribute("HoldToRun") then
-            v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-        end
-        v_u_8 = false
-    elseif table.find(v_u_5.Q, p11.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 2 })
-    end
-end)
-local v_u_13 = false
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Down:Connect(function()
-    -- upvalues: (ref) v_u_13, (copy) v_u_2, (ref) v_u_7, (copy) v_u_4
-    v_u_13 = true
-    if v_u_2:GetAttribute("HoldToRun") then
-        v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-    else
-        v_u_7 = not v_u_7
-        v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-    end
-end)
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Up:Connect(function()
-    -- upvalues: (copy) v_u_2, (copy) v_u_4, (ref) v_u_13
-    if v_u_2:GetAttribute("HoldToRun") then
-        v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-    end
-    v_u_13 = false
-end)
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Crouch.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_4
-    v_u_4:Fire(true, { "Crouch" })
-end)
-game:GetService("RunService").Heartbeat:Connect(function()
-    -- upvalues: (copy) v_u_2, (ref) v_u_8, (ref) v_u_13, (copy) v_u_3, (copy) v_u_4, (ref) v_u_7
-    if v_u_2:GetAttribute("HoldToRun") and (v_u_8 or v_u_13) and (v_u_3:GetAttribute("CanRun") and (not v_u_3:HasTag("Battery") and (not v_u_3:GetAttribute("Ragdoll") and (v_u_3:GetAttribute("Stamina") or 0) > 0))) then
-        if not v_u_3:GetAttribute("Running") then
-            v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-            v_u_3:SetAttribute("Running", true)
-            return
-        end
-    elseif v_u_2:GetAttribute("HoldToRun") or (not v_u_3:GetAttribute("CanRun") or (v_u_3:HasTag("Battery") or (v_u_3:GetAttribute("Ragdoll") or (v_u_3:GetAttribute("Stamina") or 0) <= 0))) then
-        if v_u_3:GetAttribute("Running") then
-            v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-            v_u_3:SetAttribute("Running", false)
-        end
-        v_u_7 = false
-        v_u_8 = false
-    elseif v_u_7 ~= v_u_3:GetAttribute("Running") then
-        v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-        v_u_3:SetAttribute("Running", v_u_7)
-        return
-    end
-end)
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.Sounds
--- Decompiled with Velocity Script Decompiler
--- Failed to decompile
-Error:
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.TalkingMouth
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = game:GetService("Players"):GetPlayerFromCharacter(script.Parent)
-local v_u_2 = CFrame.new
-local v_u_3 = CFrame.Angles
-local v_u_4 = math.asin
-function castRay(p5, p6, p7)
-    local v8 = RaycastParams.new()
-    v8.FilterDescendantsInstances = {
-        p5,
-        workspace.IGNORE,
-        workspace.PLAYERS,
-        workspace.Terrain
-    }
-    local v9 = workspace:Raycast(p6, p7, v8)
-    local v10 = v9 and v9.Position or p6 + p7
-    return (p6 - v10).Magnitude, p6, v10, v9
-end
-if v_u_1 then
-    script:WaitForChild("AudioDeviceInput", 100).Player = v_u_1
-    local v_u_11 = v_u_1.Character:WaitForChild("VoiceBox")
-    local v_u_12 = v_u_11.AudioAnalyzer
-    if game:GetService("Players").LocalPlayer == v_u_1 then
-        script:WaitForChild("AudioDeviceInput", 100).Volume = 0
-    end
-    local v_u_13 = script.Parent:FindFirstChild("OsLowerJaw", true)
-    local v_u_14 = v_u_13.CFrame
-    local v_u_15 = script.Parent:FindFirstChild("Neck", true)
-    local v_u_16 = v_u_15.CFrame.Y
-    game:GetService("RunService"):BindToRenderStep("CameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
-        -- upvalues: (copy) v_u_1
-        local v17 = (workspace.CurrentCamera.CFrame.p - workspace.CurrentCamera.Focus.p).magnitude
-        if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.LockCenter and v17 > 2 then
-            local v18 = script.Parent.RootPart.CFrame.RightVector * 1.75
-            game:GetService("TweenService"):Create(script.Parent.Humanoid, TweenInfo.new(0.3), {
-                ["CameraOffset"] = (script.Parent.HumanoidRootPart.CFrame + Vector3.new(0, 1.5, 0)):pointToObjectSpace(script.Parent:FindFirstChild("HeadAttachment", true).WorldCFrame.p + v18)
-            }):Play()
-            return
-        elseif game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.LockCenter and v17 <= 2 then
-            local v19 = script.Parent.RootPart.Position
-            local v20 = script.Parent:FindFirstChild("HeadAttachment", true).WorldCFrame.p
-            local v21 = v20 - v19
-            local _, _, v22, v23 = castRay(v_u_1.Character, v19, v21)
-            if v23 then
-                v20 = v22 - (v21.Magnitude == 0 and Vector3.new(0, 0, 0) or v21.Unit) * 0.1
-            end
-            game:GetService("TweenService"):Create(script.Parent.Humanoid, TweenInfo.new(0), {
-                ["CameraOffset"] = (script.Parent.HumanoidRootPart.CFrame + Vector3.new(0, 1.5, 0)):pointToObjectSpace(v20)
-            }):Play()
-        else
-            game:GetService("TweenService"):Create(script.Parent.Humanoid, TweenInfo.new(0.3), {
-                ["CameraOffset"] = (script.Parent.HumanoidRootPart.CFrame + Vector3.new(0, 1.5, 0)):pointToObjectSpace(script.Parent:FindFirstChild("HeadAttachment", true).WorldCFrame.p)
-            }):Play()
-        end
-    end)
-    local v_u_24 = 0
-    local function v_u_28(p25)
-        -- upvalues: (copy) v_u_15, (copy) v_u_2, (copy) v_u_16, (copy) v_u_3, (ref) v_u_24, (copy) v_u_13, (copy) v_u_4
-        if game:GetService("Players"):GetPlayerFromCharacter(script.Parent) == game:GetService("Players").LocalPlayer then
-            if script.Parent:HasTag("Cutscene") then
-                v_u_15.CFrame = v_u_2(0, v_u_16, 0) * v_u_3(-0.45451864380436335, 0, -0)
-                v_u_24 = v_u_24 + p25
-                if v_u_24 > 0.25 then
-                    v_u_24 = 0
-                    script:WaitForChild("Replicator"):FireServer({ v_u_15, v_u_13 }, { v_u_15.CFrame, v_u_13.CFrame })
-                end
-            else
-                local v26 = script.Parent:FindFirstChild("HeadDefaultAttachment", true).WorldCFrame:toObjectSpace(game:GetService("Workspace").CurrentCamera.CFrame).lookVector
-                if v_u_15 then
-                    local v27 = v_u_2(0, v_u_16, 0) * v_u_3(-0.45451864380436335, 0, -0) * v_u_3(0, -v_u_4(v26.x), 0) * v_u_3(v_u_4(v26.y), 0, 0)
-                    v_u_15.CFrame = v_u_15.CFrame:Lerp(v27, 0.9 * p25 * 15)
-                end
-                v_u_24 = v_u_24 + p25
-                if v_u_24 > 0.25 then
-                    v_u_24 = 0
-                    script:WaitForChild("Replicator"):FireServer({ v_u_15 }, { v_u_15.CFrame })
-                end
-            end
-        else
-            return
-        end
-    end
-    local v_u_29 = tick()
-    game:GetService("RunService").Stepped:Connect(function(_, p30)
-        -- upvalues: (ref) v_u_29, (copy) v_u_11, (copy) v_u_28, (copy) v_u_12, (copy) v_u_13, (copy) v_u_14
-        if tick() - v_u_29 > 0.5 then
-            v_u_11:FindFirstChild("Audio").Pitch = Random.new():NextNumber(0.7, 0.9)
-            v_u_29 = tick()
-        else
-            v_u_11:FindFirstChild("Audio").Pitch = 0.8
-        end
-        v_u_28(p30)
-        local v31 = v_u_12.RmsLevel * 15
-        local v32 = math.clamp(v31, 0, 45)
-        v_u_13.CFrame = v_u_14 * CFrame.fromEulerAnglesXYZ(-math.rad(v32), 0, 0)
-    end)
-end
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.TalkingMouth.Server
--- Decompiled with Velocity Script Decompiler
--- Failed to decompile
-Error:
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.TalkingMouth.TalkingMouthServer
--- Decompiled with Velocity Script Decompiler
--- Failed to decompile
-Error:
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.StepSFX
--- Decompiled with Velocity Script Decompiler
-if script.Parent:WaitForChild("Humanoid", 10) then
-    local v1 = script.Parent:FindFirstChildOfClass("Humanoid")
-    local v_u_2 = 0
-    v1:WaitForChild("Animator").AnimationPlayed:Connect(function(p3)
-        -- upvalues: (ref) v_u_2
-        local v_u_5 = p3:GetMarkerReachedSignal("Step"):Connect(function()
-            -- upvalues: (ref) v_u_2
-            if not script.Parent:HasTag("UNDETECTABLE") then
-                v_u_2 = v_u_2 + 1
-                if v_u_2 > 3 then
-                    v_u_2 = 1
-                end
-                local v_u_4 = script.Steps:FindFirstChild(v_u_2):Clone()
-                v_u_4.Parent = script.Parent:FindFirstChild("HumanoidRootPart")
-                v_u_4.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if not v_u_4.IsLoaded then
-                    v_u_4.Loaded:Wait()
-                end
-                v_u_4:Play()
-                task.wait(0.1)
-                task.delay(v_u_4.TimeLength, function()
-                    -- upvalues: (copy) v_u_4
-                    v_u_4:Destroy()
-                end)
-            end
-        end)
-        local v_u_7 = p3:GetMarkerReachedSignal("StepRush"):Connect(function()
-            -- upvalues: (ref) v_u_2
-            if not script.Parent:HasTag("INVIS") then
-                v_u_2 = v_u_2 + 1
-                if v_u_2 > 3 then
-                    v_u_2 = 1
-                end
-                local v_u_6 = script.Steps2:FindFirstChild(v_u_2):Clone()
-                v_u_6.Parent = script.Parent:FindFirstChild("HumanoidRootPart")
-                v_u_6.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if not v_u_6.IsLoaded then
-                    v_u_6.Loaded:Wait()
-                end
-                v_u_6:Play()
-                task.wait(0.1)
-                task.delay(v_u_6.TimeLength, function()
-                    -- upvalues: (copy) v_u_6
-                    v_u_6:Destroy()
-                end)
-            end
-        end)
-        p3.Stopped:Once(function()
-            -- upvalues: (ref) v_u_5, (ref) v_u_7
-            v_u_5:Disconnect()
-            v_u_7:Disconnect()
-        end)
-    end)
-end
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.Animate
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = script.Parent
-local v_u_2 = v_u_1:WaitForChild("Humanoid")
-local v_u_3 = "Standing"
-local _ = v_u_2.MaxHealth / 2
-local v_u_4 = game:GetService("Workspace").CurrentCamera
-local v_u_5 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
-local v_u_7 = v_u_5.new(Enum.RenderPriority.Camera.Value, function(p6)
-    -- upvalues: (copy) v_u_4
-    if v_u_4.CameraType ~= Enum.CameraType.Scriptable then
-        v_u_4.CFrame = v_u_4.CFrame * p6
-    end
-end)
-v_u_7:Start()
-require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p8)
-    -- upvalues: (copy) v_u_7, (copy) v_u_5
-    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-        v_u_7:Shake(v_u_5.Presets[p8])
-    end
-end)
-local v9, v10 = pcall(function()
-    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
-end)
-local v_u_11 = v9 and v10
-local v_u_12 = ""
-local v_u_13 = nil
-local v_u_14 = nil
-local v_u_15 = nil
-local v_u_16 = 1
-local v_u_17 = {}
-local v_u_18 = {
-    ["idle"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=129830618431771",
-            ["weight"] = 9
-        }
-    },
-    ["runForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=74160046429233",
-            ["weight"] = 10
-        }
-    },
-    ["runLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=111534138959133",
-            ["weight"] = 10
-        }
-    },
-    ["runRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=103758315563104",
-            ["weight"] = 10
-        }
-    },
-    ["walkForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=126261863915299",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=89108444403670",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=129887420610542",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=138068581032578",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=115567619906878",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=114261887795674",
-            ["weight"] = 10
-        }
-    },
-    ["walkRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=118509706908978",
-            ["weight"] = 10
-        }
-    },
-    ["walkLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=87240234350250",
-            ["weight"] = 10
-        }
-    },
-    ["jump"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["fall"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["climb"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["sit"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolnone"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolslash"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toollunge"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    }
-}
-local v_u_19 = {
-    ["wave"] = false,
-    ["point"] = false,
-    ["dance1"] = true,
-    ["dance2"] = true,
-    ["dance3"] = true,
-    ["laugh"] = false,
-    ["cheer"] = false
-}
-function configureAnimationSet(p_u_20, p_u_21)
-    -- upvalues: (copy) v_u_17, (ref) v_u_14, (copy) v_u_2
-    if v_u_17[p_u_20] ~= nil then
-        for _, v22 in pairs(v_u_17[p_u_20].connections) do
-            v22:disconnect()
-        end
-    end
-    v_u_17[p_u_20] = {}
-    v_u_17[p_u_20].count = 0
-    v_u_17[p_u_20].totalWeight = 0
-    v_u_17[p_u_20].connections = {}
-    local v23 = script:FindFirstChild(p_u_20)
-    if v23 ~= nil then
-        local v24 = v_u_17[p_u_20].connections
-        local v25 = v23.ChildAdded
-        table.insert(v24, v25:connect(function(_)
-            -- upvalues: (copy) p_u_20, (copy) p_u_21
-            configureAnimationSet(p_u_20, p_u_21)
-        end))
-        local v26 = v_u_17[p_u_20].connections
-        local v27 = v23.ChildRemoved
-        table.insert(v26, v27:connect(function(_)
-            -- upvalues: (copy) p_u_20, (copy) p_u_21
-            configureAnimationSet(p_u_20, p_u_21)
-        end))
-        local v28 = 1
-        for _, v_u_29 in pairs(v23:GetChildren()) do
-            if v_u_29:IsA("Animation") then
-                local v30 = v_u_17[p_u_20].connections
-                local v31 = v_u_29.Changed
-                local function v32(_)
-                    -- upvalues: (ref) v_u_14, (copy) v_u_29, (copy) p_u_20, (copy) p_u_21
-                    if v_u_14 and v_u_14.Animation == v_u_29 then
-                        stopAllAnimations()
-                    end
-                    configureAnimationSet(p_u_20, p_u_21)
-                    task.spawn(move, os.clock())
-                end
-                table.insert(v30, v31:connect(v32))
-                v_u_17[p_u_20][v28] = {}
-                v_u_17[p_u_20][v28].anim = v_u_29
-                local v33 = v_u_29:FindFirstChild("Weight")
-                if v33 == nil then
-                    v_u_17[p_u_20][v28].weight = 1
-                else
-                    v_u_17[p_u_20][v28].weight = v33.Value
-                end
-                v_u_17[p_u_20].count = v_u_17[p_u_20].count + 1
-                v_u_17[p_u_20].totalWeight = v_u_17[p_u_20].totalWeight + v_u_17[p_u_20][v28].weight
-                v28 = v28 + 1
-                if v_u_14 and v_u_14.Animation == v_u_29 then
-                    stopAllAnimations()
-                    playAnimation(p_u_20, 0, v_u_2)
-                end
-            end
-        end
-    end
-    if v_u_17[p_u_20].count <= 0 then
-        for v34, v35 in pairs(p_u_21) do
-            v_u_17[p_u_20][v34] = {}
-            v_u_17[p_u_20][v34].anim = Instance.new("Animation")
-            v_u_17[p_u_20][v34].anim.Name = p_u_20
-            v_u_17[p_u_20][v34].anim.AnimationId = v35.id
-            v_u_17[p_u_20][v34].weight = v35.weight
-            v_u_17[p_u_20].count = v_u_17[p_u_20].count + 1
-            v_u_17[p_u_20].totalWeight = v_u_17[p_u_20].totalWeight + v35.weight
-        end
-    end
-end
-function scriptChildModified(p36)
-    -- upvalues: (copy) v_u_18
-    local v37 = v_u_18[p36.Name]
-    if v37 ~= nil then
-        configureAnimationSet(p36.Name, v37)
-    end
-end
-script.ChildAdded:connect(scriptChildModified)
-script.ChildRemoved:connect(scriptChildModified)
-if v_u_2 then
-    v_u_2:FindFirstChildOfClass("Animator")
-end
-local v_u_38 = v_u_14
-for v39, v40 in pairs(v_u_18) do
-    configureAnimationSet(v39, v40)
-end
-local v_u_41 = "None"
-local v_u_42 = 0
-local v_u_43 = 0
-function stopAllAnimations()
-    -- upvalues: (ref) v_u_12, (copy) v_u_19, (ref) v_u_13, (ref) v_u_15, (ref) v_u_38
-    local v44 = v_u_12
-    local v45 = v_u_19[v44] ~= nil and v_u_19[v44] == false and "idle" or v44
-    v_u_12 = ""
-    v_u_13 = nil
-    if v_u_15 ~= nil then
-        v_u_15:disconnect()
-    end
-    if v_u_38 ~= nil then
-        v_u_38:Stop()
-        v_u_38:Destroy()
-        v_u_38 = nil
-    end
-    return v45
-end
-function setAnimationSpeed(p46)
-    -- upvalues: (ref) v_u_16, (ref) v_u_38
-    if p46 ~= v_u_16 and v_u_38 then
-        v_u_16 = p46
-        v_u_38:AdjustSpeed(v_u_16)
-    end
-end
-function keyFrameReachedFunc(p47)
-    -- upvalues: (ref) v_u_12, (copy) v_u_19, (ref) v_u_16, (copy) v_u_2
-    if p47 == "End" then
-        local v48 = v_u_12
-        local v49 = v_u_19[v48] ~= nil and v_u_19[v48] == false and "idle" or v48
-        local v50 = v_u_16
-        playAnimation(v49, 0, v_u_2)
-        setAnimationSpeed(v50)
-    end
-end
-function playAnimation(p51, p52, p53)
-    -- upvalues: (copy) v_u_17, (ref) v_u_13, (ref) v_u_38, (ref) v_u_12, (ref) v_u_16, (ref) v_u_15, (ref) v_u_3, (copy) v_u_7, (copy) v_u_5
-    local v54 = math.random(1, v_u_17[p51].totalWeight)
-    local v55 = 1
-    while v_u_17[p51][v55].weight < v54 do
-        v54 = v54 - v_u_17[p51][v55].weight
-        v55 = v55 + 1
-    end
-    local v56 = v_u_17[p51][v55].anim
-    if v56 ~= v_u_13 then
-        if v_u_38 ~= nil then
-            v_u_38:Stop(p52)
-            v_u_38:Destroy()
-        end
-        local v57 = (not (v_u_12:match("walk") or v_u_12:match("run")) or v_u_12 == "stop") and 0 or v_u_38.TimePosition
-        v_u_16 = 1
-        v_u_38 = p53:LoadAnimation(v56)
-        v_u_38.Priority = Enum.AnimationPriority.Core
-        v_u_38:Play(p52)
-        v_u_38.TimePosition = v57
-        v_u_12 = p51
-        v_u_13 = v56
-        if v_u_15 ~= nil then
-            v_u_15:disconnect()
-        end
-        local v_u_58 = v_u_38:GetMarkerReachedSignal("Step"):Connect(function()
-            -- upvalues: (ref) v_u_3, (ref) v_u_7, (ref) v_u_5
-            if v_u_3 == "Walking" and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-                v_u_7:Shake(v_u_5.Presets.StepShake)
-            end
-        end)
-        v_u_38.Stopped:Once(function()
-            -- upvalues: (ref) v_u_58
-            v_u_58:Disconnect()
-        end)
-        v_u_15 = v_u_38.KeyframeReached:connect(keyFrameReachedFunc)
-    end
-end
-local v_u_59 = ""
-local v_u_60 = nil
-local v_u_61 = nil
-local v_u_62 = nil
-function toolKeyFrameReachedFunc(p63)
-    -- upvalues: (ref) v_u_59, (copy) v_u_2
-    if p63 == "End" then
-        playToolAnimation(v_u_59, 0, v_u_2)
-    end
-end
-function playToolAnimation(p64, p65, p66, p67)
-    -- upvalues: (copy) v_u_17, (ref) v_u_61, (ref) v_u_60, (ref) v_u_59, (ref) v_u_62
-    local v68 = math.random(1, v_u_17[p64].totalWeight)
-    local v69 = 1
-    while v_u_17[p64][v69].weight < v68 do
-        v68 = v68 - v_u_17[p64][v69].weight
-        v69 = v69 + 1
-    end
-    local v70 = v_u_17[p64][v69].anim
-    if v_u_61 ~= v70 then
-        if v_u_60 ~= nil then
-            v_u_60:Stop()
-            v_u_60:Destroy()
-            p65 = 0
-        end
-        v_u_60 = p66:LoadAnimation(v70)
-        if p67 then
-            v_u_60.Priority = p67
-        end
-        v_u_60:Play(p65)
-        v_u_59 = p64
-        v_u_61 = v70
-        v_u_62 = v_u_60.KeyframeReached:connect(toolKeyFrameReachedFunc)
-    end
-end
-function stopToolAnimations()
-    -- upvalues: (ref) v_u_59, (ref) v_u_62, (ref) v_u_61, (ref) v_u_60
-    local v71 = v_u_59
-    if v_u_62 ~= nil then
-        v_u_62:disconnect()
-    end
-    v_u_59 = ""
-    v_u_61 = nil
-    if v_u_60 ~= nil then
-        v_u_60:Stop()
-        v_u_60:Destroy()
-        v_u_60 = nil
-    end
-    return v71
-end
-function onDied()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "Dead"
-end
-function onJumping()
-    -- upvalues: (copy) v_u_2, (ref) v_u_43, (ref) v_u_3
-    playAnimation("jump", 0.1, v_u_2)
-    v_u_43 = 0.3
-    v_u_3 = "Jumping"
-end
-function onClimbing(p72)
-    -- upvalues: (copy) v_u_11, (copy) v_u_1, (copy) v_u_2, (ref) v_u_3
-    local v73 = p72 / (not v_u_11 and 1 or v_u_1:GetScale())
-    playAnimation("climb", 0.1, v_u_2)
-    setAnimationSpeed(v73 / 12)
-    v_u_3 = "Climbing"
-end
-function onGettingUp()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "GettingUp"
-end
-function onFreeFall()
-    -- upvalues: (ref) v_u_43, (copy) v_u_2, (ref) v_u_3
-    if v_u_43 <= 0 then
-        playAnimation("fall", 0.3, v_u_2)
-    end
-    v_u_3 = "FreeFall"
-end
-function onFallingDown()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "FallingDown"
-end
-function onSeated()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "Seated"
-end
-function onPlatformStanding()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "PlatformStanding"
-end
-function onSwimming(p74)
-    -- upvalues: (ref) v_u_3
-    if p74 > 0 then
-        v_u_3 = "Running"
-    else
-        v_u_3 = "Standing"
-    end
-end
-function getTool()
-    -- upvalues: (copy) v_u_1
-    for _, v75 in ipairs(v_u_1:GetChildren()) do
-        if v75.className == "Tool" then
-            return v75
-        end
-    end
-    return nil
-end
-function getToolAnim(p76)
-    for _, v77 in ipairs(p76:GetChildren()) do
-        if v77.Name == "toolanim" and v77.className == "StringValue" then
-            return v77
-        end
-    end
-    return nil
-end
-function animateTool()
-    -- upvalues: (ref) v_u_41, (copy) v_u_2
-    if v_u_41 == "None" then
-        playToolAnimation("toolnone", 0.1, v_u_2, Enum.AnimationPriority.Idle)
-        return
-    elseif v_u_41 == "Slash" then
-        playToolAnimation("toolslash", 0, v_u_2, Enum.AnimationPriority.Action)
-        return
-    elseif v_u_41 == "Lunge" then
-        playToolAnimation("toollunge", 0, v_u_2, Enum.AnimationPriority.Action)
-    end
-end
-local v_u_78 = 0
-local v_u_79 = v_u_2.Health
-function move(p80)
-    -- upvalues: (copy) v_u_1, (ref) v_u_3, (copy) v_u_2, (ref) v_u_78, (ref) v_u_43, (copy) v_u_7, (copy) v_u_19, (ref) v_u_12, (ref) v_u_38, (ref) v_u_79, (ref) v_u_41, (ref) v_u_42, (ref) v_u_61
-    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
-        if v_u_1:HasTag("KillAnims") then
-            v_u_3 = "None"
-            stopAllAnimations()
-        elseif v_u_3 ~= "Standing" then
-            v_u_3 = "Standing"
-            playAnimation("idle", 0.1, v_u_2)
-        end
-    else
-        local v81 = p80 - v_u_78
-        v_u_78 = p80
-        if v_u_43 > 0 then
-            v_u_43 = v_u_43 - v81
-        end
-        local v82 = (v_u_1:FindFirstChild("HumanoidRootPart").Velocity * Vector3.new(1, 0, 1)).Magnitude
-        if v_u_2.FloorMaterial ~= Enum.Material.Air and (v_u_3 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_2.MoveDirection) > 0.45) then
-            if v82 > 0.01 and (v82 <= 18 and v_u_2.MoveDirection ~= Vector3.new(0, 0, 0)) then
-                v_u_7:StopSustained(0.5)
-                v_u_3 = "Walking"
-            elseif v82 > 18 and v_u_2.MoveDirection ~= Vector3.new(0, 0, 0) then
-                v_u_3 = "Running"
-            elseif v_u_19[v_u_12] == nil and (v_u_3 ~= "Standing" and v_u_3 ~= "Stopping") then
-                playAnimation("idle", 0.1, v_u_2)
-                v_u_3 = "Standing"
-            end
-        end
-        if v_u_3 == "FreeFall" and v_u_43 <= 0 then
-            playAnimation("fall", 0.3, v_u_2)
-        else
-            if v_u_3 == "Seated" then
-                playAnimation("sit", 0.5, v_u_2)
-                return
-            end
-            if v_u_3 == "Walking" then
-                local v83 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_2.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v83 = v83 * -1
-                end
-                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                    playAnimation("walkForward", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
-                    playAnimation("walkForwardRight", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
-                    playAnimation("walkBackwardRight", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
-                    playAnimation("walkBackwardLeft", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
-                    playAnimation("walkForwardLeft", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
-                    playAnimation("walkForward", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
-                    playAnimation("walkRight", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
-                    playAnimation("walkBackward", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
-                    playAnimation("walkLeft", 0.3, v_u_2)
-                end
-                if v_u_38 then
-                    v_u_38.Priority = Enum.AnimationPriority.Movement
-                end
-                setAnimationSpeed(v82 / 12)
-            elseif v_u_3 == "Running" then
-                local v84 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_2.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v84 = v84 * -1
-                end
-                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                    playAnimation("runForward", 0.3, v_u_2)
-                elseif v84:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runLeft", 0.3, v_u_2)
-                elseif v84:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runRight", 0.3, v_u_2)
-                else
-                    playAnimation("runForward", 0.3, v_u_2)
-                end
-                if v_u_38 then
-                    v_u_38.Priority = Enum.AnimationPriority.Movement
-                end
-                setAnimationSpeed(v82 / 24)
-            elseif v_u_3 == "Dead" or (v_u_3 == "GettingUp" or (v_u_3 == "FallingDown" or (v_u_3 == "Seated" or v_u_3 == "PlatformStanding"))) then
-                stopAllAnimations()
-            end
-        end
-        v_u_79 = v_u_2.Health
-        local v85 = getTool()
-        if v85 and v85:FindFirstChild("Handle") then
-            local v86 = getToolAnim(v85)
-            if v86 then
-                v_u_41 = v86.Value
-                v86.Parent = nil
-                v_u_42 = p80 + 0.3
-            end
-            if v_u_42 < p80 then
-                v_u_42 = 0
-                v_u_41 = "None"
-            end
-            animateTool()
-        else
-            stopToolAnimations()
-            v_u_41 = "None"
-            v_u_61 = nil
-            v_u_42 = 0
-        end
-    end
-end
-v_u_2.Died:connect(onDied)
-stopAllAnimations()
-for _, v87 in v_u_2:FindFirstChildOfClass("Animator"):GetPlayingAnimationTracks() do
-    v87:Stop()
-end
-playAnimation("idle", 0.1, v_u_2)
-local _ = "Standing"
-while v_u_1.Parent ~= nil do
-    local _, v88 = wait()
-    move(v88)
-end
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.Animate2
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = script.Parent
-local v_u_2 = v_u_1:WaitForChild("Humanoid")
-local v_u_3 = "Standing"
-local _ = v_u_2.MaxHealth / 2
-local v_u_4 = game:GetService("Workspace").CurrentCamera
-local v_u_5 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
-local v_u_7 = v_u_5.new(Enum.RenderPriority.Camera.Value, function(p6)
-    -- upvalues: (copy) v_u_4
-    if v_u_4.CameraType ~= Enum.CameraType.Scriptable then
-        v_u_4.CFrame = v_u_4.CFrame * p6
-    end
-end)
-v_u_7:Start()
-require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p8)
-    -- upvalues: (copy) v_u_7, (copy) v_u_5
-    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-        v_u_7:Shake(v_u_5.Presets[p8])
-    end
-end)
-local v9, v10 = pcall(function()
-    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
-end)
-local v_u_11 = v9 and v10
-local v_u_12 = ""
-local v_u_13 = nil
-local v_u_14 = nil
-local v_u_15 = nil
-local v_u_16 = 1
-local v_u_17 = {}
-local v_u_18 = {
-    ["idle"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=112567039316532",
-            ["weight"] = 9
-        }
-    },
-    ["runForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=136441798556379",
-            ["weight"] = 10
-        }
-    },
-    ["runLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=92954891460328",
-            ["weight"] = 10
-        }
-    },
-    ["runRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=102650613728634",
-            ["weight"] = 10
-        }
-    },
-    ["walkForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=1327143189",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=85120741667342",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=129666392895912",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=116187425061819",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=129666392895912",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=107313365026630",
-            ["weight"] = 10
-        }
-    },
-    ["walkRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=107098422226014",
-            ["weight"] = 10
-        }
-    },
-    ["walkLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=109497731950632",
-            ["weight"] = 10
-        }
-    },
-    ["jump"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["fall"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["climb"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["sit"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolnone"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolslash"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toollunge"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    }
-}
-local v_u_19 = {
-    ["wave"] = false,
-    ["point"] = false,
-    ["dance1"] = true,
-    ["dance2"] = true,
-    ["dance3"] = true,
-    ["laugh"] = false,
-    ["cheer"] = false
-}
-function configureAnimationSet(p_u_20, p_u_21)
-    -- upvalues: (copy) v_u_17, (ref) v_u_14, (copy) v_u_2
-    if v_u_17[p_u_20] ~= nil then
-        for _, v22 in pairs(v_u_17[p_u_20].connections) do
-            v22:disconnect()
-        end
-    end
-    v_u_17[p_u_20] = {}
-    v_u_17[p_u_20].count = 0
-    v_u_17[p_u_20].totalWeight = 0
-    v_u_17[p_u_20].connections = {}
-    local v23 = script:FindFirstChild(p_u_20)
-    if v23 ~= nil then
-        local v24 = v_u_17[p_u_20].connections
-        local v25 = v23.ChildAdded
-        table.insert(v24, v25:connect(function(_)
-            -- upvalues: (copy) p_u_20, (copy) p_u_21
-            configureAnimationSet(p_u_20, p_u_21)
-        end))
-        local v26 = v_u_17[p_u_20].connections
-        local v27 = v23.ChildRemoved
-        table.insert(v26, v27:connect(function(_)
-            -- upvalues: (copy) p_u_20, (copy) p_u_21
-            configureAnimationSet(p_u_20, p_u_21)
-        end))
-        local v28 = 1
-        for _, v_u_29 in pairs(v23:GetChildren()) do
-            if v_u_29:IsA("Animation") then
-                local v30 = v_u_17[p_u_20].connections
-                local v31 = v_u_29.Changed
-                local function v32(_)
-                    -- upvalues: (ref) v_u_14, (copy) v_u_29, (copy) p_u_20, (copy) p_u_21
-                    if v_u_14 and v_u_14.Animation == v_u_29 then
-                        stopAllAnimations()
-                    end
-                    configureAnimationSet(p_u_20, p_u_21)
-                    task.spawn(move, os.clock())
-                end
-                table.insert(v30, v31:connect(v32))
-                v_u_17[p_u_20][v28] = {}
-                v_u_17[p_u_20][v28].anim = v_u_29
-                local v33 = v_u_29:FindFirstChild("Weight")
-                if v33 == nil then
-                    v_u_17[p_u_20][v28].weight = 1
-                else
-                    v_u_17[p_u_20][v28].weight = v33.Value
-                end
-                v_u_17[p_u_20].count = v_u_17[p_u_20].count + 1
-                v_u_17[p_u_20].totalWeight = v_u_17[p_u_20].totalWeight + v_u_17[p_u_20][v28].weight
-                v28 = v28 + 1
-                if v_u_14 and v_u_14.Animation == v_u_29 then
-                    stopAllAnimations()
-                    playAnimation(p_u_20, 0, v_u_2)
-                end
-            end
-        end
-    end
-    if v_u_17[p_u_20].count <= 0 then
-        for v34, v35 in pairs(p_u_21) do
-            v_u_17[p_u_20][v34] = {}
-            v_u_17[p_u_20][v34].anim = Instance.new("Animation")
-            v_u_17[p_u_20][v34].anim.Name = p_u_20
-            v_u_17[p_u_20][v34].anim.AnimationId = v35.id
-            v_u_17[p_u_20][v34].weight = v35.weight
-            v_u_17[p_u_20].count = v_u_17[p_u_20].count + 1
-            v_u_17[p_u_20].totalWeight = v_u_17[p_u_20].totalWeight + v35.weight
-        end
-    end
-end
-function scriptChildModified(p36)
-    -- upvalues: (copy) v_u_18
-    local v37 = v_u_18[p36.Name]
-    if v37 ~= nil then
-        configureAnimationSet(p36.Name, v37)
-    end
-end
-script.ChildAdded:connect(scriptChildModified)
-script.ChildRemoved:connect(scriptChildModified)
-if v_u_2 then
-    v_u_2:FindFirstChildOfClass("Animator")
-end
-local v_u_38 = v_u_14
-for v39, v40 in pairs(v_u_18) do
-    configureAnimationSet(v39, v40)
-end
-local v_u_41 = "None"
-local v_u_42 = 0
-local v_u_43 = 0
-function stopAllAnimations()
-    -- upvalues: (ref) v_u_12, (copy) v_u_19, (ref) v_u_13, (ref) v_u_15, (ref) v_u_38
-    local v44 = v_u_12
-    local v45 = v_u_19[v44] ~= nil and v_u_19[v44] == false and "idle" or v44
-    v_u_12 = ""
-    v_u_13 = nil
-    if v_u_15 ~= nil then
-        v_u_15:disconnect()
-    end
-    if v_u_38 ~= nil then
-        v_u_38:Stop()
-        v_u_38:Destroy()
-        v_u_38 = nil
-    end
-    return v45
-end
-function setAnimationSpeed(p46)
-    -- upvalues: (ref) v_u_16, (ref) v_u_38
-    if p46 ~= v_u_16 and v_u_38 then
-        v_u_16 = p46
-        v_u_38:AdjustSpeed(v_u_16)
-    end
-end
-function keyFrameReachedFunc(p47)
-    -- upvalues: (ref) v_u_12, (copy) v_u_19, (ref) v_u_16, (copy) v_u_2
-    if p47 == "End" then
-        local v48 = v_u_12
-        local v49 = v_u_19[v48] ~= nil and v_u_19[v48] == false and "idle" or v48
-        local v50 = v_u_16
-        playAnimation(v49, 0, v_u_2)
-        setAnimationSpeed(v50)
-    end
-end
-function playAnimation(p51, p52, p53)
-    -- upvalues: (copy) v_u_17, (ref) v_u_13, (ref) v_u_38, (ref) v_u_12, (ref) v_u_16, (ref) v_u_15, (ref) v_u_3, (copy) v_u_7, (copy) v_u_5
-    local v54 = math.random(1, v_u_17[p51].totalWeight)
-    local v55 = 1
-    while v_u_17[p51][v55].weight < v54 do
-        v54 = v54 - v_u_17[p51][v55].weight
-        v55 = v55 + 1
-    end
-    local v56 = v_u_17[p51][v55].anim
-    if v56 ~= v_u_13 then
-        if v_u_38 ~= nil then
-            v_u_38:Stop(p52)
-            v_u_38:Destroy()
-        end
-        local v57 = (not (v_u_12:match("walk") or v_u_12:match("run")) or v_u_12 == "stop") and 0 or v_u_38.TimePosition
-        v_u_16 = 1
-        v_u_38 = p53:LoadAnimation(v56)
-        v_u_38.Priority = Enum.AnimationPriority.Core
-        v_u_38:Play(p52)
-        v_u_38.TimePosition = v57
-        v_u_12 = p51
-        v_u_13 = v56
-        if v_u_15 ~= nil then
-            v_u_15:disconnect()
-        end
-        local v_u_58 = v_u_38:GetMarkerReachedSignal("Step"):Connect(function()
-            -- upvalues: (ref) v_u_3, (ref) v_u_7, (ref) v_u_5
-            if v_u_3 == "Walking" then
-                if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-                    v_u_7:Shake(v_u_5.Presets.StepShake)
-                    return
-                end
-            elseif (v_u_3 == "Running" or v_u_3 == "RunningStart") and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-                v_u_7:Shake(v_u_5.Presets.RunningShake)
-            end
-        end)
-        v_u_38.Stopped:Once(function()
-            -- upvalues: (ref) v_u_58
-            v_u_58:Disconnect()
-        end)
-        v_u_15 = v_u_38.KeyframeReached:connect(keyFrameReachedFunc)
-    end
-end
-local v_u_59 = ""
-local v_u_60 = nil
-local v_u_61 = nil
-local v_u_62 = nil
-function toolKeyFrameReachedFunc(p63)
-    -- upvalues: (ref) v_u_59, (copy) v_u_2
-    if p63 == "End" then
-        playToolAnimation(v_u_59, 0, v_u_2)
-    end
-end
-function playToolAnimation(p64, p65, p66, p67)
-    -- upvalues: (copy) v_u_17, (ref) v_u_61, (ref) v_u_60, (ref) v_u_59, (ref) v_u_62
-    local v68 = math.random(1, v_u_17[p64].totalWeight)
-    local v69 = 1
-    while v_u_17[p64][v69].weight < v68 do
-        v68 = v68 - v_u_17[p64][v69].weight
-        v69 = v69 + 1
-    end
-    local v70 = v_u_17[p64][v69].anim
-    if v_u_61 ~= v70 then
-        if v_u_60 ~= nil then
-            v_u_60:Stop()
-            v_u_60:Destroy()
-            p65 = 0
-        end
-        v_u_60 = p66:LoadAnimation(v70)
-        if p67 then
-            v_u_60.Priority = p67
-        end
-        v_u_60:Play(p65)
-        v_u_59 = p64
-        v_u_61 = v70
-        v_u_62 = v_u_60.KeyframeReached:connect(toolKeyFrameReachedFunc)
-    end
-end
-function stopToolAnimations()
-    -- upvalues: (ref) v_u_59, (ref) v_u_62, (ref) v_u_61, (ref) v_u_60
-    local v71 = v_u_59
-    if v_u_62 ~= nil then
-        v_u_62:disconnect()
-    end
-    v_u_59 = ""
-    v_u_61 = nil
-    if v_u_60 ~= nil then
-        v_u_60:Stop()
-        v_u_60:Destroy()
-        v_u_60 = nil
-    end
-    return v71
-end
-function onDied()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "Dead"
-end
-function onJumping()
-    -- upvalues: (copy) v_u_2, (ref) v_u_43, (ref) v_u_3
-    playAnimation("jump", 0.1, v_u_2)
-    v_u_43 = 0.3
-    v_u_3 = "Jumping"
-end
-function onClimbing(p72)
-    -- upvalues: (copy) v_u_11, (copy) v_u_1, (copy) v_u_2, (ref) v_u_3
-    local v73 = p72 / (not v_u_11 and 1 or v_u_1:GetScale())
-    playAnimation("climb", 0.1, v_u_2)
-    setAnimationSpeed(v73 / 12)
-    v_u_3 = "Climbing"
-end
-function onGettingUp()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "GettingUp"
-end
-function onFreeFall()
-    -- upvalues: (ref) v_u_43, (copy) v_u_2, (ref) v_u_3
-    if v_u_43 <= 0 then
-        playAnimation("fall", 0.3, v_u_2)
-    end
-    v_u_3 = "FreeFall"
-end
-function onFallingDown()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "FallingDown"
-end
-function onSeated()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "Seated"
-end
-function onPlatformStanding()
-    -- upvalues: (ref) v_u_3
-    v_u_3 = "PlatformStanding"
-end
-function onSwimming(p74)
-    -- upvalues: (ref) v_u_3
-    if p74 > 0 then
-        v_u_3 = "Running"
-    else
-        v_u_3 = "Standing"
-    end
-end
-function getTool()
-    -- upvalues: (copy) v_u_1
-    for _, v75 in ipairs(v_u_1:GetChildren()) do
-        if v75.className == "Tool" then
-            return v75
-        end
-    end
-    return nil
-end
-function getToolAnim(p76)
-    for _, v77 in ipairs(p76:GetChildren()) do
-        if v77.Name == "toolanim" and v77.className == "StringValue" then
-            return v77
-        end
-    end
-    return nil
-end
-function animateTool()
-    -- upvalues: (ref) v_u_41, (copy) v_u_2
-    if v_u_41 == "None" then
-        playToolAnimation("toolnone", 0.1, v_u_2, Enum.AnimationPriority.Idle)
-        return
-    elseif v_u_41 == "Slash" then
-        playToolAnimation("toolslash", 0, v_u_2, Enum.AnimationPriority.Action)
-        return
-    elseif v_u_41 == "Lunge" then
-        playToolAnimation("toollunge", 0, v_u_2, Enum.AnimationPriority.Action)
-    end
-end
-local v_u_78 = 0
-local v_u_79 = v_u_2.Health
-function move(p80)
-    -- upvalues: (copy) v_u_1, (ref) v_u_3, (copy) v_u_2, (ref) v_u_78, (ref) v_u_43, (copy) v_u_7, (copy) v_u_19, (ref) v_u_12, (ref) v_u_38, (ref) v_u_79, (ref) v_u_41, (ref) v_u_42, (ref) v_u_61
-    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
-        if v_u_1:HasTag("KillAnims") then
-            v_u_3 = "None"
-            stopAllAnimations()
-        elseif v_u_3 ~= "Standing" then
-            v_u_3 = "Standing"
-            playAnimation("idle", 0.1, v_u_2)
-        end
-    else
-        local v81 = p80 - v_u_78
-        v_u_78 = p80
-        if v_u_43 > 0 then
-            v_u_43 = v_u_43 - v81
-        end
-        local v82 = (v_u_1:FindFirstChild("HumanoidRootPart").Velocity * Vector3.new(1, 0, 1)).Magnitude
-        if v_u_2.FloorMaterial ~= Enum.Material.Air and (v_u_3 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_2.MoveDirection) > 0.45) then
-            if v82 > 0.01 and (v82 <= 16 and v_u_2.MoveDirection ~= Vector3.new(0, 0, 0)) then
-                v_u_7:StopSustained(0.5)
-                v_u_3 = "Walking"
-            elseif v82 > 16 and v_u_2.MoveDirection ~= Vector3.new(0, 0, 0) then
-                v_u_3 = "Running"
-            elseif v_u_19[v_u_12] == nil and (v_u_3 ~= "Standing" and v_u_3 ~= "Stopping") then
-                playAnimation("idle", 0.1, v_u_2)
-                v_u_3 = "Standing"
-            end
-        end
-        if v_u_3 == "FreeFall" and v_u_43 <= 0 then
-            playAnimation("idle", 0.1, v_u_2)
-        else
-            if v_u_3 == "Seated" then
-                playAnimation("sit", 0.5, v_u_2)
-                return
-            end
-            if v_u_3 == "Walking" then
-                local v83 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_2.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v83 = v83 * -1
-                end
-                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                    playAnimation("walkForward", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
-                    playAnimation("walkForwardRight", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
-                    playAnimation("walkBackwardRight", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
-                    playAnimation("walkBackwardLeft", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
-                    playAnimation("walkForwardLeft", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
-                    playAnimation("walkForward", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
-                    playAnimation("walkRight", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
-                    playAnimation("walkBackward", 0.3, v_u_2)
-                elseif v83:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
-                    playAnimation("walkLeft", 0.3, v_u_2)
-                end
-                if v_u_38 then
-                    v_u_38.Priority = Enum.AnimationPriority.Movement
-                end
-                setAnimationSpeed(v82 / 12)
-            elseif v_u_3 == "Running" then
-                local v84 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_2.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v84 = v84 * -1
-                end
-                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                    playAnimation("runForward", 0.3, v_u_2)
-                elseif v84:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runLeft", 0.3, v_u_2)
-                elseif v84:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runRight", 0.3, v_u_2)
-                else
-                    playAnimation("runForward", 0.3, v_u_2)
-                end
-                if v_u_38 then
-                    v_u_38.Priority = Enum.AnimationPriority.Movement
-                end
-                setAnimationSpeed(v82 / 24)
-            elseif v_u_3 == "Dead" or (v_u_3 == "GettingUp" or (v_u_3 == "FallingDown" or (v_u_3 == "Seated" or v_u_3 == "PlatformStanding"))) then
-                stopAllAnimations()
-            end
-        end
-        v_u_79 = v_u_2.Health
-        local v85 = getTool()
-        if v85 and v85:FindFirstChild("Handle") then
-            local v86 = getToolAnim(v85)
-            if v86 then
-                v_u_41 = v86.Value
-                v86.Parent = nil
-                v_u_42 = p80 + 0.3
-            end
-            if v_u_42 < p80 then
-                v_u_42 = 0
-                v_u_41 = "None"
-            end
-            animateTool()
-        else
-            stopToolAnimations()
-            v_u_41 = "None"
-            v_u_61 = nil
-            v_u_42 = 0
-        end
-    end
-end
-v_u_2.Died:connect(onDied)
-stopAllAnimations()
-for _, v87 in v_u_2:FindFirstChildOfClass("Animator"):GetPlayingAnimationTracks() do
-    v87:Stop()
-end
-playAnimation("idle", 0.1, v_u_2)
-local _ = "Standing"
-while v_u_1.Parent ~= nil do
-    local _, v88 = wait()
-    move(v88)
-end
-
--- PATH: Workspace.PLAYERS.KILLER.caylaamunch.Movement
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("ReplicatedStorage")
-local v_u_2 = game:GetService("TweenService")
-local v3 = game:GetService("RunService")
-local v4 = game:GetService("Players")
-local v_u_5 = v1:WaitForChild("Requests")
-local v_u_6 = v4.LocalPlayer
-local v_u_7 = v_u_6.Character or v_u_6.CharacterAdded:Wait()
-local v_u_8 = v_u_7:WaitForChild("Humanoid")
-local v_u_9 = v_u_7:WaitForChild("HumanoidRootPart")
-for _, v10 in v_u_7:GetDescendants() do
-    if v10:IsA("BasePart") then
-        v10.Massless = v_u_9 ~= v10
-    end
-end
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
-local v_u_11 = Instance.new("BodyVelocity")
-v_u_11.Name = "MovementBodyVelocity"
-v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
-v_u_11.P = (1 / 0)
-v_u_11.Velocity = Vector3.new(0, 0, 0)
-v_u_11.Parent = v_u_9
-v_u_8.WalkSpeed = 0.01
-v_u_8.JumpPower = 0
-local v_u_12 = 16
-local v_u_13 = Vector3.new(0, 0, 0)
-local v_u_14 = Vector3.new(0, 0, 0)
-local v_u_15 = false
-local v_u_16 = false
-local v_u_17 = {}
-v3.Heartbeat:Connect(function(_)
-    -- upvalues: (copy) v_u_17, (copy) v_u_9
-    local v18 = workspace:GetServerTimeNow()
-    v_u_17[v18] = v_u_9.Position
-    for v19 in next, v_u_17 do
-        if v19 < v18 - 1 then
-            v_u_17[v19] = nil
-        end
-    end
-end)
-function castRay(p20, p21, p22)
-    local v23 = RaycastParams.new()
-    v23.FilterDescendantsInstances = { p20, workspace.IGNORE, workspace.PLAYERS }
-    local v24 = workspace:Raycast(p21, p22, v23)
-    local v25 = v24 and v24.Position or p21 + p22
-    return (p21 - v25).Magnitude, p21, v25, v24
-end
-local v_u_26 = 0
-local v_u_27 = v_u_9.Position
-v3:IsStudio()
-local function v_u_38()
-    -- upvalues: (copy) v_u_7, (copy) v_u_8, (ref) v_u_12, (copy) v_u_9, (ref) v_u_13, (ref) v_u_16, (ref) v_u_15, (ref) v_u_14, (ref) v_u_27, (ref) v_u_26, (copy) v_u_5
-    local v28 = v_u_7:GetAttribute("WalkSpeed") or 0
-    local v29 = v_u_7:GetAttribute("RunSpeed") or 0
-    local v30 = v_u_8.MoveDirection
-    if v_u_7:HasTag("Confusion") then
-        v30 = v30 * -1
-    end
-    local v31 = v_u_7:GetAttribute("Crouching")
-    local v32 = v_u_7:GetAttribute("Running")
-    local v33 = v_u_7:HasTag("SlowStop")
-    local v34 = v_u_7:GetAttribute("Stamina") or 0
-    local v35 = v_u_7:HasTag("CantMove") or (v_u_7:HasTag("CustomSpeed") and v_u_7:GetAttribute("CustomSpeed") or v31 and v28 / 2)
-    if v35 then
-        v28 = v35
-    elseif v32 and v34 > 0 then
-        v28 = v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 and v29 and v29 or v28
-    end
-    v_u_12 = v28
-    local v36 = v_u_15
-    if v36 then
-        if v30.Magnitude > 0 and (v_u_16 and v_u_9.CFrame.LookVector:Dot(v30) < 0.45) or v30.Magnitude == 0 then
-            if v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 then
-                v36 = not v31
-            else
-                v36 = false
-            end
-        else
-            v36 = false
-        end
-    end
-    v_u_16 = v36
-    if v_u_16 then
-        local _, _, _, v37 = castRay(v_u_7, v_u_9.CFrame.Position, v_u_9.CFrame.LookVector * 1.5)
-        if not v37 then
-            v30 = v_u_9.CFrame.LookVector
-        end
-    end
-    if v30.Magnitude > 0 then
-        v_u_13 = v30 * v_u_12
-        if not v_u_16 then
-            v_u_14 = v_u_13
-        end
-        if not v32 or (v29 > v_u_12 or not v33) then
-            v33 = v_u_16
-        end
-        v_u_15 = v33
-    else
-        v_u_13 = Vector3.new(0, 0, 0)
-    end
-    if (v_u_9.Position - v_u_27).Magnitude > 0.25 and tick() - v_u_26 > 0.011111111111111112 then
-        v_u_5.Movement:FireServer(v_u_9.CFrame, workspace:GetServerTimeNow(), v_u_7)
-        v_u_27 = v_u_9.Position
-        v_u_26 = tick()
-    end
-end
-v3.Heartbeat:Connect(function(p39)
-    -- upvalues: (copy) v_u_6, (copy) v_u_38, (ref) v_u_16, (ref) v_u_14, (ref) v_u_13, (ref) v_u_15, (copy) v_u_9, (copy) v_u_11, (copy) v_u_7, (copy) v_u_2
-    v_u_6:GetAttribute("Mouselocked")
-    v_u_38()
-    if v_u_16 then
-        v_u_14 = ((v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) * v_u_14.Magnitude):Lerp(Vector3.new(0, 0, 0), 1.8 * p39)
-        if v_u_14.Magnitude <= 1 then
-            v_u_16 = false
-            v_u_15 = false
-        end
-    else
-        v_u_14 = v_u_13
-    end
-    local v_u_40 = v_u_9:FindFirstChild("Velocity") or v_u_9:FindFirstChild("BodyVelocity")
-    if v_u_40 and v_u_11.Parent ~= nil then
-        v_u_40.Parent = nil
-        task.delay(0.05, function()
-            -- upvalues: (copy) v_u_40, (ref) v_u_9
-            v_u_40.Parent = v_u_9
-        end)
-    end
-    if v_u_7:GetAttribute("Ragdoll") or (v_u_7:HasTag("CantMove") or (v_u_7:HasTag("Ragdoll") or v_u_40)) then
-        v_u_11.MaxForce = Vector3.new(0, 0, 0)
-        v_u_11.Parent = nil
-    elseif v_u_11.MaxForce == Vector3.new(0, 0, 0) then
-        v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
-        v_u_11.Parent = v_u_9
-    end
-    v_u_11.Velocity = v_u_14
-    local v41 = v_u_9:FindFirstChildOfClass("BodyVelocity")
-    if v41 and (v41:GetAttribute("Update") and v41:GetAttribute("Update") == "Root") then
-        local v42 = v41:GetAttribute("Tween") or 0
-        local v43 = v41:GetAttribute("Speed") or 0
-        v_u_2:Create(v41, TweenInfo.new(v42), {
-            ["Velocity"] = v_u_9.CFrame.LookVector * v43
-        }):Play()
-    end
-    local v44 = v_u_9:FindFirstChildOfClass("BodyGyro")
-    if v44 and (v44:GetAttribute("Update") and v44:GetAttribute("Update") == "Cam") then
-        v44.CFrame = workspace.CurrentCamera.CFrame
-    end
-end)
-v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
-v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
-v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
-
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.ChaseThemes
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.ChaseThemes
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = { workspace:WaitForChild("LobbyMusic") }
@@ -1697,7 +43,7 @@ game:GetService("RunService").Stepped:Connect(function()
     end
 end)
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Input
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Input
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("UserInputService")
 local v_u_2 = game:GetService("Players").LocalPlayer
@@ -1796,7 +142,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
     end
 end)
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Animate
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v2 = v_u_1:WaitForChild("Torso")
@@ -2629,7 +975,7 @@ while v_u_1.Parent ~= nil do
     move(v104)
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Elevator.On Respawn
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Elevator.On Respawn
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 local v_u_2 = game:GetService("RunService")
@@ -2918,23 +1264,23 @@ else
     script.RemoteEvent:FireServer(true)
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Elevator.On Respawn.Server
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Elevator.On Respawn.Server
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Voice
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Voice
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Voice.AudioDeviceInput.Mute
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Voice.AudioDeviceInput.Mute
 -- Decompiled with Velocity Script Decompiler
 if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
     script.Parent.Volume = 0
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Client
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Client
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
 local v2 = { "Torso", "Head", "Glow" }
@@ -3110,12 +1456,12 @@ v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
     end
 end)
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Client.Server
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Client.Server
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.StepSFX
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.StepSFX
 -- Decompiled with Velocity Script Decompiler
 if script.Parent:FindFirstChildOfClass("Humanoid") then
     local function v_u_7()
@@ -3243,7 +1589,7 @@ if script.Parent:FindFirstChildOfClass("Humanoid") then
     end)
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.cristhiancx7.Movement
+-- PATH: Workspace.PLAYERS.LOBBY.IDKWHATTOSAY122345.Movement
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 local v_u_2 = game:GetService("TweenService")
@@ -3399,7 +1745,7 @@ v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
 v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
 v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.ChaseThemes
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.ChaseThemes
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = { workspace:WaitForChild("LobbyMusic") }
@@ -3443,7 +1789,7 @@ game:GetService("RunService").Stepped:Connect(function()
     end
 end)
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Input
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Input
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("UserInputService")
 local v_u_2 = game:GetService("Players").LocalPlayer
@@ -3542,7 +1888,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
     end
 end)
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Animate
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v2 = v_u_1:WaitForChild("Torso")
@@ -4375,7 +2721,7 @@ while v_u_1.Parent ~= nil do
     move(v104)
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Elevator.On Respawn
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Elevator.On Respawn
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 local v_u_2 = game:GetService("RunService")
@@ -4664,23 +3010,23 @@ else
     script.RemoteEvent:FireServer(true)
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Elevator.On Respawn.Server
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Elevator.On Respawn.Server
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Voice
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Voice
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Voice.AudioDeviceInput.Mute
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Voice.AudioDeviceInput.Mute
 -- Decompiled with Velocity Script Decompiler
 if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
     script.Parent.Volume = 0
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Client
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Client
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
 local v2 = { "Torso", "Head", "Glow" }
@@ -4856,12 +3202,12 @@ v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
     end
 end)
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Client.Server
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Client.Server
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.StepSFX
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.StepSFX
 -- Decompiled with Velocity Script Decompiler
 if script.Parent:FindFirstChildOfClass("Humanoid") then
     local function v_u_7()
@@ -4989,7 +3335,7 @@ if script.Parent:FindFirstChildOfClass("Humanoid") then
     end)
 end
 
--- PATH: Workspace.PLAYERS.LOBBY.ii_xhxnessyx.Movement
+-- PATH: Workspace.PLAYERS.LOBBY.Jjjjaadgtdghdfhh.Movement
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 local v_u_2 = game:GetService("TweenService")
@@ -5145,3142 +3491,7 @@ v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
 v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
 v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
 
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.ChaseThemes-Survivor
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("RunService")
-local v_u_2 = game:GetService("Players")
-local v_u_3 = {
-    15,
-    30,
-    45,
-    60
-}
-workspace:FindFirstChild("LobbyMusic").Volume = 0
-local v_u_4 = {}
-local v_u_5 = 0
-v1.Heartbeat:Connect(function(p6)
-    -- upvalues: (copy) v_u_2, (copy) v_u_4, (copy) v_u_3, (ref) v_u_5
-    local v7 = v_u_2.LocalPlayer.Character
-    if not v7 then
-        return
-    end
-    local v8 = v7:FindFirstChild("HumanoidRootPart")
-    if not v8 then
-        return
-    end
-    if workspace.GAME.STOP_MUSIC.Value == true then
-        for _, v9 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v9:FindFirstChild("Phases") then
-                for v10 = 1, 4 do
-                    game:GetService("TweenService"):Create(v9:FindFirstChild("Phases"):FindFirstChild(v10), TweenInfo.new(0.25), {
-                        ["Volume"] = 0
-                    }):Play()
-                end
-            end
-        end
-        return
-    end
-    if workspace.GAME.STOP_MUSIC_ALL.Value == true then
-        for _, v11 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v11:FindFirstChild("Phases") then
-                for v12 = 1, 6 do
-                    if v11:FindFirstChild("Phases"):FindFirstChild(v12) then
-                        game:GetService("TweenService"):Create(v11:FindFirstChild("Phases"):FindFirstChild(v12), TweenInfo.new(0.25), {
-                            ["Volume"] = 0
-                        }):Play()
-                    end
-                end
-            end
-        end
-        return
-    end
-    if game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then
-        for _, v13 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v13:FindFirstChild("Phases") then
-                for v14 = 1, 6 do
-                    if v13:FindFirstChild("Phases"):FindFirstChild(v14) then
-                        game:GetService("TweenService"):Create(v13:FindFirstChild("Phases"):FindFirstChild(v14), TweenInfo.new(0.5), {
-                            ["PlaybackSpeed"] = 0
-                        }):Play()
-                    end
-                end
-            end
-        end
-        return
-    end
-    local v15 = 0
-    for _, v16 in workspace.PLAYERS.KILLER:GetChildren() do
-        local v17 = v16:FindFirstChild("HumanoidRootPart")
-        if v17 and (v16:FindFirstChild("Phases") and not v_u_4[v16.Name]) then
-            local v18 = {}
-            for v19 = 1, 4 do
-                v18[v19] = v16:WaitForChild("Phases"):WaitForChild(v19)
-            end
-            for _, v20 in next, v18 do
-                if not (v20.IsLoaded or v_u_4[v16.Name]) then
-                    v_u_4[v16.Name] = true
-                    v20.Loaded:Wait()
-                    v_u_4[v16.Name] = false
-                end
-            end
-            for _, v21 in next, v18 do
-                if not v21.IsPlaying then
-                    v21:Play()
-                    v21.Volume = 0
-                end
-            end
-            local v22 = 0
-            for v23, v24 in next, v_u_3 do
-                if (v8.Position - v17.Position).Magnitude <= v24 then
-                    v22 = #v18 - v23 + 1
-                    break
-                end
-            end
-            local v25 = v7:HasTag("COMBAT") and 4 or (v16:HasTag("UNDETECTABLE") and v22 < 4 and 0 or ((v16:HasTag("INVISIBILE") or v16:HasTag("TRUE_UNDETECTABLE")) and 0 or v22))
-            if v15 < v25 then
-                v15 = v25
-            end
-            if v25 ~= v_u_5 and (v25 == 4 and v7:HasTag("COMBAT")) then
-                for _, v26 in next, v18 do
-                    v26.TimePosition = 0
-                end
-            end
-            for v27, v28 in next, v18 do
-                if v27 == v25 then
-                    v28.Volume = v28.Volume + (v28:GetAttribute("VOLUME_MAX") - v28.Volume) * math.min(p6, 1)
-                else
-                    v28.Volume = v28.Volume * (1 - math.min(p6, 1))
-                end
-            end
-        end
-    end
-    v_u_5 = v15
-    if workspace:FindFirstChild("MAPS"):FindFirstChild("GAME MAP"):FindFirstChild("Music") then
-        local v29 = workspace:FindFirstChild("MAPS"):FindFirstChild("GAME MAP"):FindFirstChild("Music")
-        if v15 > 0 then
-            game:GetService("TweenService"):Create(v29, TweenInfo.new(0.5), {
-                ["Volume"] = 0
-            }):Play()
-            return
-        end
-        game:GetService("TweenService"):Create(v29, TweenInfo.new(0.5), {
-            ["Volume"] = v29:GetAttribute("Volume")
-        }):Play()
-    end
-end)
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.Input
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("UserInputService")
-local v_u_2 = game:GetService("Players").LocalPlayer
-local v_u_3 = v_u_2.Character
-local v_u_4 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Input")
-local v_u_5 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Keybinds"))
-task.spawn(function()
-    repeat
-        local v6 = pcall(function()
-            game:GetService("StarterGui"):SetCore("ResetButtonCallback", false)
-        end)
-        task.wait(1)
-    until v6
-end)
-local v_u_7 = false
-local v_u_8 = false
-v1.InputBegan:Connect(function(p9, p10)
-    -- upvalues: (copy) v_u_5, (ref) v_u_8, (copy) v_u_2, (ref) v_u_7, (copy) v_u_4
-    if p10 then
-        return
-    elseif table.find(v_u_5.Run, p9.KeyCode) then
-        v_u_8 = true
-        if v_u_2:GetAttribute("HoldToRun") then
-            v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-        else
-            v_u_7 = not v_u_7
-            v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-        end
-    elseif table.find(v_u_5.Q, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 1 })
-        return
-    elseif table.find(v_u_5.E, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 2 })
-        return
-    elseif table.find(v_u_5.Flashlight, p9.KeyCode) then
-        v_u_4:Fire(true, { "Flashlight" })
-    elseif table.find(v_u_5.Crouch, p9.KeyCode) then
-        v_u_4:Fire(true, { "Crouch" })
-    end
-end)
-v1.InputEnded:Connect(function(p11, p12)
-    -- upvalues: (copy) v_u_5, (copy) v_u_2, (copy) v_u_4, (ref) v_u_8
-    if not p12 then
-        if table.find(v_u_5.Run, p11.KeyCode) then
-            if v_u_2:GetAttribute("HoldToRun") then
-                v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-            end
-            v_u_8 = false
-        end
-    end
-end)
-local v_u_13 = false
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Down:Connect(function()
-    -- upvalues: (ref) v_u_13, (copy) v_u_2, (ref) v_u_7, (copy) v_u_4
-    v_u_13 = true
-    if v_u_2:GetAttribute("HoldToRun") then
-        v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-    else
-        v_u_7 = not v_u_7
-        v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-    end
-end)
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Up:Connect(function()
-    -- upvalues: (copy) v_u_2, (copy) v_u_4, (ref) v_u_13
-    if v_u_2:GetAttribute("HoldToRun") then
-        v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-    end
-    v_u_13 = false
-end)
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Crouch.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_4
-    v_u_4:Fire(true, { "Crouch" })
-end)
-game:GetService("RunService").Heartbeat:Connect(function()
-    -- upvalues: (copy) v_u_2, (ref) v_u_8, (ref) v_u_13, (copy) v_u_3, (copy) v_u_4, (ref) v_u_7
-    if v_u_2:GetAttribute("HoldToRun") and (v_u_8 or v_u_13) and (v_u_3:GetAttribute("CanRun") and (not v_u_3:HasTag("Battery") and (not v_u_3:GetAttribute("Ragdoll") and (v_u_3:GetAttribute("Stamina") or 0) > 0))) then
-        if not v_u_3:GetAttribute("Running") then
-            v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-            v_u_3:SetAttribute("Running", true)
-            return
-        end
-    elseif v_u_2:GetAttribute("HoldToRun") or (not v_u_3:GetAttribute("CanRun") or (v_u_3:HasTag("Battery") or (v_u_3:GetAttribute("Ragdoll") or (v_u_3:GetAttribute("Stamina") or 0) <= 0))) then
-        if v_u_3:GetAttribute("Running") then
-            v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-            v_u_3:SetAttribute("Running", false)
-        end
-        v_u_7 = false
-        v_u_8 = false
-    elseif v_u_7 ~= v_u_3:GetAttribute("Running") then
-        v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-        v_u_3:SetAttribute("Running", v_u_7)
-        return
-    end
-end)
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.Animate
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = script.Parent
-local v2 = v_u_1:WaitForChild("Torso")
-local v_u_3 = v2:WaitForChild("Right Shoulder")
-local v_u_4 = v2:WaitForChild("Left Shoulder")
-local v_u_5 = v2:WaitForChild("Right Hip")
-local v_u_6 = v2:WaitForChild("Left Hip")
-v2:WaitForChild("Neck")
-local v_u_7 = v_u_1:WaitForChild("Humanoid")
-local v_u_8 = "Standing"
-local v_u_9 = v_u_7.MaxHealth / 2
-local v_u_10 = game:GetService("Workspace").CurrentCamera
-local v_u_11 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
-local v_u_13 = v_u_11.new(Enum.RenderPriority.Camera.Value, function(p12)
-    -- upvalues: (copy) v_u_10
-    if v_u_10.CameraType ~= Enum.CameraType.Scriptable then
-        v_u_10.CFrame = v_u_10.CFrame * p12
-    end
-end)
-v_u_13:Start()
-require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p14)
-    -- upvalues: (copy) v_u_13, (copy) v_u_11
-    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-        v_u_13:Shake(v_u_11.Presets[p14])
-    end
-end)
-local v15, v16 = pcall(function()
-    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
-end)
-local v_u_17 = v15 and v16
-local v_u_18 = ""
-local v_u_19 = nil
-local v_u_20 = nil
-local v_u_21 = nil
-local v_u_22 = 1
-local v_u_23 = {}
-local v_u_24 = {
-    ["idle"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=140603061945284",
-            ["weight"] = 9
-        }
-    },
-    ["stop"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=83559231447722",
-            ["weight"] = 11
-        }
-    },
-    ["stopWalk"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=133043783896866",
-            ["weight"] = 11
-        }
-    },
-    ["runForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=78749200572411",
-            ["weight"] = 10
-        }
-    },
-    ["runLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=96509043428510",
-            ["weight"] = 10
-        }
-    },
-    ["runRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=97131507395933",
-            ["weight"] = 10
-        }
-    },
-    ["runStart"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=113729068153328",
-            ["weight"] = 11
-        }
-    },
-    ["runStartLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=71403377531705",
-            ["weight"] = 11
-        }
-    },
-    ["runStartRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=75650510533728",
-            ["weight"] = 11
-        }
-    },
-    ["walkForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=89929150450773",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=111382930561219",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=107545126168718",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=82823739770244",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=140470116427904",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=85839904210745",
-            ["weight"] = 10
-        }
-    },
-    ["walkRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=111516784776401",
-            ["weight"] = 10
-        }
-    },
-    ["walkLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=118831683318213",
-            ["weight"] = 10
-        }
-    },
-    ["Crouchidle"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=86063084977279",
-            ["weight"] = 9
-        }
-    },
-    ["CrouchwalkForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=93405694022444",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkForwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=117819977958017",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkForwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=88661748313165",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkBackward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=81174024597617",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkBackwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=88741205365224",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkBackwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=96823064462744",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=114730177951495",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=138684140853282",
-            ["weight"] = 10
-        }
-    },
-    ["jump"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["fall"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=110915217320372",
-            ["weight"] = 10
-        }
-    },
-    ["climb"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["sit"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolnone"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolslash"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toollunge"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    }
-}
-local v_u_25 = {
-    ["wave"] = false,
-    ["point"] = false,
-    ["dance1"] = true,
-    ["dance2"] = true,
-    ["dance3"] = true,
-    ["laugh"] = false,
-    ["cheer"] = false
-}
-function configureAnimationSet(p_u_26, p_u_27)
-    -- upvalues: (copy) v_u_23
-    if v_u_23[p_u_26] ~= nil then
-        for _, v28 in pairs(v_u_23[p_u_26].connections) do
-            v28:disconnect()
-        end
-    end
-    v_u_23[p_u_26] = {}
-    v_u_23[p_u_26].count = 0
-    v_u_23[p_u_26].totalWeight = 0
-    v_u_23[p_u_26].connections = {}
-    local v29 = script:FindFirstChild(p_u_26)
-    if v29 ~= nil then
-        local v30 = v_u_23[p_u_26].connections
-        local v31 = v29.ChildAdded
-        table.insert(v30, v31:connect(function(_)
-            -- upvalues: (copy) p_u_26, (copy) p_u_27
-            configureAnimationSet(p_u_26, p_u_27)
-        end))
-        local v32 = v_u_23[p_u_26].connections
-        local v33 = v29.ChildRemoved
-        table.insert(v32, v33:connect(function(_)
-            -- upvalues: (copy) p_u_26, (copy) p_u_27
-            configureAnimationSet(p_u_26, p_u_27)
-        end))
-        local v34 = 1
-        for _, v35 in pairs(v29:GetChildren()) do
-            if v35:IsA("Animation") then
-                local v36 = v_u_23[p_u_26].connections
-                local v37 = v35.Changed
-                table.insert(v36, v37:connect(function(_)
-                    -- upvalues: (copy) p_u_26, (copy) p_u_27
-                    configureAnimationSet(p_u_26, p_u_27)
-                    task.spawn(move, os.clock())
-                end))
-                v_u_23[p_u_26][v34] = {}
-                v_u_23[p_u_26][v34].anim = v35
-                local v38 = v35:FindFirstChild("Weight")
-                if v38 == nil then
-                    v_u_23[p_u_26][v34].weight = 1
-                else
-                    v_u_23[p_u_26][v34].weight = v38.Value
-                end
-                v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
-                v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v_u_23[p_u_26][v34].weight
-                v34 = v34 + 1
-            end
-        end
-    end
-    if v_u_23[p_u_26].count <= 0 then
-        for v39, v40 in pairs(p_u_27) do
-            v_u_23[p_u_26][v39] = {}
-            v_u_23[p_u_26][v39].anim = Instance.new("Animation")
-            v_u_23[p_u_26][v39].anim.Name = p_u_26
-            v_u_23[p_u_26][v39].anim.AnimationId = v40.id
-            v_u_23[p_u_26][v39].weight = v40.weight
-            v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
-            v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v40.weight
-        end
-    end
-end
-function scriptChildModified(p41)
-    -- upvalues: (copy) v_u_24
-    local v42 = v_u_24[p41.Name]
-    if v42 ~= nil then
-        configureAnimationSet(p41.Name, v42)
-    end
-end
-script.ChildAdded:connect(scriptChildModified)
-script.ChildRemoved:connect(scriptChildModified)
-local v43
-if v_u_7 then
-    v43 = v_u_7:FindFirstChildOfClass("Animator")
-else
-    v43 = nil
-end
-if v43 then
-    local v44 = v43:GetPlayingAnimationTracks()
-    for _, v45 in ipairs(v44) do
-        v45:Stop(0)
-        v45:Destroy()
-    end
-end
-for v46, v47 in pairs(v_u_24) do
-    configureAnimationSet(v46, v47)
-end
-local v_u_48 = "None"
-local v_u_49 = 0
-local v_u_50 = 0
-function stopAllAnimations()
-    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_19, (ref) v_u_21, (ref) v_u_20
-    local v51 = v_u_18
-    local v52 = v_u_25[v51] ~= nil and v_u_25[v51] == false and "idle" or v51
-    v_u_18 = ""
-    v_u_19 = nil
-    if v_u_21 ~= nil then
-        v_u_21:disconnect()
-    end
-    if v_u_20 ~= nil then
-        v_u_20:Stop()
-        v_u_20:Destroy()
-        v_u_20 = nil
-    end
-    return v52
-end
-function setAnimationSpeed(p53)
-    -- upvalues: (ref) v_u_22, (ref) v_u_20
-    if p53 ~= v_u_22 and v_u_20 then
-        v_u_22 = p53
-        v_u_20:AdjustSpeed(v_u_22)
-    end
-end
-function keyFrameReachedFunc(p54)
-    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_22, (copy) v_u_7
-    if p54 == "End" then
-        local v55 = v_u_18
-        local v56 = v_u_25[v55] ~= nil and v_u_25[v55] == false and "idle" or v55
-        local v57 = v_u_22
-        playAnimation(v56, 0, v_u_7)
-        setAnimationSpeed(v57)
-    end
-end
-function playAnimation(p58, p59, p60)
-    -- upvalues: (copy) v_u_23, (ref) v_u_19, (ref) v_u_20, (ref) v_u_18, (ref) v_u_22, (ref) v_u_21, (ref) v_u_8, (copy) v_u_13, (copy) v_u_11
-    local v61 = math.random(1, v_u_23[p58].totalWeight)
-    local v62 = 1
-    while v_u_23[p58][v62].weight < v61 do
-        v61 = v61 - v_u_23[p58][v62].weight
-        v62 = v62 + 1
-    end
-    local v63 = v_u_23[p58][v62].anim
-    if v63 ~= v_u_19 then
-        if v_u_20 ~= nil then
-            v_u_20:Stop(p59)
-            v_u_20:Destroy()
-        end
-        local v64 = (not (v_u_18:match("walk") or v_u_18:match("run")) or v_u_18 == "stop") and 0 or v_u_20.TimePosition
-        v_u_22 = 1
-        v_u_20 = p60:LoadAnimation(v63)
-        v_u_20.Priority = Enum.AnimationPriority.Core
-        v_u_20:Play(p59)
-        v_u_20.TimePosition = v64
-        v_u_18 = p58
-        v_u_19 = v63
-        if v_u_21 ~= nil then
-            v_u_21:disconnect()
-        end
-        local v_u_65 = v_u_20:GetMarkerReachedSignal("Step"):Connect(function()
-            -- upvalues: (ref) v_u_8, (ref) v_u_13, (ref) v_u_11
-            if (v_u_8 == "Running" or v_u_8 == "RunningStart") and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-                v_u_13:Shake(v_u_11.Presets.RunningShake)
-            end
-        end)
-        v_u_20.Stopped:Once(function()
-            -- upvalues: (ref) v_u_65
-            v_u_65:Disconnect()
-        end)
-        v_u_21 = v_u_20.KeyframeReached:connect(keyFrameReachedFunc)
-    end
-end
-local v_u_66 = ""
-local v_u_67 = nil
-local v_u_68 = nil
-local v_u_69 = nil
-function toolKeyFrameReachedFunc(p70)
-    -- upvalues: (ref) v_u_66, (copy) v_u_7
-    if p70 == "End" then
-        playToolAnimation(v_u_66, 0, v_u_7)
-    end
-end
-function playToolAnimation(p71, p72, p73, p74)
-    -- upvalues: (copy) v_u_23, (ref) v_u_68, (ref) v_u_67, (ref) v_u_66, (ref) v_u_69
-    local v75 = math.random(1, v_u_23[p71].totalWeight)
-    local v76 = 1
-    while v_u_23[p71][v76].weight < v75 do
-        v75 = v75 - v_u_23[p71][v76].weight
-        v76 = v76 + 1
-    end
-    local v77 = v_u_23[p71][v76].anim
-    if v_u_68 ~= v77 then
-        if v_u_67 ~= nil then
-            v_u_67:Stop()
-            v_u_67:Destroy()
-            p72 = 0
-        end
-        v_u_67 = p73:LoadAnimation(v77)
-        if p74 then
-            v_u_67.Priority = p74
-        end
-        v_u_67:Play(p72)
-        v_u_66 = p71
-        v_u_68 = v77
-        v_u_69 = v_u_67.KeyframeReached:connect(toolKeyFrameReachedFunc)
-    end
-end
-function stopToolAnimations()
-    -- upvalues: (ref) v_u_66, (ref) v_u_69, (ref) v_u_68, (ref) v_u_67
-    local v78 = v_u_66
-    if v_u_69 ~= nil then
-        v_u_69:disconnect()
-    end
-    v_u_66 = ""
-    v_u_68 = nil
-    if v_u_67 ~= nil then
-        v_u_67:Stop()
-        v_u_67:Destroy()
-        v_u_67 = nil
-    end
-    return v78
-end
-function onDied()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "Dead"
-end
-function onJumping()
-    -- upvalues: (copy) v_u_7, (ref) v_u_50, (ref) v_u_8
-    playAnimation("jump", 0.1, v_u_7)
-    v_u_50 = 0.3
-    v_u_8 = "Jumping"
-end
-function onClimbing(p79)
-    -- upvalues: (copy) v_u_17, (copy) v_u_1, (copy) v_u_7, (ref) v_u_8
-    local v80 = p79 / (not v_u_17 and 1 or v_u_1:GetScale())
-    playAnimation("climb", 0.1, v_u_7)
-    setAnimationSpeed(v80 / 12)
-    v_u_8 = "Climbing"
-end
-function onGettingUp()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "GettingUp"
-end
-function onFreeFall()
-    -- upvalues: (ref) v_u_50, (copy) v_u_7, (ref) v_u_8
-    if v_u_50 <= 0 then
-        playAnimation("fall", 0.3, v_u_7)
-    end
-    v_u_8 = "FreeFall"
-end
-function onFallingDown()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "FallingDown"
-end
-function onSeated()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "Seated"
-end
-function onPlatformStanding()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "PlatformStanding"
-end
-function onSwimming(p81)
-    -- upvalues: (ref) v_u_8
-    if p81 > 0 then
-        v_u_8 = "Running"
-    else
-        v_u_8 = "Standing"
-    end
-end
-function getTool()
-    -- upvalues: (copy) v_u_1
-    for _, v82 in ipairs(v_u_1:GetChildren()) do
-        if v82.className == "Tool" then
-            return v82
-        end
-    end
-    return nil
-end
-function getToolAnim(p83)
-    for _, v84 in ipairs(p83:GetChildren()) do
-        if v84.Name == "toolanim" and v84.className == "StringValue" then
-            return v84
-        end
-    end
-    return nil
-end
-function animateTool()
-    -- upvalues: (ref) v_u_48, (copy) v_u_7
-    if v_u_48 == "None" then
-        playToolAnimation("toolnone", 0.1, v_u_7, Enum.AnimationPriority.Idle)
-        return
-    elseif v_u_48 == "Slash" then
-        playToolAnimation("toolslash", 0, v_u_7, Enum.AnimationPriority.Action)
-        return
-    elseif v_u_48 == "Lunge" then
-        playToolAnimation("toollunge", 0, v_u_7, Enum.AnimationPriority.Action)
-    end
-end
-function moveSit()
-    -- upvalues: (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6
-    v_u_3.MaxVelocity = 0.15
-    v_u_4.MaxVelocity = 0.15
-    v_u_3:SetDesiredAngle(1.57)
-    v_u_4:SetDesiredAngle(-1.57)
-    v_u_5:SetDesiredAngle(1.57)
-    v_u_6:SetDesiredAngle(-1.57)
-end
-local v_u_85 = 0
-local v_u_86 = v_u_7.Health
-local v_u_87 = false
-local v_u_88 = false
-local v_u_89 = 0
-function move(p90)
-    -- upvalues: (copy) v_u_1, (ref) v_u_8, (copy) v_u_7, (ref) v_u_85, (ref) v_u_50, (ref) v_u_87, (ref) v_u_89, (copy) v_u_13, (ref) v_u_20, (copy) v_u_25, (ref) v_u_18, (ref) v_u_88, (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6, (copy) v_u_9, (ref) v_u_86, (ref) v_u_48, (ref) v_u_49, (ref) v_u_68
-    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
-        if v_u_1:HasTag("KillAnims") then
-            v_u_8 = "None"
-            stopAllAnimations()
-        elseif v_u_8 ~= "Standing" then
-            v_u_8 = "Standing"
-            playAnimation("idle", 0.1, v_u_7)
-        end
-    else
-        local v91 = 1
-        local v92 = 1
-        local v93 = p90 - v_u_85
-        v_u_85 = p90
-        local v94 = false
-        if v_u_50 > 0 then
-            v_u_50 = v_u_50 - v93
-        end
-        local v95 = (v_u_1:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity * Vector3.new(1, 0, 1)).Magnitude
-        if v_u_8 == "Standing" or v_u_8 == "Stopping" then
-            if v_u_1:GetAttribute("Crouching") == true and v_u_87 == false then
-                v_u_87 = true
-                stopAllAnimations()
-                playAnimation("Crouchidle", 0.1, v_u_7)
-            elseif v_u_1:GetAttribute("Crouching") == false and v_u_87 == true then
-                v_u_87 = false
-                stopAllAnimations()
-                playAnimation("idle", 0.1, v_u_7)
-            end
-        end
-        if v_u_7.FloorMaterial ~= Enum.Material.Air and (v_u_8 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_7.MoveDirection) > 0.45) then
-            if v95 > 0.01 and (v95 <= 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0)) then
-                v_u_89 = 0
-                v_u_13:StopSustained(0.5)
-                v_u_8 = "Walking"
-            elseif v95 > 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
-                local v96 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v96 = v96 * -1
-                end
-                local v_u_97 = game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default and 1 or (v96:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 and 2 or (v96:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 and 3 or 1))
-                if v_u_1:HasTag("Battery") or v_u_8 == "Running" and (v_u_8 ~= "RunningStart" or v_u_89 == v_u_97) then
-                    if v_u_8 == "Running" then
-                        v_u_89 = 0
-                    end
-                else
-                    stopAllAnimations()
-                    if v_u_97 == 2 then
-                        v_u_89 = 2
-                        playAnimation("runStartRight", 0, v_u_7)
-                        v_u_8 = "RunningStart"
-                    elseif v_u_97 == 3 then
-                        v_u_89 = 3
-                        playAnimation("runStartLeft", 0, v_u_7)
-                        v_u_8 = "RunningStart"
-                    elseif v_u_97 == 1 then
-                        v_u_89 = 1
-                        playAnimation("runStart", 0, v_u_7)
-                        v_u_8 = "RunningStart"
-                    else
-                        v_u_8 = "RunningStart"
-                    end
-                    if v_u_20 and v_u_8 == "RunningStart" then
-                        v_u_20.Priority = Enum.AnimationPriority.Action
-                        v_u_20.Stopped:Once(function()
-                            -- upvalues: (ref) v_u_8, (ref) v_u_89, (ref) v_u_97, (ref) v_u_20
-                            if v_u_8 == "RunningStart" and v_u_89 == v_u_97 then
-                                if v_u_20 then
-                                    v_u_20.TimePosition = 0
-                                end
-                                v_u_8 = "Running"
-                                v_u_89 = 0
-                            end
-                        end)
-                    end
-                end
-            else
-                v_u_89 = 0
-                if v_u_25[v_u_18] == nil and (v_u_8 ~= "Standing" or v95 > 12) and (v_u_8 ~= "Stopping" and v_u_8 ~= "WalkStopping") then
-                    if (v_u_8 == "Standing" and v95 > 12 or (v_u_8 == "Running" or v_u_8 == "RunningStart") and v95 > 21) and v_u_7.MoveDirection == Vector3.new(0, 0, 0) then
-                        v_u_8 = "Stopping"
-                        stopAllAnimations()
-                        playAnimation("stop", 0, v_u_7)
-                        if v_u_20 then
-                            v_u_20.Priority = Enum.AnimationPriority.Action2
-                            v_u_20.Stopped:Once(function()
-                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
-                                v_u_8 = "Standing"
-                                v_u_88 = false
-                                if v_u_8 == "Standing" then
-                                    if v_u_1:GetAttribute("Crouching") == true then
-                                        playAnimation("Crouchidle", 0.1, v_u_7)
-                                        return
-                                    end
-                                    playAnimation("idle", 0.1, v_u_7)
-                                end
-                            end)
-                        else
-                            v_u_8 = "Standing"
-                            if v_u_1:GetAttribute("Crouching") == true then
-                                playAnimation("Crouchidle", 0.1, v_u_7)
-                            else
-                                playAnimation("idle", 0.1, v_u_7)
-                            end
-                        end
-                    elseif v_u_8 == "Walking" and (v_u_1:GetAttribute("Crouching") == false and (v95 > 2 and v_u_7.MoveDirection == Vector3.new(0, 0, 0))) then
-                        v_u_8 = "WalkStopping"
-                        stopAllAnimations()
-                        playAnimation("stopWalk", 0.1, v_u_7)
-                        if v_u_20 then
-                            v_u_20.Priority = Enum.AnimationPriority.Action2
-                            v_u_20.Stopped:Once(function()
-                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
-                                v_u_8 = "Standing"
-                                v_u_88 = false
-                                if v_u_8 == "Standing" then
-                                    if v_u_1:GetAttribute("Crouching") == true then
-                                        playAnimation("Crouchidle", 0.1, v_u_7)
-                                        return
-                                    end
-                                    playAnimation("idle", 0.1, v_u_7)
-                                end
-                            end)
-                        else
-                            v_u_8 = "Standing"
-                            if v_u_1:GetAttribute("Crouching") == true then
-                                playAnimation("Crouchidle", 0.1, v_u_7)
-                            else
-                                playAnimation("idle", 0.1, v_u_7)
-                            end
-                        end
-                    else
-                        if v_u_1:GetAttribute("Crouching") == true then
-                            playAnimation("Crouchidle", 0.1, v_u_7)
-                        else
-                            playAnimation("idle", 0.1, v_u_7)
-                        end
-                        v_u_8 = "Standing"
-                    end
-                end
-            end
-        end
-        if v_u_8 == "FreeFall" and v_u_50 <= 0 then
-            playAnimation("fall", 0.3, v_u_7)
-        else
-            if v_u_8 == "Seated" then
-                playAnimation("sit", 0.5, v_u_7)
-                return
-            end
-            if v_u_8 == "Walking" or v_u_8 == "WalkStopping" and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
-                local v98 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v98 = v98 * -1
-                end
-                if v_u_1:GetAttribute("Crouching") == true then
-                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkForwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkBackwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkBackwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkForwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkBackward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkLeft", 0.3, v_u_7)
-                    end
-                    if v_u_20 then
-                        v_u_20.Priority = Enum.AnimationPriority.Movement
-                    end
-                    setAnimationSpeed(v95 / 6)
-                else
-                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                        playAnimation("walkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("walkForwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("walkBackwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("walkBackwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("walkForwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
-                        playAnimation("walkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("walkRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
-                        playAnimation("walkBackward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("walkLeft", 0.3, v_u_7)
-                    end
-                    if v_u_20 then
-                        v_u_20.Priority = Enum.AnimationPriority.Movement
-                    end
-                    setAnimationSpeed(v95 / 12)
-                end
-            elseif v_u_8 == "Running" then
-                local v99 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v99 = v99 * -1
-                end
-                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                    playAnimation("runForward", 0.1, v_u_7)
-                elseif v99:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runRight", 0.3, v_u_7)
-                elseif v99:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runLeft", 0.3, v_u_7)
-                else
-                    playAnimation("runForward", 0.3, v_u_7)
-                end
-                if v_u_20 then
-                    v_u_20.Priority = Enum.AnimationPriority.Movement
-                end
-                setAnimationSpeed(v95 / 24)
-            elseif v_u_8 == "Dead" or (v_u_8 == "GettingUp" or (v_u_8 == "FallingDown" or (v_u_8 == "Seated" or v_u_8 == "PlatformStanding"))) then
-                stopAllAnimations()
-                v94 = true
-                v92 = 1
-                v91 = 0.1
-            end
-        end
-        if v94 then
-            local v100 = p90 * v92
-            local v101 = v91 * math.sin(v100)
-            v_u_3:SetDesiredAngle(v101 + 0)
-            v_u_4:SetDesiredAngle(v101 - 0)
-            v_u_5:SetDesiredAngle(-v101)
-            v_u_6:SetDesiredAngle(-v101)
-        end
-        if v_u_7.Health <= v_u_9 then
-            if v_u_88 == false then
-                v_u_88 = true
-                if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-                    v_u_13:ShakeSustain(v_u_13.Presets.Injured)
-                end
-            end
-        elseif v_u_88 == true then
-            v_u_88 = false
-            v_u_13:StopSustained(1)
-        end
-        v_u_86 = v_u_7.Health
-        local v102 = getTool()
-        if v102 and v102:FindFirstChild("Handle") then
-            local v103 = getToolAnim(v102)
-            if v103 then
-                v_u_48 = v103.Value
-                v103.Parent = nil
-                v_u_49 = p90 + 0.3
-            end
-            if v_u_49 < p90 then
-                v_u_49 = 0
-                v_u_48 = "None"
-            end
-            animateTool()
-        else
-            stopToolAnimations()
-            v_u_48 = "None"
-            v_u_68 = nil
-            v_u_49 = 0
-        end
-    end
-end
-v_u_7.Died:connect(onDied)
-v_u_7.Jumping:connect(onJumping)
-v_u_7.Climbing:connect(onClimbing)
-v_u_7.GettingUp:connect(onGettingUp)
-v_u_7.FreeFalling:connect(onFreeFall)
-v_u_7.FallingDown:connect(onFallingDown)
-v_u_7.Seated:connect(onSeated)
-v_u_7.PlatformStanding:connect(onPlatformStanding)
-v_u_7.Swimming:connect(onSwimming)
-playAnimation("idle", 0.1, v_u_7)
-local _ = "Standing"
-while v_u_1.Parent ~= nil do
-    local _, v104 = wait()
-    move(v104)
-end
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.Voice
--- Decompiled with Velocity Script Decompiler
--- Failed to decompile
-Error:
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.Voice.AudioDeviceInput.Mute
--- Decompiled with Velocity Script Decompiler
-if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
-    script.Parent.Volume = 0
-end
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.Client
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
-local v2 = { "Torso", "Head", "Glow" }
-for _, v_u_3 in script.Parent:GetDescendants() do
-    if not v_u_3.Parent:IsA("Accessory") and (v_u_3:IsA("BasePart") and not table.find(v2, v_u_3.Name)) then
-        v_u_3.LocalTransparencyModifier = v_u_3.Transparency
-        v_u_3:GetPropertyChangedSignal("LocalTransparencyModifier"):Connect(function()
-            -- upvalues: (copy) v_u_3
-            v_u_3.LocalTransparencyModifier = v_u_3.Transparency
-        end)
-    end
-end
-local v_u_4 = {
-    ["Character"] = script.Parent,
-    ["Humanoid"] = script.Parent:FindFirstChildOfClass("Humanoid"),
-    ["RootPart"] = script.Parent:WaitForChild("HumanoidRootPart")
-}
-local v_u_5 = game:GetService("UserInputService")
-local v_u_6 = v_u_4.Character:WaitForChild("Torso", 100):FindFirstChild("Neck")
-local v_u_7 = v_u_6.C0.Y
-local v_u_8 = CFrame.new
-local v_u_9 = CFrame.Angles
-local v_u_10 = math.asin
-v_u_4.State = "Standing"
-Instance.new("NumberValue")
-local v_u_11 = script:WaitForChild("Replicator")
-function castRay(p12, p13, p14)
-    local v15 = RaycastParams.new()
-    v15.FilterDescendantsInstances = {
-        p12,
-        workspace.IGNORE,
-        workspace.PLAYERS,
-        workspace.Terrain
-    }
-    local v16 = workspace:Raycast(p13, p14, v15)
-    local v17 = v16 and v16.Position or p13 + p14
-    return (p13 - v17).Magnitude, p13, v17, v16
-end
-game:GetService("RunService"):BindToRenderStep("CameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
-    -- upvalues: (copy) v_u_4, (copy) v_u_5
-    if workspace.CurrentCamera.CameraSubject == v_u_4.Humanoid then
-        local v18 = (workspace.CurrentCamera.CFrame.p - workspace.CurrentCamera.Focus.p).magnitude
-        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 > 2 then
-            local v19, _, _, _ = castRay(v_u_4.Character, v_u_4.RootPart.Position, v_u_4.RootPart.CFrame.RightVector * 1.75)
-            local v20 = v_u_4.RootPart.CFrame.RightVector * v19
-            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
-                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0 + v20)
-            }):Play()
-            return
-        end
-        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 <= 2 then
-            local v21 = v_u_4.Character:WaitForChild("Head").CFrame.p - v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0.5
-            local v22 = v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 1.25 - v21
-            local _, _, v23, v24 = castRay(v_u_4.Character, v21, v22)
-            if v24 then
-                local _ = v23 - (v22.Magnitude == 0 and Vector3.new(0, 0, 0) or v22.Unit) * 0.1
-            end
-            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0), {
-                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v23)
-            }):Play()
-            return
-        end
-        game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
-            ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0)
-        }):Play()
-    end
-end)
-local v_u_25 = 0
-local function v_u_29(p26)
-    -- upvalues: (copy) v_u_4, (copy) v_u_6, (copy) v_u_8, (copy) v_u_7, (copy) v_u_9, (ref) v_u_25, (copy) v_u_11, (copy) v_u_10
-    if game:GetService("Players"):GetPlayerFromCharacter(v_u_4.Character) == game:GetService("Players").LocalPlayer then
-        if v_u_4.Character:HasTag("Cutscene") then
-            v_u_6.C0 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793)
-            v_u_25 = v_u_25 + p26
-            if v_u_25 > 0.25 then
-                v_u_25 = 0
-                v_u_11:FireServer({ v_u_6 }, { v_u_6.C0 })
-            end
-        else
-            local v27 = v_u_4.RootPart.CFrame:toObjectSpace(game:GetService("Workspace").CurrentCamera.CFrame).lookVector
-            local v28
-            if v_u_6 then
-                v28 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793) * v_u_9(0, 0, -v_u_10(v27.x)) * v_u_9(-v_u_10(v27.y), 0, 0)
-                v_u_6.C0 = v_u_6.C0:Lerp(v28, 0.9 * p26 * 15)
-            else
-                v28 = nil
-            end
-            v_u_25 = v_u_25 + p26
-            if v_u_25 > 0.25 then
-                v_u_25 = 0
-                v_u_11:FireServer({ v_u_6 }, { v28 or v_u_6.C0 })
-            end
-        end
-    else
-        return
-    end
-end
-local v_u_30 = nil
-local v_u_31 = 0
-local v_u_32 = v_u_4.Character:WaitForChild("Torso").AssemblyLinearVelocity
-local v_u_33 = workspace.CurrentCamera
-local v_u_34 = nil
-local v_u_35 = 0
-local v_u_36 = 0
-local v_u_37 = nil
-v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
-    -- upvalues: (copy) v_u_4, (ref) v_u_37, (copy) v_u_29, (copy) v_u_1, (ref) v_u_30, (ref) v_u_32, (ref) v_u_31, (copy) v_u_33, (ref) v_u_36, (ref) v_u_34, (ref) v_u_35
-    if v_u_4.Character == nil then
-        v_u_37:Disconnect()
-    else
-        v_u_29(p38)
-        if v_u_4.Character:GetAttribute("Ragdoll") then
-            local _, _, _, v39, _, v40 = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, Vector3.new(-0, -3, -0), nil, v_u_30)
-            if not v_u_30 then
-                v_u_30 = v40
-            end
-            local v41 = v_u_4.Character.Torso.AssemblyLinearVelocity
-            if not v_u_32 then
-                v_u_32 = v41
-            end
-            if v39 and ((v41 - v_u_32).Y > 4 and tick() - v_u_31 > 0.2) then
-                v_u_31 = tick()
-                local v_u_42 = script["FloorHit" .. math.random(3)]:Clone()
-                v_u_42.Parent = v_u_4.Character:FindFirstChild("HumanoidRootPart")
-                v_u_42:Play()
-                task.spawn(function()
-                    -- upvalues: (copy) v_u_42
-                    if not v_u_42.IsLoaded then
-                        v_u_42.Loaded:Wait()
-                    end
-                    task.delay(v_u_42.TimeLength / v_u_42.PlaybackSpeed, v_u_42.Destroy, v_u_42)
-                end)
-            end
-            v_u_32 = v41
-        else
-            v_u_32 = nil
-        end
-        local v43 = next
-        local v44, v45 = workspace.PLAYERS.KILLER:GetChildren()
-        for _, v46 in v43, v44, v45 do
-            if v46:FindFirstChild("HumanoidRootPart") and v46 ~= v_u_4.Character then
-                local v47 = v_u_4.Character.HumanoidRootPart.Position
-                local v48 = v46.HumanoidRootPart.Position
-                local v49 = v_u_33.CFrame.Position
-                local v50 = v46.HumanoidRootPart.CFrame.LookVector:Dot((v47 - v48).Unit)
-                local _, v51 = v_u_33:WorldToViewportPoint(v48)
-                local v52 = (v48 - v47).Magnitude
-                local v53 = 1 - 8 / (v52 / 2 + 1)
-                local v54 = math.min(0.9, v53)
-                if v52 < 150 and (v51 and v_u_36 < 0.25 or v_u_36 > 0.25) and (v54 < v50 and not (v46:HasTag("Imitation") or v46:HasTag("UNDETECTABLE"))) then
-                    local _, _, _, v55, v56 = v_u_1.Obstruction:CastObstruction(v49, v48 - v49, v_u_34)
-                    if not v_u_34 then
-                        v_u_34 = v56
-                    end
-                    local _, _, _, v57, _ = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, v48 - v47, v_u_34)
-                    if v57 or v55 then
-                        v_u_36 = 0
-                    else
-                        if v_u_36 > 0.25 then
-                            if tick() - v_u_35 > 10 then
-                                script.InView["InView" .. math.random(3)]:Play()
-                            end
-                            v_u_35 = tick()
-                        end
-                        v_u_36 = v_u_36 + p38
-                    end
-                else
-                    v_u_36 = 0
-                    v_u_34 = nil
-                end
-            end
-        end
-    end
-end)
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.Client.Server
--- Decompiled with Velocity Script Decompiler
--- Failed to decompile
-Error:
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.StepSFX
--- Decompiled with Velocity Script Decompiler
-if script.Parent:FindFirstChildOfClass("Humanoid") then
-    local function v_u_7()
-        if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial ~= Enum.Material.Air then
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Carpet then
-                local v_u_1 = script.Steps:FindFirstChild("carpet"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("carpet"):GetChildren())]:Clone()
-                v_u_1.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_1.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_1.Volume = v_u_1.Volume / 2
-                end
-                if not v_u_1.IsLoaded then
-                    v_u_1.Loaded:Wait()
-                end
-                v_u_1:Play()
-                task.delay(v_u_1.TimeLength, function()
-                    -- upvalues: (copy) v_u_1
-                    v_u_1:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Foil then
-                local v_u_2 = script.Steps:FindFirstChild("inflatable"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("inflatable"):GetChildren())]:Clone()
-                v_u_2.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_2.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_2.Volume = v_u_2.Volume / 2
-                end
-                if not v_u_2.IsLoaded then
-                    v_u_2.Loaded:Wait()
-                end
-                v_u_2:Play()
-                task.delay(v_u_2.TimeLength, function()
-                    -- upvalues: (copy) v_u_2
-                    v_u_2:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.DiamondPlate or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Metal or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.CorrodedMetal) then
-                local v_u_3 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
-                v_u_3.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_3.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_3.Volume = v_u_3.Volume / 2
-                end
-                if not v_u_3.IsLoaded then
-                    v_u_3.Loaded:Wait()
-                end
-                v_u_3:Play()
-                task.delay(v_u_3.TimeLength, function()
-                    -- upvalues: (copy) v_u_3
-                    v_u_3:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Concrete then
-                local v_u_4 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
-                v_u_4.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_4.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_4.Volume = v_u_4.Volume / 2
-                end
-                if not v_u_4.IsLoaded then
-                    v_u_4.Loaded:Wait()
-                end
-                v_u_4:Play()
-                task.delay(v_u_4.TimeLength, function()
-                    -- upvalues: (copy) v_u_4
-                    v_u_4:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Grass or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Ground or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.LeafyGrass or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Mud)) then
-                local v_u_5 = script.Steps:FindFirstChild("grass").walking:GetChildren()[math.random(1, #script.Steps:FindFirstChild("grass").walking:GetChildren())]:Clone()
-                v_u_5.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_5.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_5.Volume = v_u_5.Volume / 2
-                end
-                if not v_u_5.IsLoaded then
-                    v_u_5.Loaded:Wait()
-                end
-                v_u_5:Play()
-                task.delay(v_u_5.TimeLength, function()
-                    -- upvalues: (copy) v_u_5
-                    v_u_5:Destroy()
-                end)
-                return
-            end
-            local v_u_6 = script.Steps:FindFirstChild("misc"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("misc"):GetChildren())]:Clone()
-            v_u_6.Parent = script.Parent:FindFirstChild("Torso")
-            v_u_6.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-            if script.Parent:GetAttribute("Crouching") == true then
-                v_u_6.Volume = v_u_6.Volume / 2
-            end
-            if not v_u_6.IsLoaded then
-                v_u_6.Loaded:Wait()
-            end
-            v_u_6:Play()
-            task.delay(v_u_6.TimeLength, function()
-                -- upvalues: (copy) v_u_6
-                v_u_6:Destroy()
-            end)
-        end
-    end
-    script.Parent:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator").AnimationPlayed:Connect(function(p8)
-        -- upvalues: (copy) v_u_7
-        local v_u_9 = p8:GetMarkerReachedSignal("Step"):Connect(function()
-            -- upvalues: (ref) v_u_7
-            if not script.Parent:HasTag("UNDETECTABLE") then
-                v_u_7()
-            end
-        end)
-        local v_u_10 = p8:GetMarkerReachedSignal("Step2"):Connect(function()
-            -- upvalues: (ref) v_u_7
-            if not script.Parent:HasTag("INVIS") then
-                v_u_7()
-            end
-        end)
-        p8.Stopped:Once(function()
-            -- upvalues: (ref) v_u_9, (ref) v_u_10
-            v_u_9:Disconnect()
-            v_u_10:Disconnect()
-        end)
-    end)
-end
-
--- PATH: Workspace.PLAYERS.ALIVE.FOXYBOY_66.Movement
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("ReplicatedStorage")
-local v_u_2 = game:GetService("TweenService")
-local v3 = game:GetService("RunService")
-local v4 = game:GetService("Players")
-local v_u_5 = v1:WaitForChild("Requests")
-local v_u_6 = v4.LocalPlayer
-local v_u_7 = v_u_6.Character or v_u_6.CharacterAdded:Wait()
-local v_u_8 = v_u_7:WaitForChild("Humanoid")
-local v_u_9 = v_u_7:WaitForChild("HumanoidRootPart")
-for _, v10 in v_u_7:GetDescendants() do
-    if v10:IsA("BasePart") then
-        v10.Massless = v_u_9 ~= v10
-    end
-end
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
-local v_u_11 = Instance.new("BodyVelocity")
-v_u_11.Name = "MovementBodyVelocity"
-v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
-v_u_11.P = (1 / 0)
-v_u_11.Velocity = Vector3.new(0, 0, 0)
-v_u_11.Parent = v_u_9
-v_u_8.WalkSpeed = 0.01
-v_u_8.JumpPower = 0
-local v_u_12 = 16
-local v_u_13 = Vector3.new(0, 0, 0)
-local v_u_14 = Vector3.new(0, 0, 0)
-local v_u_15 = false
-local v_u_16 = false
-local v_u_17 = {}
-v3.Heartbeat:Connect(function(_)
-    -- upvalues: (copy) v_u_17, (copy) v_u_9
-    local v18 = workspace:GetServerTimeNow()
-    v_u_17[v18] = v_u_9.Position
-    for v19 in next, v_u_17 do
-        if v19 < v18 - 1 then
-            v_u_17[v19] = nil
-        end
-    end
-end)
-function castRay(p20, p21, p22)
-    local v23 = RaycastParams.new()
-    v23.FilterDescendantsInstances = { p20, workspace.IGNORE, workspace.PLAYERS }
-    local v24 = workspace:Raycast(p21, p22, v23)
-    local v25 = v24 and v24.Position or p21 + p22
-    return (p21 - v25).Magnitude, p21, v25, v24
-end
-local v_u_26 = 0
-local v_u_27 = v_u_9.Position
-v3:IsStudio()
-local function v_u_38()
-    -- upvalues: (copy) v_u_7, (copy) v_u_8, (ref) v_u_12, (copy) v_u_9, (ref) v_u_13, (ref) v_u_16, (ref) v_u_15, (ref) v_u_14, (ref) v_u_27, (ref) v_u_26, (copy) v_u_5
-    local v28 = v_u_7:GetAttribute("WalkSpeed") or 0
-    local v29 = v_u_7:GetAttribute("RunSpeed") or 0
-    local v30 = v_u_8.MoveDirection
-    if v_u_7:HasTag("Confusion") then
-        v30 = v30 * -1
-    end
-    local v31 = v_u_7:GetAttribute("Crouching")
-    local v32 = v_u_7:GetAttribute("Running")
-    local v33 = v_u_7:HasTag("SlowStop")
-    local v34 = v_u_7:GetAttribute("Stamina") or 0
-    local v35 = v_u_7:HasTag("CantMove") or (v_u_7:HasTag("CustomSpeed") and v_u_7:GetAttribute("CustomSpeed") or v31 and v28 / 2)
-    if v35 then
-        v28 = v35
-    elseif v32 and v34 > 0 then
-        v28 = v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 and v29 and v29 or v28
-    end
-    v_u_12 = v28
-    local v36 = v_u_15
-    if v36 then
-        if v30.Magnitude > 0 and (v_u_16 and v_u_9.CFrame.LookVector:Dot(v30) < 0.45) or v30.Magnitude == 0 then
-            if v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 then
-                v36 = not v31
-            else
-                v36 = false
-            end
-        else
-            v36 = false
-        end
-    end
-    v_u_16 = v36
-    if v_u_16 then
-        local _, _, _, v37 = castRay(v_u_7, v_u_9.CFrame.Position, v_u_9.CFrame.LookVector * 1.5)
-        if not v37 then
-            v30 = v_u_9.CFrame.LookVector
-        end
-    end
-    if v30.Magnitude > 0 then
-        v_u_13 = v30 * v_u_12
-        if not v_u_16 then
-            v_u_14 = v_u_13
-        end
-        if not v32 or (v29 > v_u_12 or not v33) then
-            v33 = v_u_16
-        end
-        v_u_15 = v33
-    else
-        v_u_13 = Vector3.new(0, 0, 0)
-    end
-    if (v_u_9.Position - v_u_27).Magnitude > 0.25 and tick() - v_u_26 > 0.011111111111111112 then
-        v_u_5.Movement:FireServer(v_u_9.CFrame, workspace:GetServerTimeNow(), v_u_7)
-        v_u_27 = v_u_9.Position
-        v_u_26 = tick()
-    end
-end
-v3.Heartbeat:Connect(function(p39)
-    -- upvalues: (copy) v_u_6, (copy) v_u_38, (ref) v_u_16, (ref) v_u_14, (ref) v_u_13, (ref) v_u_15, (copy) v_u_9, (copy) v_u_11, (copy) v_u_7, (copy) v_u_2
-    v_u_6:GetAttribute("Mouselocked")
-    v_u_38()
-    if v_u_16 then
-        v_u_14 = ((v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) * v_u_14.Magnitude):Lerp(Vector3.new(0, 0, 0), 1.8 * p39)
-        if v_u_14.Magnitude <= 1 then
-            v_u_16 = false
-            v_u_15 = false
-        end
-    else
-        v_u_14 = v_u_13
-    end
-    local v_u_40 = v_u_9:FindFirstChild("Velocity") or v_u_9:FindFirstChild("BodyVelocity")
-    if v_u_40 and v_u_11.Parent ~= nil then
-        v_u_40.Parent = nil
-        task.delay(0.05, function()
-            -- upvalues: (copy) v_u_40, (ref) v_u_9
-            v_u_40.Parent = v_u_9
-        end)
-    end
-    if v_u_7:GetAttribute("Ragdoll") or (v_u_7:HasTag("CantMove") or (v_u_7:HasTag("Ragdoll") or v_u_40)) then
-        v_u_11.MaxForce = Vector3.new(0, 0, 0)
-        v_u_11.Parent = nil
-    elseif v_u_11.MaxForce == Vector3.new(0, 0, 0) then
-        v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
-        v_u_11.Parent = v_u_9
-    end
-    v_u_11.Velocity = v_u_14
-    local v41 = v_u_9:FindFirstChildOfClass("BodyVelocity")
-    if v41 and (v41:GetAttribute("Update") and v41:GetAttribute("Update") == "Root") then
-        local v42 = v41:GetAttribute("Tween") or 0
-        local v43 = v41:GetAttribute("Speed") or 0
-        v_u_2:Create(v41, TweenInfo.new(v42), {
-            ["Velocity"] = v_u_9.CFrame.LookVector * v43
-        }):Play()
-    end
-    local v44 = v_u_9:FindFirstChildOfClass("BodyGyro")
-    if v44 and (v44:GetAttribute("Update") and v44:GetAttribute("Update") == "Cam") then
-        v44.CFrame = workspace.CurrentCamera.CFrame
-    end
-end)
-v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
-v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
-v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.ChaseThemes-Survivor
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("RunService")
-local v_u_2 = game:GetService("Players")
-local v_u_3 = {
-    15,
-    30,
-    45,
-    60
-}
-workspace:FindFirstChild("LobbyMusic").Volume = 0
-local v_u_4 = {}
-local v_u_5 = 0
-v1.Heartbeat:Connect(function(p6)
-    -- upvalues: (copy) v_u_2, (copy) v_u_4, (copy) v_u_3, (ref) v_u_5
-    local v7 = v_u_2.LocalPlayer.Character
-    if not v7 then
-        return
-    end
-    local v8 = v7:FindFirstChild("HumanoidRootPart")
-    if not v8 then
-        return
-    end
-    if workspace.GAME.STOP_MUSIC.Value == true then
-        for _, v9 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v9:FindFirstChild("Phases") then
-                for v10 = 1, 4 do
-                    game:GetService("TweenService"):Create(v9:FindFirstChild("Phases"):FindFirstChild(v10), TweenInfo.new(0.25), {
-                        ["Volume"] = 0
-                    }):Play()
-                end
-            end
-        end
-        return
-    end
-    if workspace.GAME.STOP_MUSIC_ALL.Value == true then
-        for _, v11 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v11:FindFirstChild("Phases") then
-                for v12 = 1, 6 do
-                    if v11:FindFirstChild("Phases"):FindFirstChild(v12) then
-                        game:GetService("TweenService"):Create(v11:FindFirstChild("Phases"):FindFirstChild(v12), TweenInfo.new(0.25), {
-                            ["Volume"] = 0
-                        }):Play()
-                    end
-                end
-            end
-        end
-        return
-    end
-    if game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then
-        for _, v13 in workspace.PLAYERS.KILLER:GetChildren() do
-            if v13:FindFirstChild("Phases") then
-                for v14 = 1, 6 do
-                    if v13:FindFirstChild("Phases"):FindFirstChild(v14) then
-                        game:GetService("TweenService"):Create(v13:FindFirstChild("Phases"):FindFirstChild(v14), TweenInfo.new(0.5), {
-                            ["PlaybackSpeed"] = 0
-                        }):Play()
-                    end
-                end
-            end
-        end
-        return
-    end
-    local v15 = 0
-    for _, v16 in workspace.PLAYERS.KILLER:GetChildren() do
-        local v17 = v16:FindFirstChild("HumanoidRootPart")
-        if v17 and (v16:FindFirstChild("Phases") and not v_u_4[v16.Name]) then
-            local v18 = {}
-            for v19 = 1, 4 do
-                v18[v19] = v16:WaitForChild("Phases"):WaitForChild(v19)
-            end
-            for _, v20 in next, v18 do
-                if not (v20.IsLoaded or v_u_4[v16.Name]) then
-                    v_u_4[v16.Name] = true
-                    v20.Loaded:Wait()
-                    v_u_4[v16.Name] = false
-                end
-            end
-            for _, v21 in next, v18 do
-                if not v21.IsPlaying then
-                    v21:Play()
-                    v21.Volume = 0
-                end
-            end
-            local v22 = 0
-            for v23, v24 in next, v_u_3 do
-                if (v8.Position - v17.Position).Magnitude <= v24 then
-                    v22 = #v18 - v23 + 1
-                    break
-                end
-            end
-            local v25 = v7:HasTag("COMBAT") and 4 or (v16:HasTag("UNDETECTABLE") and v22 < 4 and 0 or ((v16:HasTag("INVISIBILE") or v16:HasTag("TRUE_UNDETECTABLE")) and 0 or v22))
-            if v15 < v25 then
-                v15 = v25
-            end
-            if v25 ~= v_u_5 and (v25 == 4 and v7:HasTag("COMBAT")) then
-                for _, v26 in next, v18 do
-                    v26.TimePosition = 0
-                end
-            end
-            for v27, v28 in next, v18 do
-                if v27 == v25 then
-                    v28.Volume = v28.Volume + (v28:GetAttribute("VOLUME_MAX") - v28.Volume) * math.min(p6, 1)
-                else
-                    v28.Volume = v28.Volume * (1 - math.min(p6, 1))
-                end
-            end
-        end
-    end
-    v_u_5 = v15
-    if workspace:FindFirstChild("MAPS"):FindFirstChild("GAME MAP"):FindFirstChild("Music") then
-        local v29 = workspace:FindFirstChild("MAPS"):FindFirstChild("GAME MAP"):FindFirstChild("Music")
-        if v15 > 0 then
-            game:GetService("TweenService"):Create(v29, TweenInfo.new(0.5), {
-                ["Volume"] = 0
-            }):Play()
-            return
-        end
-        game:GetService("TweenService"):Create(v29, TweenInfo.new(0.5), {
-            ["Volume"] = v29:GetAttribute("Volume")
-        }):Play()
-    end
-end)
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.Input
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("UserInputService")
-local v_u_2 = game:GetService("Players").LocalPlayer
-local v_u_3 = v_u_2.Character
-local v_u_4 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Input")
-local v_u_5 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Keybinds"))
-task.spawn(function()
-    repeat
-        local v6 = pcall(function()
-            game:GetService("StarterGui"):SetCore("ResetButtonCallback", false)
-        end)
-        task.wait(1)
-    until v6
-end)
-local v_u_7 = false
-local v_u_8 = false
-v1.InputBegan:Connect(function(p9, p10)
-    -- upvalues: (copy) v_u_5, (ref) v_u_8, (copy) v_u_2, (ref) v_u_7, (copy) v_u_4
-    if p10 then
-        return
-    elseif table.find(v_u_5.Run, p9.KeyCode) then
-        v_u_8 = true
-        if v_u_2:GetAttribute("HoldToRun") then
-            v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-        else
-            v_u_7 = not v_u_7
-            v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-        end
-    elseif table.find(v_u_5.Q, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 1 })
-        return
-    elseif table.find(v_u_5.E, p9.KeyCode) then
-        v_u_4:Fire(true, { "Ability", 2 })
-        return
-    elseif table.find(v_u_5.Flashlight, p9.KeyCode) then
-        v_u_4:Fire(true, { "Flashlight" })
-    elseif table.find(v_u_5.Crouch, p9.KeyCode) then
-        v_u_4:Fire(true, { "Crouch" })
-    end
-end)
-v1.InputEnded:Connect(function(p11, p12)
-    -- upvalues: (copy) v_u_5, (copy) v_u_2, (copy) v_u_4, (ref) v_u_8
-    if not p12 then
-        if table.find(v_u_5.Run, p11.KeyCode) then
-            if v_u_2:GetAttribute("HoldToRun") then
-                v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-            end
-            v_u_8 = false
-        end
-    end
-end)
-local v_u_13 = false
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Down:Connect(function()
-    -- upvalues: (ref) v_u_13, (copy) v_u_2, (ref) v_u_7, (copy) v_u_4
-    v_u_13 = true
-    if v_u_2:GetAttribute("HoldToRun") then
-        v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-    else
-        v_u_7 = not v_u_7
-        v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-    end
-end)
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Up:Connect(function()
-    -- upvalues: (copy) v_u_2, (copy) v_u_4, (ref) v_u_13
-    if v_u_2:GetAttribute("HoldToRun") then
-        v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-    end
-    v_u_13 = false
-end)
-game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Crouch.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_4
-    v_u_4:Fire(true, { "Crouch" })
-end)
-game:GetService("RunService").Heartbeat:Connect(function()
-    -- upvalues: (copy) v_u_2, (ref) v_u_8, (ref) v_u_13, (copy) v_u_3, (copy) v_u_4, (ref) v_u_7
-    if v_u_2:GetAttribute("HoldToRun") and (v_u_8 or v_u_13) and (v_u_3:GetAttribute("CanRun") and (not v_u_3:HasTag("Battery") and (not v_u_3:GetAttribute("Ragdoll") and (v_u_3:GetAttribute("Stamina") or 0) > 0))) then
-        if not v_u_3:GetAttribute("Running") then
-            v_u_4:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
-            v_u_3:SetAttribute("Running", true)
-            return
-        end
-    elseif v_u_2:GetAttribute("HoldToRun") or (not v_u_3:GetAttribute("CanRun") or (v_u_3:HasTag("Battery") or (v_u_3:GetAttribute("Ragdoll") or (v_u_3:GetAttribute("Stamina") or 0) <= 0))) then
-        if v_u_3:GetAttribute("Running") then
-            v_u_4:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
-            v_u_3:SetAttribute("Running", false)
-        end
-        v_u_7 = false
-        v_u_8 = false
-    elseif v_u_7 ~= v_u_3:GetAttribute("Running") then
-        v_u_4:Fire(true, { v_u_7, Enum.KeyCode.LeftShift.Value })
-        v_u_3:SetAttribute("Running", v_u_7)
-        return
-    end
-end)
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.Animate
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = script.Parent
-local v2 = v_u_1:WaitForChild("Torso")
-local v_u_3 = v2:WaitForChild("Right Shoulder")
-local v_u_4 = v2:WaitForChild("Left Shoulder")
-local v_u_5 = v2:WaitForChild("Right Hip")
-local v_u_6 = v2:WaitForChild("Left Hip")
-v2:WaitForChild("Neck")
-local v_u_7 = v_u_1:WaitForChild("Humanoid")
-local v_u_8 = "Standing"
-local v_u_9 = v_u_7.MaxHealth / 2
-local v_u_10 = game:GetService("Workspace").CurrentCamera
-local v_u_11 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
-local v_u_13 = v_u_11.new(Enum.RenderPriority.Camera.Value, function(p12)
-    -- upvalues: (copy) v_u_10
-    if v_u_10.CameraType ~= Enum.CameraType.Scriptable then
-        v_u_10.CFrame = v_u_10.CFrame * p12
-    end
-end)
-v_u_13:Start()
-require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p14)
-    -- upvalues: (copy) v_u_13, (copy) v_u_11
-    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-        v_u_13:Shake(v_u_11.Presets[p14])
-    end
-end)
-local v15, v16 = pcall(function()
-    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
-end)
-local v_u_17 = v15 and v16
-local v_u_18 = ""
-local v_u_19 = nil
-local v_u_20 = nil
-local v_u_21 = nil
-local v_u_22 = 1
-local v_u_23 = {}
-local v_u_24 = {
-    ["idle"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=140603061945284",
-            ["weight"] = 9
-        }
-    },
-    ["stop"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=83559231447722",
-            ["weight"] = 11
-        }
-    },
-    ["stopWalk"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=133043783896866",
-            ["weight"] = 11
-        }
-    },
-    ["runForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=78749200572411",
-            ["weight"] = 10
-        }
-    },
-    ["runLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=96509043428510",
-            ["weight"] = 10
-        }
-    },
-    ["runRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=97131507395933",
-            ["weight"] = 10
-        }
-    },
-    ["runStart"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=113729068153328",
-            ["weight"] = 11
-        }
-    },
-    ["runStartLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=71403377531705",
-            ["weight"] = 11
-        }
-    },
-    ["runStartRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=75650510533728",
-            ["weight"] = 11
-        }
-    },
-    ["walkForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=89929150450773",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=111382930561219",
-            ["weight"] = 10
-        }
-    },
-    ["walkForwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=107545126168718",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=82823739770244",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=140470116427904",
-            ["weight"] = 10
-        }
-    },
-    ["walkBackwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=85839904210745",
-            ["weight"] = 10
-        }
-    },
-    ["walkRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=111516784776401",
-            ["weight"] = 10
-        }
-    },
-    ["walkLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=118831683318213",
-            ["weight"] = 10
-        }
-    },
-    ["Crouchidle"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=86063084977279",
-            ["weight"] = 9
-        }
-    },
-    ["CrouchwalkForward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=93405694022444",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkForwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=117819977958017",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkForwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=88661748313165",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkBackward"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=81174024597617",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkBackwardLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=88741205365224",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkBackwardRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=96823064462744",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkRight"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=114730177951495",
-            ["weight"] = 10
-        }
-    },
-    ["CrouchwalkLeft"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=138684140853282",
-            ["weight"] = 10
-        }
-    },
-    ["jump"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["fall"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=110915217320372",
-            ["weight"] = 10
-        }
-    },
-    ["climb"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["sit"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolnone"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toolslash"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    },
-    ["toollunge"] = {
-        {
-            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
-            ["weight"] = 10
-        }
-    }
-}
-local v_u_25 = {
-    ["wave"] = false,
-    ["point"] = false,
-    ["dance1"] = true,
-    ["dance2"] = true,
-    ["dance3"] = true,
-    ["laugh"] = false,
-    ["cheer"] = false
-}
-function configureAnimationSet(p_u_26, p_u_27)
-    -- upvalues: (copy) v_u_23
-    if v_u_23[p_u_26] ~= nil then
-        for _, v28 in pairs(v_u_23[p_u_26].connections) do
-            v28:disconnect()
-        end
-    end
-    v_u_23[p_u_26] = {}
-    v_u_23[p_u_26].count = 0
-    v_u_23[p_u_26].totalWeight = 0
-    v_u_23[p_u_26].connections = {}
-    local v29 = script:FindFirstChild(p_u_26)
-    if v29 ~= nil then
-        local v30 = v_u_23[p_u_26].connections
-        local v31 = v29.ChildAdded
-        table.insert(v30, v31:connect(function(_)
-            -- upvalues: (copy) p_u_26, (copy) p_u_27
-            configureAnimationSet(p_u_26, p_u_27)
-        end))
-        local v32 = v_u_23[p_u_26].connections
-        local v33 = v29.ChildRemoved
-        table.insert(v32, v33:connect(function(_)
-            -- upvalues: (copy) p_u_26, (copy) p_u_27
-            configureAnimationSet(p_u_26, p_u_27)
-        end))
-        local v34 = 1
-        for _, v35 in pairs(v29:GetChildren()) do
-            if v35:IsA("Animation") then
-                local v36 = v_u_23[p_u_26].connections
-                local v37 = v35.Changed
-                table.insert(v36, v37:connect(function(_)
-                    -- upvalues: (copy) p_u_26, (copy) p_u_27
-                    configureAnimationSet(p_u_26, p_u_27)
-                    task.spawn(move, os.clock())
-                end))
-                v_u_23[p_u_26][v34] = {}
-                v_u_23[p_u_26][v34].anim = v35
-                local v38 = v35:FindFirstChild("Weight")
-                if v38 == nil then
-                    v_u_23[p_u_26][v34].weight = 1
-                else
-                    v_u_23[p_u_26][v34].weight = v38.Value
-                end
-                v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
-                v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v_u_23[p_u_26][v34].weight
-                v34 = v34 + 1
-            end
-        end
-    end
-    if v_u_23[p_u_26].count <= 0 then
-        for v39, v40 in pairs(p_u_27) do
-            v_u_23[p_u_26][v39] = {}
-            v_u_23[p_u_26][v39].anim = Instance.new("Animation")
-            v_u_23[p_u_26][v39].anim.Name = p_u_26
-            v_u_23[p_u_26][v39].anim.AnimationId = v40.id
-            v_u_23[p_u_26][v39].weight = v40.weight
-            v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
-            v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v40.weight
-        end
-    end
-end
-function scriptChildModified(p41)
-    -- upvalues: (copy) v_u_24
-    local v42 = v_u_24[p41.Name]
-    if v42 ~= nil then
-        configureAnimationSet(p41.Name, v42)
-    end
-end
-script.ChildAdded:connect(scriptChildModified)
-script.ChildRemoved:connect(scriptChildModified)
-local v43
-if v_u_7 then
-    v43 = v_u_7:FindFirstChildOfClass("Animator")
-else
-    v43 = nil
-end
-if v43 then
-    local v44 = v43:GetPlayingAnimationTracks()
-    for _, v45 in ipairs(v44) do
-        v45:Stop(0)
-        v45:Destroy()
-    end
-end
-for v46, v47 in pairs(v_u_24) do
-    configureAnimationSet(v46, v47)
-end
-local v_u_48 = "None"
-local v_u_49 = 0
-local v_u_50 = 0
-function stopAllAnimations()
-    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_19, (ref) v_u_21, (ref) v_u_20
-    local v51 = v_u_18
-    local v52 = v_u_25[v51] ~= nil and v_u_25[v51] == false and "idle" or v51
-    v_u_18 = ""
-    v_u_19 = nil
-    if v_u_21 ~= nil then
-        v_u_21:disconnect()
-    end
-    if v_u_20 ~= nil then
-        v_u_20:Stop()
-        v_u_20:Destroy()
-        v_u_20 = nil
-    end
-    return v52
-end
-function setAnimationSpeed(p53)
-    -- upvalues: (ref) v_u_22, (ref) v_u_20
-    if p53 ~= v_u_22 and v_u_20 then
-        v_u_22 = p53
-        v_u_20:AdjustSpeed(v_u_22)
-    end
-end
-function keyFrameReachedFunc(p54)
-    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_22, (copy) v_u_7
-    if p54 == "End" then
-        local v55 = v_u_18
-        local v56 = v_u_25[v55] ~= nil and v_u_25[v55] == false and "idle" or v55
-        local v57 = v_u_22
-        playAnimation(v56, 0, v_u_7)
-        setAnimationSpeed(v57)
-    end
-end
-function playAnimation(p58, p59, p60)
-    -- upvalues: (copy) v_u_23, (ref) v_u_19, (ref) v_u_20, (ref) v_u_18, (ref) v_u_22, (ref) v_u_21, (ref) v_u_8, (copy) v_u_13, (copy) v_u_11
-    local v61 = math.random(1, v_u_23[p58].totalWeight)
-    local v62 = 1
-    while v_u_23[p58][v62].weight < v61 do
-        v61 = v61 - v_u_23[p58][v62].weight
-        v62 = v62 + 1
-    end
-    local v63 = v_u_23[p58][v62].anim
-    if v63 ~= v_u_19 then
-        if v_u_20 ~= nil then
-            v_u_20:Stop(p59)
-            v_u_20:Destroy()
-        end
-        local v64 = (not (v_u_18:match("walk") or v_u_18:match("run")) or v_u_18 == "stop") and 0 or v_u_20.TimePosition
-        v_u_22 = 1
-        v_u_20 = p60:LoadAnimation(v63)
-        v_u_20.Priority = Enum.AnimationPriority.Core
-        v_u_20:Play(p59)
-        v_u_20.TimePosition = v64
-        v_u_18 = p58
-        v_u_19 = v63
-        if v_u_21 ~= nil then
-            v_u_21:disconnect()
-        end
-        local v_u_65 = v_u_20:GetMarkerReachedSignal("Step"):Connect(function()
-            -- upvalues: (ref) v_u_8, (ref) v_u_13, (ref) v_u_11
-            if (v_u_8 == "Running" or v_u_8 == "RunningStart") and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-                v_u_13:Shake(v_u_11.Presets.RunningShake)
-            end
-        end)
-        v_u_20.Stopped:Once(function()
-            -- upvalues: (ref) v_u_65
-            v_u_65:Disconnect()
-        end)
-        v_u_21 = v_u_20.KeyframeReached:connect(keyFrameReachedFunc)
-    end
-end
-local v_u_66 = ""
-local v_u_67 = nil
-local v_u_68 = nil
-local v_u_69 = nil
-function toolKeyFrameReachedFunc(p70)
-    -- upvalues: (ref) v_u_66, (copy) v_u_7
-    if p70 == "End" then
-        playToolAnimation(v_u_66, 0, v_u_7)
-    end
-end
-function playToolAnimation(p71, p72, p73, p74)
-    -- upvalues: (copy) v_u_23, (ref) v_u_68, (ref) v_u_67, (ref) v_u_66, (ref) v_u_69
-    local v75 = math.random(1, v_u_23[p71].totalWeight)
-    local v76 = 1
-    while v_u_23[p71][v76].weight < v75 do
-        v75 = v75 - v_u_23[p71][v76].weight
-        v76 = v76 + 1
-    end
-    local v77 = v_u_23[p71][v76].anim
-    if v_u_68 ~= v77 then
-        if v_u_67 ~= nil then
-            v_u_67:Stop()
-            v_u_67:Destroy()
-            p72 = 0
-        end
-        v_u_67 = p73:LoadAnimation(v77)
-        if p74 then
-            v_u_67.Priority = p74
-        end
-        v_u_67:Play(p72)
-        v_u_66 = p71
-        v_u_68 = v77
-        v_u_69 = v_u_67.KeyframeReached:connect(toolKeyFrameReachedFunc)
-    end
-end
-function stopToolAnimations()
-    -- upvalues: (ref) v_u_66, (ref) v_u_69, (ref) v_u_68, (ref) v_u_67
-    local v78 = v_u_66
-    if v_u_69 ~= nil then
-        v_u_69:disconnect()
-    end
-    v_u_66 = ""
-    v_u_68 = nil
-    if v_u_67 ~= nil then
-        v_u_67:Stop()
-        v_u_67:Destroy()
-        v_u_67 = nil
-    end
-    return v78
-end
-function onDied()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "Dead"
-end
-function onJumping()
-    -- upvalues: (copy) v_u_7, (ref) v_u_50, (ref) v_u_8
-    playAnimation("jump", 0.1, v_u_7)
-    v_u_50 = 0.3
-    v_u_8 = "Jumping"
-end
-function onClimbing(p79)
-    -- upvalues: (copy) v_u_17, (copy) v_u_1, (copy) v_u_7, (ref) v_u_8
-    local v80 = p79 / (not v_u_17 and 1 or v_u_1:GetScale())
-    playAnimation("climb", 0.1, v_u_7)
-    setAnimationSpeed(v80 / 12)
-    v_u_8 = "Climbing"
-end
-function onGettingUp()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "GettingUp"
-end
-function onFreeFall()
-    -- upvalues: (ref) v_u_50, (copy) v_u_7, (ref) v_u_8
-    if v_u_50 <= 0 then
-        playAnimation("fall", 0.3, v_u_7)
-    end
-    v_u_8 = "FreeFall"
-end
-function onFallingDown()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "FallingDown"
-end
-function onSeated()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "Seated"
-end
-function onPlatformStanding()
-    -- upvalues: (ref) v_u_8
-    v_u_8 = "PlatformStanding"
-end
-function onSwimming(p81)
-    -- upvalues: (ref) v_u_8
-    if p81 > 0 then
-        v_u_8 = "Running"
-    else
-        v_u_8 = "Standing"
-    end
-end
-function getTool()
-    -- upvalues: (copy) v_u_1
-    for _, v82 in ipairs(v_u_1:GetChildren()) do
-        if v82.className == "Tool" then
-            return v82
-        end
-    end
-    return nil
-end
-function getToolAnim(p83)
-    for _, v84 in ipairs(p83:GetChildren()) do
-        if v84.Name == "toolanim" and v84.className == "StringValue" then
-            return v84
-        end
-    end
-    return nil
-end
-function animateTool()
-    -- upvalues: (ref) v_u_48, (copy) v_u_7
-    if v_u_48 == "None" then
-        playToolAnimation("toolnone", 0.1, v_u_7, Enum.AnimationPriority.Idle)
-        return
-    elseif v_u_48 == "Slash" then
-        playToolAnimation("toolslash", 0, v_u_7, Enum.AnimationPriority.Action)
-        return
-    elseif v_u_48 == "Lunge" then
-        playToolAnimation("toollunge", 0, v_u_7, Enum.AnimationPriority.Action)
-    end
-end
-function moveSit()
-    -- upvalues: (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6
-    v_u_3.MaxVelocity = 0.15
-    v_u_4.MaxVelocity = 0.15
-    v_u_3:SetDesiredAngle(1.57)
-    v_u_4:SetDesiredAngle(-1.57)
-    v_u_5:SetDesiredAngle(1.57)
-    v_u_6:SetDesiredAngle(-1.57)
-end
-local v_u_85 = 0
-local v_u_86 = v_u_7.Health
-local v_u_87 = false
-local v_u_88 = false
-local v_u_89 = 0
-function move(p90)
-    -- upvalues: (copy) v_u_1, (ref) v_u_8, (copy) v_u_7, (ref) v_u_85, (ref) v_u_50, (ref) v_u_87, (ref) v_u_89, (copy) v_u_13, (ref) v_u_20, (copy) v_u_25, (ref) v_u_18, (ref) v_u_88, (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6, (copy) v_u_9, (ref) v_u_86, (ref) v_u_48, (ref) v_u_49, (ref) v_u_68
-    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
-        if v_u_1:HasTag("KillAnims") then
-            v_u_8 = "None"
-            stopAllAnimations()
-        elseif v_u_8 ~= "Standing" then
-            v_u_8 = "Standing"
-            playAnimation("idle", 0.1, v_u_7)
-        end
-    else
-        local v91 = 1
-        local v92 = 1
-        local v93 = p90 - v_u_85
-        v_u_85 = p90
-        local v94 = false
-        if v_u_50 > 0 then
-            v_u_50 = v_u_50 - v93
-        end
-        local v95 = (v_u_1:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity * Vector3.new(1, 0, 1)).Magnitude
-        if v_u_8 == "Standing" or v_u_8 == "Stopping" then
-            if v_u_1:GetAttribute("Crouching") == true and v_u_87 == false then
-                v_u_87 = true
-                stopAllAnimations()
-                playAnimation("Crouchidle", 0.1, v_u_7)
-            elseif v_u_1:GetAttribute("Crouching") == false and v_u_87 == true then
-                v_u_87 = false
-                stopAllAnimations()
-                playAnimation("idle", 0.1, v_u_7)
-            end
-        end
-        if v_u_7.FloorMaterial ~= Enum.Material.Air and (v_u_8 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_7.MoveDirection) > 0.45) then
-            if v95 > 0.01 and (v95 <= 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0)) then
-                v_u_89 = 0
-                v_u_13:StopSustained(0.5)
-                v_u_8 = "Walking"
-            elseif v95 > 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
-                local v96 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v96 = v96 * -1
-                end
-                local v_u_97 = game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default and 1 or (v96:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 and 2 or (v96:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 and 3 or 1))
-                if v_u_1:HasTag("Battery") or v_u_8 == "Running" and (v_u_8 ~= "RunningStart" or v_u_89 == v_u_97) then
-                    if v_u_8 == "Running" then
-                        v_u_89 = 0
-                    end
-                else
-                    stopAllAnimations()
-                    if v_u_97 == 2 then
-                        v_u_89 = 2
-                        playAnimation("runStartRight", 0, v_u_7)
-                        v_u_8 = "RunningStart"
-                    elseif v_u_97 == 3 then
-                        v_u_89 = 3
-                        playAnimation("runStartLeft", 0, v_u_7)
-                        v_u_8 = "RunningStart"
-                    elseif v_u_97 == 1 then
-                        v_u_89 = 1
-                        playAnimation("runStart", 0, v_u_7)
-                        v_u_8 = "RunningStart"
-                    else
-                        v_u_8 = "RunningStart"
-                    end
-                    if v_u_20 and v_u_8 == "RunningStart" then
-                        v_u_20.Priority = Enum.AnimationPriority.Action
-                        v_u_20.Stopped:Once(function()
-                            -- upvalues: (ref) v_u_8, (ref) v_u_89, (ref) v_u_97, (ref) v_u_20
-                            if v_u_8 == "RunningStart" and v_u_89 == v_u_97 then
-                                if v_u_20 then
-                                    v_u_20.TimePosition = 0
-                                end
-                                v_u_8 = "Running"
-                                v_u_89 = 0
-                            end
-                        end)
-                    end
-                end
-            else
-                v_u_89 = 0
-                if v_u_25[v_u_18] == nil and (v_u_8 ~= "Standing" or v95 > 12) and (v_u_8 ~= "Stopping" and v_u_8 ~= "WalkStopping") then
-                    if (v_u_8 == "Standing" and v95 > 12 or (v_u_8 == "Running" or v_u_8 == "RunningStart") and v95 > 21) and v_u_7.MoveDirection == Vector3.new(0, 0, 0) then
-                        v_u_8 = "Stopping"
-                        stopAllAnimations()
-                        playAnimation("stop", 0, v_u_7)
-                        if v_u_20 then
-                            v_u_20.Priority = Enum.AnimationPriority.Action2
-                            v_u_20.Stopped:Once(function()
-                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
-                                v_u_8 = "Standing"
-                                v_u_88 = false
-                                if v_u_8 == "Standing" then
-                                    if v_u_1:GetAttribute("Crouching") == true then
-                                        playAnimation("Crouchidle", 0.1, v_u_7)
-                                        return
-                                    end
-                                    playAnimation("idle", 0.1, v_u_7)
-                                end
-                            end)
-                        else
-                            v_u_8 = "Standing"
-                            if v_u_1:GetAttribute("Crouching") == true then
-                                playAnimation("Crouchidle", 0.1, v_u_7)
-                            else
-                                playAnimation("idle", 0.1, v_u_7)
-                            end
-                        end
-                    elseif v_u_8 == "Walking" and (v_u_1:GetAttribute("Crouching") == false and (v95 > 2 and v_u_7.MoveDirection == Vector3.new(0, 0, 0))) then
-                        v_u_8 = "WalkStopping"
-                        stopAllAnimations()
-                        playAnimation("stopWalk", 0.1, v_u_7)
-                        if v_u_20 then
-                            v_u_20.Priority = Enum.AnimationPriority.Action2
-                            v_u_20.Stopped:Once(function()
-                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
-                                v_u_8 = "Standing"
-                                v_u_88 = false
-                                if v_u_8 == "Standing" then
-                                    if v_u_1:GetAttribute("Crouching") == true then
-                                        playAnimation("Crouchidle", 0.1, v_u_7)
-                                        return
-                                    end
-                                    playAnimation("idle", 0.1, v_u_7)
-                                end
-                            end)
-                        else
-                            v_u_8 = "Standing"
-                            if v_u_1:GetAttribute("Crouching") == true then
-                                playAnimation("Crouchidle", 0.1, v_u_7)
-                            else
-                                playAnimation("idle", 0.1, v_u_7)
-                            end
-                        end
-                    else
-                        if v_u_1:GetAttribute("Crouching") == true then
-                            playAnimation("Crouchidle", 0.1, v_u_7)
-                        else
-                            playAnimation("idle", 0.1, v_u_7)
-                        end
-                        v_u_8 = "Standing"
-                    end
-                end
-            end
-        end
-        if v_u_8 == "FreeFall" and v_u_50 <= 0 then
-            playAnimation("fall", 0.3, v_u_7)
-        else
-            if v_u_8 == "Seated" then
-                playAnimation("sit", 0.5, v_u_7)
-                return
-            end
-            if v_u_8 == "Walking" or v_u_8 == "WalkStopping" and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
-                local v98 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v98 = v98 * -1
-                end
-                if v_u_1:GetAttribute("Crouching") == true then
-                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkForwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkBackwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkBackwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkForwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkBackward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("CrouchwalkLeft", 0.3, v_u_7)
-                    end
-                    if v_u_20 then
-                        v_u_20.Priority = Enum.AnimationPriority.Movement
-                    end
-                    setAnimationSpeed(v95 / 6)
-                else
-                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                        playAnimation("walkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("walkForwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("walkBackwardRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
-                        playAnimation("walkBackwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
-                        playAnimation("walkForwardLeft", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
-                        playAnimation("walkForward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("walkRight", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
-                        playAnimation("walkBackward", 0.3, v_u_7)
-                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
-                        playAnimation("walkLeft", 0.3, v_u_7)
-                    end
-                    if v_u_20 then
-                        v_u_20.Priority = Enum.AnimationPriority.Movement
-                    end
-                    setAnimationSpeed(v95 / 12)
-                end
-            elseif v_u_8 == "Running" then
-                local v99 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
-                if v_u_1:HasTag("Confusion") then
-                    v99 = v99 * -1
-                end
-                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
-                    playAnimation("runForward", 0.1, v_u_7)
-                elseif v99:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runRight", 0.3, v_u_7)
-                elseif v99:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
-                    playAnimation("runLeft", 0.3, v_u_7)
-                else
-                    playAnimation("runForward", 0.3, v_u_7)
-                end
-                if v_u_20 then
-                    v_u_20.Priority = Enum.AnimationPriority.Movement
-                end
-                setAnimationSpeed(v95 / 24)
-            elseif v_u_8 == "Dead" or (v_u_8 == "GettingUp" or (v_u_8 == "FallingDown" or (v_u_8 == "Seated" or v_u_8 == "PlatformStanding"))) then
-                stopAllAnimations()
-                v94 = true
-                v92 = 1
-                v91 = 0.1
-            end
-        end
-        if v94 then
-            local v100 = p90 * v92
-            local v101 = v91 * math.sin(v100)
-            v_u_3:SetDesiredAngle(v101 + 0)
-            v_u_4:SetDesiredAngle(v101 - 0)
-            v_u_5:SetDesiredAngle(-v101)
-            v_u_6:SetDesiredAngle(-v101)
-        end
-        if v_u_7.Health <= v_u_9 then
-            if v_u_88 == false then
-                v_u_88 = true
-                if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
-                    v_u_13:ShakeSustain(v_u_13.Presets.Injured)
-                end
-            end
-        elseif v_u_88 == true then
-            v_u_88 = false
-            v_u_13:StopSustained(1)
-        end
-        v_u_86 = v_u_7.Health
-        local v102 = getTool()
-        if v102 and v102:FindFirstChild("Handle") then
-            local v103 = getToolAnim(v102)
-            if v103 then
-                v_u_48 = v103.Value
-                v103.Parent = nil
-                v_u_49 = p90 + 0.3
-            end
-            if v_u_49 < p90 then
-                v_u_49 = 0
-                v_u_48 = "None"
-            end
-            animateTool()
-        else
-            stopToolAnimations()
-            v_u_48 = "None"
-            v_u_68 = nil
-            v_u_49 = 0
-        end
-    end
-end
-v_u_7.Died:connect(onDied)
-v_u_7.Jumping:connect(onJumping)
-v_u_7.Climbing:connect(onClimbing)
-v_u_7.GettingUp:connect(onGettingUp)
-v_u_7.FreeFalling:connect(onFreeFall)
-v_u_7.FallingDown:connect(onFallingDown)
-v_u_7.Seated:connect(onSeated)
-v_u_7.PlatformStanding:connect(onPlatformStanding)
-v_u_7.Swimming:connect(onSwimming)
-playAnimation("idle", 0.1, v_u_7)
-local _ = "Standing"
-while v_u_1.Parent ~= nil do
-    local _, v104 = wait()
-    move(v104)
-end
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.Voice
--- Decompiled with Velocity Script Decompiler
--- Failed to decompile
-Error:
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.Voice.AudioDeviceInput.Mute
--- Decompiled with Velocity Script Decompiler
-if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
-    script.Parent.Volume = 0
-end
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.Client
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
-local v2 = { "Torso", "Head", "Glow" }
-for _, v_u_3 in script.Parent:GetDescendants() do
-    if not v_u_3.Parent:IsA("Accessory") and (v_u_3:IsA("BasePart") and not table.find(v2, v_u_3.Name)) then
-        v_u_3.LocalTransparencyModifier = v_u_3.Transparency
-        v_u_3:GetPropertyChangedSignal("LocalTransparencyModifier"):Connect(function()
-            -- upvalues: (copy) v_u_3
-            v_u_3.LocalTransparencyModifier = v_u_3.Transparency
-        end)
-    end
-end
-local v_u_4 = {
-    ["Character"] = script.Parent,
-    ["Humanoid"] = script.Parent:FindFirstChildOfClass("Humanoid"),
-    ["RootPart"] = script.Parent:WaitForChild("HumanoidRootPart")
-}
-local v_u_5 = game:GetService("UserInputService")
-local v_u_6 = v_u_4.Character:WaitForChild("Torso", 100):FindFirstChild("Neck")
-local v_u_7 = v_u_6.C0.Y
-local v_u_8 = CFrame.new
-local v_u_9 = CFrame.Angles
-local v_u_10 = math.asin
-v_u_4.State = "Standing"
-Instance.new("NumberValue")
-local v_u_11 = script:WaitForChild("Replicator")
-function castRay(p12, p13, p14)
-    local v15 = RaycastParams.new()
-    v15.FilterDescendantsInstances = {
-        p12,
-        workspace.IGNORE,
-        workspace.PLAYERS,
-        workspace.Terrain
-    }
-    local v16 = workspace:Raycast(p13, p14, v15)
-    local v17 = v16 and v16.Position or p13 + p14
-    return (p13 - v17).Magnitude, p13, v17, v16
-end
-game:GetService("RunService"):BindToRenderStep("CameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
-    -- upvalues: (copy) v_u_4, (copy) v_u_5
-    if workspace.CurrentCamera.CameraSubject == v_u_4.Humanoid then
-        local v18 = (workspace.CurrentCamera.CFrame.p - workspace.CurrentCamera.Focus.p).magnitude
-        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 > 2 then
-            local v19, _, _, _ = castRay(v_u_4.Character, v_u_4.RootPart.Position, v_u_4.RootPart.CFrame.RightVector * 1.75)
-            local v20 = v_u_4.RootPart.CFrame.RightVector * v19
-            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
-                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0 + v20)
-            }):Play()
-            return
-        end
-        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 <= 2 then
-            local v21 = v_u_4.Character:WaitForChild("Head").CFrame.p - v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0.5
-            local v22 = v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 1.25 - v21
-            local _, _, v23, v24 = castRay(v_u_4.Character, v21, v22)
-            if v24 then
-                local _ = v23 - (v22.Magnitude == 0 and Vector3.new(0, 0, 0) or v22.Unit) * 0.1
-            end
-            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0), {
-                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v23)
-            }):Play()
-            return
-        end
-        game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
-            ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0)
-        }):Play()
-    end
-end)
-local v_u_25 = 0
-local function v_u_29(p26)
-    -- upvalues: (copy) v_u_4, (copy) v_u_6, (copy) v_u_8, (copy) v_u_7, (copy) v_u_9, (ref) v_u_25, (copy) v_u_11, (copy) v_u_10
-    if game:GetService("Players"):GetPlayerFromCharacter(v_u_4.Character) == game:GetService("Players").LocalPlayer then
-        if v_u_4.Character:HasTag("Cutscene") then
-            v_u_6.C0 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793)
-            v_u_25 = v_u_25 + p26
-            if v_u_25 > 0.25 then
-                v_u_25 = 0
-                v_u_11:FireServer({ v_u_6 }, { v_u_6.C0 })
-            end
-        else
-            local v27 = v_u_4.RootPart.CFrame:toObjectSpace(game:GetService("Workspace").CurrentCamera.CFrame).lookVector
-            local v28
-            if v_u_6 then
-                v28 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793) * v_u_9(0, 0, -v_u_10(v27.x)) * v_u_9(-v_u_10(v27.y), 0, 0)
-                v_u_6.C0 = v_u_6.C0:Lerp(v28, 0.9 * p26 * 15)
-            else
-                v28 = nil
-            end
-            v_u_25 = v_u_25 + p26
-            if v_u_25 > 0.25 then
-                v_u_25 = 0
-                v_u_11:FireServer({ v_u_6 }, { v28 or v_u_6.C0 })
-            end
-        end
-    else
-        return
-    end
-end
-local v_u_30 = nil
-local v_u_31 = 0
-local v_u_32 = v_u_4.Character:WaitForChild("Torso").AssemblyLinearVelocity
-local v_u_33 = workspace.CurrentCamera
-local v_u_34 = nil
-local v_u_35 = 0
-local v_u_36 = 0
-local v_u_37 = nil
-v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
-    -- upvalues: (copy) v_u_4, (ref) v_u_37, (copy) v_u_29, (copy) v_u_1, (ref) v_u_30, (ref) v_u_32, (ref) v_u_31, (copy) v_u_33, (ref) v_u_36, (ref) v_u_34, (ref) v_u_35
-    if v_u_4.Character == nil then
-        v_u_37:Disconnect()
-    else
-        v_u_29(p38)
-        if v_u_4.Character:GetAttribute("Ragdoll") then
-            local _, _, _, v39, _, v40 = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, Vector3.new(-0, -3, -0), nil, v_u_30)
-            if not v_u_30 then
-                v_u_30 = v40
-            end
-            local v41 = v_u_4.Character.Torso.AssemblyLinearVelocity
-            if not v_u_32 then
-                v_u_32 = v41
-            end
-            if v39 and ((v41 - v_u_32).Y > 4 and tick() - v_u_31 > 0.2) then
-                v_u_31 = tick()
-                local v_u_42 = script["FloorHit" .. math.random(3)]:Clone()
-                v_u_42.Parent = v_u_4.Character:FindFirstChild("HumanoidRootPart")
-                v_u_42:Play()
-                task.spawn(function()
-                    -- upvalues: (copy) v_u_42
-                    if not v_u_42.IsLoaded then
-                        v_u_42.Loaded:Wait()
-                    end
-                    task.delay(v_u_42.TimeLength / v_u_42.PlaybackSpeed, v_u_42.Destroy, v_u_42)
-                end)
-            end
-            v_u_32 = v41
-        else
-            v_u_32 = nil
-        end
-        local v43 = next
-        local v44, v45 = workspace.PLAYERS.KILLER:GetChildren()
-        for _, v46 in v43, v44, v45 do
-            if v46:FindFirstChild("HumanoidRootPart") and v46 ~= v_u_4.Character then
-                local v47 = v_u_4.Character.HumanoidRootPart.Position
-                local v48 = v46.HumanoidRootPart.Position
-                local v49 = v_u_33.CFrame.Position
-                local v50 = v46.HumanoidRootPart.CFrame.LookVector:Dot((v47 - v48).Unit)
-                local _, v51 = v_u_33:WorldToViewportPoint(v48)
-                local v52 = (v48 - v47).Magnitude
-                local v53 = 1 - 8 / (v52 / 2 + 1)
-                local v54 = math.min(0.9, v53)
-                if v52 < 150 and (v51 and v_u_36 < 0.25 or v_u_36 > 0.25) and (v54 < v50 and not (v46:HasTag("Imitation") or v46:HasTag("UNDETECTABLE"))) then
-                    local _, _, _, v55, v56 = v_u_1.Obstruction:CastObstruction(v49, v48 - v49, v_u_34)
-                    if not v_u_34 then
-                        v_u_34 = v56
-                    end
-                    local _, _, _, v57, _ = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, v48 - v47, v_u_34)
-                    if v57 or v55 then
-                        v_u_36 = 0
-                    else
-                        if v_u_36 > 0.25 then
-                            if tick() - v_u_35 > 10 then
-                                script.InView["InView" .. math.random(3)]:Play()
-                            end
-                            v_u_35 = tick()
-                        end
-                        v_u_36 = v_u_36 + p38
-                    end
-                else
-                    v_u_36 = 0
-                    v_u_34 = nil
-                end
-            end
-        end
-    end
-end)
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.Client.Server
--- Decompiled with Velocity Script Decompiler
--- Failed to decompile
-Error:
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.StepSFX
--- Decompiled with Velocity Script Decompiler
-if script.Parent:FindFirstChildOfClass("Humanoid") then
-    local function v_u_7()
-        if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial ~= Enum.Material.Air then
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Carpet then
-                local v_u_1 = script.Steps:FindFirstChild("carpet"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("carpet"):GetChildren())]:Clone()
-                v_u_1.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_1.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_1.Volume = v_u_1.Volume / 2
-                end
-                if not v_u_1.IsLoaded then
-                    v_u_1.Loaded:Wait()
-                end
-                v_u_1:Play()
-                task.delay(v_u_1.TimeLength, function()
-                    -- upvalues: (copy) v_u_1
-                    v_u_1:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Foil then
-                local v_u_2 = script.Steps:FindFirstChild("inflatable"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("inflatable"):GetChildren())]:Clone()
-                v_u_2.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_2.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_2.Volume = v_u_2.Volume / 2
-                end
-                if not v_u_2.IsLoaded then
-                    v_u_2.Loaded:Wait()
-                end
-                v_u_2:Play()
-                task.delay(v_u_2.TimeLength, function()
-                    -- upvalues: (copy) v_u_2
-                    v_u_2:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.DiamondPlate or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Metal or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.CorrodedMetal) then
-                local v_u_3 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
-                v_u_3.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_3.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_3.Volume = v_u_3.Volume / 2
-                end
-                if not v_u_3.IsLoaded then
-                    v_u_3.Loaded:Wait()
-                end
-                v_u_3:Play()
-                task.delay(v_u_3.TimeLength, function()
-                    -- upvalues: (copy) v_u_3
-                    v_u_3:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Concrete then
-                local v_u_4 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
-                v_u_4.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_4.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_4.Volume = v_u_4.Volume / 2
-                end
-                if not v_u_4.IsLoaded then
-                    v_u_4.Loaded:Wait()
-                end
-                v_u_4:Play()
-                task.delay(v_u_4.TimeLength, function()
-                    -- upvalues: (copy) v_u_4
-                    v_u_4:Destroy()
-                end)
-                return
-            end
-            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Grass or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Ground or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.LeafyGrass or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Mud)) then
-                local v_u_5 = script.Steps:FindFirstChild("grass").walking:GetChildren()[math.random(1, #script.Steps:FindFirstChild("grass").walking:GetChildren())]:Clone()
-                v_u_5.Parent = script.Parent:FindFirstChild("Torso")
-                v_u_5.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-                if script.Parent:GetAttribute("Crouching") == true then
-                    v_u_5.Volume = v_u_5.Volume / 2
-                end
-                if not v_u_5.IsLoaded then
-                    v_u_5.Loaded:Wait()
-                end
-                v_u_5:Play()
-                task.delay(v_u_5.TimeLength, function()
-                    -- upvalues: (copy) v_u_5
-                    v_u_5:Destroy()
-                end)
-                return
-            end
-            local v_u_6 = script.Steps:FindFirstChild("misc"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("misc"):GetChildren())]:Clone()
-            v_u_6.Parent = script.Parent:FindFirstChild("Torso")
-            v_u_6.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
-            if script.Parent:GetAttribute("Crouching") == true then
-                v_u_6.Volume = v_u_6.Volume / 2
-            end
-            if not v_u_6.IsLoaded then
-                v_u_6.Loaded:Wait()
-            end
-            v_u_6:Play()
-            task.delay(v_u_6.TimeLength, function()
-                -- upvalues: (copy) v_u_6
-                v_u_6:Destroy()
-            end)
-        end
-    end
-    script.Parent:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator").AnimationPlayed:Connect(function(p8)
-        -- upvalues: (copy) v_u_7
-        local v_u_9 = p8:GetMarkerReachedSignal("Step"):Connect(function()
-            -- upvalues: (ref) v_u_7
-            if not script.Parent:HasTag("UNDETECTABLE") then
-                v_u_7()
-            end
-        end)
-        local v_u_10 = p8:GetMarkerReachedSignal("Step2"):Connect(function()
-            -- upvalues: (ref) v_u_7
-            if not script.Parent:HasTag("INVIS") then
-                v_u_7()
-            end
-        end)
-        p8.Stopped:Once(function()
-            -- upvalues: (ref) v_u_9, (ref) v_u_10
-            v_u_9:Disconnect()
-            v_u_10:Disconnect()
-        end)
-    end)
-end
-
--- PATH: Workspace.PLAYERS.ALIVE.Lagginat0r115.Movement
--- Decompiled with Velocity Script Decompiler
-local v1 = game:GetService("ReplicatedStorage")
-local v_u_2 = game:GetService("TweenService")
-local v3 = game:GetService("RunService")
-local v4 = game:GetService("Players")
-local v_u_5 = v1:WaitForChild("Requests")
-local v_u_6 = v4.LocalPlayer
-local v_u_7 = v_u_6.Character or v_u_6.CharacterAdded:Wait()
-local v_u_8 = v_u_7:WaitForChild("Humanoid")
-local v_u_9 = v_u_7:WaitForChild("HumanoidRootPart")
-for _, v10 in v_u_7:GetDescendants() do
-    if v10:IsA("BasePart") then
-        v10.Massless = v_u_9 ~= v10
-    end
-end
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
-v_u_8:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
-local v_u_11 = Instance.new("BodyVelocity")
-v_u_11.Name = "MovementBodyVelocity"
-v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
-v_u_11.P = (1 / 0)
-v_u_11.Velocity = Vector3.new(0, 0, 0)
-v_u_11.Parent = v_u_9
-v_u_8.WalkSpeed = 0.01
-v_u_8.JumpPower = 0
-local v_u_12 = 16
-local v_u_13 = Vector3.new(0, 0, 0)
-local v_u_14 = Vector3.new(0, 0, 0)
-local v_u_15 = false
-local v_u_16 = false
-local v_u_17 = {}
-v3.Heartbeat:Connect(function(_)
-    -- upvalues: (copy) v_u_17, (copy) v_u_9
-    local v18 = workspace:GetServerTimeNow()
-    v_u_17[v18] = v_u_9.Position
-    for v19 in next, v_u_17 do
-        if v19 < v18 - 1 then
-            v_u_17[v19] = nil
-        end
-    end
-end)
-function castRay(p20, p21, p22)
-    local v23 = RaycastParams.new()
-    v23.FilterDescendantsInstances = { p20, workspace.IGNORE, workspace.PLAYERS }
-    local v24 = workspace:Raycast(p21, p22, v23)
-    local v25 = v24 and v24.Position or p21 + p22
-    return (p21 - v25).Magnitude, p21, v25, v24
-end
-local v_u_26 = 0
-local v_u_27 = v_u_9.Position
-v3:IsStudio()
-local function v_u_38()
-    -- upvalues: (copy) v_u_7, (copy) v_u_8, (ref) v_u_12, (copy) v_u_9, (ref) v_u_13, (ref) v_u_16, (ref) v_u_15, (ref) v_u_14, (ref) v_u_27, (ref) v_u_26, (copy) v_u_5
-    local v28 = v_u_7:GetAttribute("WalkSpeed") or 0
-    local v29 = v_u_7:GetAttribute("RunSpeed") or 0
-    local v30 = v_u_8.MoveDirection
-    if v_u_7:HasTag("Confusion") then
-        v30 = v30 * -1
-    end
-    local v31 = v_u_7:GetAttribute("Crouching")
-    local v32 = v_u_7:GetAttribute("Running")
-    local v33 = v_u_7:HasTag("SlowStop")
-    local v34 = v_u_7:GetAttribute("Stamina") or 0
-    local v35 = v_u_7:HasTag("CantMove") or (v_u_7:HasTag("CustomSpeed") and v_u_7:GetAttribute("CustomSpeed") or v31 and v28 / 2)
-    if v35 then
-        v28 = v35
-    elseif v32 and v34 > 0 then
-        v28 = v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 and v29 and v29 or v28
-    end
-    v_u_12 = v28
-    local v36 = v_u_15
-    if v36 then
-        if v30.Magnitude > 0 and (v_u_16 and v_u_9.CFrame.LookVector:Dot(v30) < 0.45) or v30.Magnitude == 0 then
-            if v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 then
-                v36 = not v31
-            else
-                v36 = false
-            end
-        else
-            v36 = false
-        end
-    end
-    v_u_16 = v36
-    if v_u_16 then
-        local _, _, _, v37 = castRay(v_u_7, v_u_9.CFrame.Position, v_u_9.CFrame.LookVector * 1.5)
-        if not v37 then
-            v30 = v_u_9.CFrame.LookVector
-        end
-    end
-    if v30.Magnitude > 0 then
-        v_u_13 = v30 * v_u_12
-        if not v_u_16 then
-            v_u_14 = v_u_13
-        end
-        if not v32 or (v29 > v_u_12 or not v33) then
-            v33 = v_u_16
-        end
-        v_u_15 = v33
-    else
-        v_u_13 = Vector3.new(0, 0, 0)
-    end
-    if (v_u_9.Position - v_u_27).Magnitude > 0.25 and tick() - v_u_26 > 0.011111111111111112 then
-        v_u_5.Movement:FireServer(v_u_9.CFrame, workspace:GetServerTimeNow(), v_u_7)
-        v_u_27 = v_u_9.Position
-        v_u_26 = tick()
-    end
-end
-v3.Heartbeat:Connect(function(p39)
-    -- upvalues: (copy) v_u_6, (copy) v_u_38, (ref) v_u_16, (ref) v_u_14, (ref) v_u_13, (ref) v_u_15, (copy) v_u_9, (copy) v_u_11, (copy) v_u_7, (copy) v_u_2
-    v_u_6:GetAttribute("Mouselocked")
-    v_u_38()
-    if v_u_16 then
-        v_u_14 = ((v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) * v_u_14.Magnitude):Lerp(Vector3.new(0, 0, 0), 1.8 * p39)
-        if v_u_14.Magnitude <= 1 then
-            v_u_16 = false
-            v_u_15 = false
-        end
-    else
-        v_u_14 = v_u_13
-    end
-    local v_u_40 = v_u_9:FindFirstChild("Velocity") or v_u_9:FindFirstChild("BodyVelocity")
-    if v_u_40 and v_u_11.Parent ~= nil then
-        v_u_40.Parent = nil
-        task.delay(0.05, function()
-            -- upvalues: (copy) v_u_40, (ref) v_u_9
-            v_u_40.Parent = v_u_9
-        end)
-    end
-    if v_u_7:GetAttribute("Ragdoll") or (v_u_7:HasTag("CantMove") or (v_u_7:HasTag("Ragdoll") or v_u_40)) then
-        v_u_11.MaxForce = Vector3.new(0, 0, 0)
-        v_u_11.Parent = nil
-    elseif v_u_11.MaxForce == Vector3.new(0, 0, 0) then
-        v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
-        v_u_11.Parent = v_u_9
-    end
-    v_u_11.Velocity = v_u_14
-    local v41 = v_u_9:FindFirstChildOfClass("BodyVelocity")
-    if v41 and (v41:GetAttribute("Update") and v41:GetAttribute("Update") == "Root") then
-        local v42 = v41:GetAttribute("Tween") or 0
-        local v43 = v41:GetAttribute("Speed") or 0
-        v_u_2:Create(v41, TweenInfo.new(v42), {
-            ["Velocity"] = v_u_9.CFrame.LookVector * v43
-        }):Play()
-    end
-    local v44 = v_u_9:FindFirstChildOfClass("BodyGyro")
-    if v44 and (v44:GetAttribute("Update") and v44:GetAttribute("Update") == "Cam") then
-        v44.CFrame = workspace.CurrentCamera.CFrame
-    end
-end)
-v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
-v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
-v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
-
--- PATH: Workspace.MAPS.GAME MAP.PizzeriaFlame
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = game:GetService("Lighting")
-local v2 = game:GetService("RunService")
-task.wait(10)
-v2.Heartbeat:Connect(function(p3)
-    -- upvalues: (copy) v_u_1
-    local v4 = game:GetService("Players").LocalPlayer:GetAttribute("TEAM") ~= "Lobby" and (workspace.GAME.TIMER.Value >= 360 and v_u_1:FindFirstChild("Atmosphere"))
-    if v4 then
-        v4.Density = v4.Density + (0.655 - v4.Density) * p3
-        v4.Offset = v4.Offset + (0.19 - v4.Offset) * p3
-        v4.Color = v4.Color:Lerp(Color3.fromRGB(139, 10, 10), p3)
-        v4.Decay = v4.Decay:Lerp(Color3.fromRGB(203, 0, 0), p3)
-        v4.Glare = v4.Glare + (0 - v4.Glare) * p3
-        v4.Haze = v4.Haze + (1.39 - v4.Haze) * p3
-    end
-end)
-
--- PATH: Workspace.MAPS.GAME MAP.Other.DECORATION.Hooks.Animation
--- Decompiled with Velocity Script Decompiler
-local v_u_1 = {}
-local v2 = {}
-local v_u_3 = {}
-for _, v4 in script.Parent:WaitForChild("Hooks Grouped"):GetChildren() do
-    if v4:IsA("MeshPart") then
-        v_u_1[v4] = Instance.new("CFrameValue")
-        v2[v4] = { Random.new():NextNumber(-4, 4), Random.new():NextNumber(-4, 4) }
-        v4.PivotOffset = CFrame.new(0, v4.Size.Y / 2, 0)
-        v_u_3[v4] = v4:GetPivot()
-    end
-end
-task.spawn(function()
-    -- upvalues: (copy) v_u_1, (copy) v_u_3
-    game:GetService("RunService").PreRender:Connect(function()
-        -- upvalues: (ref) v_u_1, (ref) v_u_3
-        for _, v5 in script.Parent["Hooks Grouped"]:GetChildren() do
-            if v5:IsA("MeshPart") and v_u_1[v5] then
-                v5:PivotTo(v_u_3[v5] * v_u_1[v5].Value)
-            end
-        end
-    end)
-end)
-while task.wait(0) do
-    for _, v6 in script.Parent["Hooks Grouped"]:GetChildren() do
-        if v6:IsA("MeshPart") and v_u_1[v6] then
-            local v7 = game:GetService("TweenService")
-            local v8 = v_u_1[v6]
-            local v9 = TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
-            local v10 = {}
-            local v11 = CFrame.new(0, 0, 0)
-            local v12 = CFrame.fromEulerAnglesXYZ
-            local v13 = -v2[v6][1]
-            local v14 = math.rad(v13)
-            local v15 = -v2[v6][2]
-            v10.Value = v11 * v12(v14, 0, (math.rad(v15)))
-            v7:Create(v8, v9, v10):Play()
-        end
-    end
-    task.wait(2.5)
-    for _, v16 in script.Parent["Hooks Grouped"]:GetChildren() do
-        if v16:IsA("MeshPart") and v_u_1[v16] then
-            local v17 = game:GetService("TweenService")
-            local v18 = v_u_1[v16]
-            local v19 = TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
-            local v20 = {}
-            local v21 = CFrame.new(0, 0, 0)
-            local v22 = CFrame.fromEulerAnglesXYZ
-            local v23 = v2[v16][1]
-            local v24 = math.rad(v23)
-            local v25 = v2[v16][2]
-            v20.Value = v21 * v22(v24, 0, (math.rad(v25)))
-            v17:Create(v18, v19, v20):Play()
-        end
-    end
-    task.wait(2.5)
-end
-
--- PATH: Workspace.IGNORE.Kurbywtw.ChaseThemes
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.ChaseThemes
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = { workspace:WaitForChild("LobbyMusic") }
@@ -8324,7 +3535,7 @@ game:GetService("RunService").Stepped:Connect(function()
     end
 end)
 
--- PATH: Workspace.IGNORE.Kurbywtw.Input
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Input
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("UserInputService")
 local v_u_2 = game:GetService("Players").LocalPlayer
@@ -8423,7 +3634,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
     end
 end)
 
--- PATH: Workspace.IGNORE.Kurbywtw.Animate
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v2 = v_u_1:WaitForChild("Torso")
@@ -9256,7 +4467,7 @@ while v_u_1.Parent ~= nil do
     move(v104)
 end
 
--- PATH: Workspace.IGNORE.Kurbywtw.Elevator.On Respawn
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Elevator.On Respawn
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 local v_u_2 = game:GetService("RunService")
@@ -9545,23 +4756,23 @@ else
     script.RemoteEvent:FireServer(true)
 end
 
--- PATH: Workspace.IGNORE.Kurbywtw.Elevator.On Respawn.Server
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Elevator.On Respawn.Server
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.IGNORE.Kurbywtw.Voice
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Voice
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.IGNORE.Kurbywtw.Voice.AudioDeviceInput.Mute
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Voice.AudioDeviceInput.Mute
 -- Decompiled with Velocity Script Decompiler
 if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
     script.Parent.Volume = 0
 end
 
--- PATH: Workspace.IGNORE.Kurbywtw.Client
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Client
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
 local v2 = { "Torso", "Head", "Glow" }
@@ -9737,12 +4948,12 @@ v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
     end
 end)
 
--- PATH: Workspace.IGNORE.Kurbywtw.Client.Server
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Client.Server
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Workspace.IGNORE.Kurbywtw.StepSFX
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.StepSFX
 -- Decompiled with Velocity Script Decompiler
 if script.Parent:FindFirstChildOfClass("Humanoid") then
     local function v_u_7()
@@ -9870,7 +5081,6991 @@ if script.Parent:FindFirstChildOfClass("Humanoid") then
     end)
 end
 
--- PATH: Workspace.IGNORE.Kurbywtw.Movement
+-- PATH: Workspace.PLAYERS.LOBBY.toniatorcxd.Movement
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("TweenService")
+local v3 = game:GetService("RunService")
+local v4 = game:GetService("Players")
+local v_u_5 = v1:WaitForChild("Requests")
+local v_u_6 = v4.LocalPlayer
+local v_u_7 = v_u_6.Character or v_u_6.CharacterAdded:Wait()
+local v_u_8 = v_u_7:WaitForChild("Humanoid")
+local v_u_9 = v_u_7:WaitForChild("HumanoidRootPart")
+for _, v10 in v_u_7:GetDescendants() do
+    if v10:IsA("BasePart") then
+        v10.Massless = v_u_9 ~= v10
+    end
+end
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+local v_u_11 = Instance.new("BodyVelocity")
+v_u_11.Name = "MovementBodyVelocity"
+v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+v_u_11.P = (1 / 0)
+v_u_11.Velocity = Vector3.new(0, 0, 0)
+v_u_11.Parent = v_u_9
+v_u_8.WalkSpeed = 0.01
+v_u_8.JumpPower = 0
+local v_u_12 = 16
+local v_u_13 = Vector3.new(0, 0, 0)
+local v_u_14 = Vector3.new(0, 0, 0)
+local v_u_15 = false
+local v_u_16 = false
+local v_u_17 = {}
+v3.Heartbeat:Connect(function(_)
+    -- upvalues: (copy) v_u_17, (copy) v_u_9
+    local v18 = workspace:GetServerTimeNow()
+    v_u_17[v18] = v_u_9.Position
+    for v19 in next, v_u_17 do
+        if v19 < v18 - 1 then
+            v_u_17[v19] = nil
+        end
+    end
+end)
+function castRay(p20, p21, p22)
+    local v23 = RaycastParams.new()
+    v23.FilterDescendantsInstances = { p20, workspace.IGNORE, workspace.PLAYERS }
+    local v24 = workspace:Raycast(p21, p22, v23)
+    local v25 = v24 and v24.Position or p21 + p22
+    return (p21 - v25).Magnitude, p21, v25, v24
+end
+local v_u_26 = 0
+local v_u_27 = v_u_9.Position
+v3:IsStudio()
+local function v_u_38()
+    -- upvalues: (copy) v_u_7, (copy) v_u_8, (ref) v_u_12, (copy) v_u_9, (ref) v_u_13, (ref) v_u_16, (ref) v_u_15, (ref) v_u_14, (ref) v_u_27, (ref) v_u_26, (copy) v_u_5
+    local v28 = v_u_7:GetAttribute("WalkSpeed") or 0
+    local v29 = v_u_7:GetAttribute("RunSpeed") or 0
+    local v30 = v_u_8.MoveDirection
+    if v_u_7:HasTag("Confusion") then
+        v30 = v30 * -1
+    end
+    local v31 = v_u_7:GetAttribute("Crouching")
+    local v32 = v_u_7:GetAttribute("Running")
+    local v33 = v_u_7:HasTag("SlowStop")
+    local v34 = v_u_7:GetAttribute("Stamina") or 0
+    local v35 = v_u_7:HasTag("CantMove") or (v_u_7:HasTag("CustomSpeed") and v_u_7:GetAttribute("CustomSpeed") or v31 and v28 / 2)
+    if v35 then
+        v28 = v35
+    elseif v32 and v34 > 0 then
+        v28 = v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 and v29 and v29 or v28
+    end
+    v_u_12 = v28
+    local v36 = v_u_15
+    if v36 then
+        if v30.Magnitude > 0 and (v_u_16 and v_u_9.CFrame.LookVector:Dot(v30) < 0.45) or v30.Magnitude == 0 then
+            if v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 then
+                v36 = not v31
+            else
+                v36 = false
+            end
+        else
+            v36 = false
+        end
+    end
+    v_u_16 = v36
+    if v_u_16 then
+        local _, _, _, v37 = castRay(v_u_7, v_u_9.CFrame.Position, v_u_9.CFrame.LookVector * 1.5)
+        if not v37 then
+            v30 = v_u_9.CFrame.LookVector
+        end
+    end
+    if v30.Magnitude > 0 then
+        v_u_13 = v30 * v_u_12
+        if not v_u_16 then
+            v_u_14 = v_u_13
+        end
+        if not v32 or (v29 > v_u_12 or not v33) then
+            v33 = v_u_16
+        end
+        v_u_15 = v33
+    else
+        v_u_13 = Vector3.new(0, 0, 0)
+    end
+    if (v_u_9.Position - v_u_27).Magnitude > 0.25 and tick() - v_u_26 > 0.011111111111111112 then
+        v_u_5.Movement:FireServer(v_u_9.CFrame, workspace:GetServerTimeNow(), v_u_7)
+        v_u_27 = v_u_9.Position
+        v_u_26 = tick()
+    end
+end
+v3.Heartbeat:Connect(function(p39)
+    -- upvalues: (copy) v_u_6, (copy) v_u_38, (ref) v_u_16, (ref) v_u_14, (ref) v_u_13, (ref) v_u_15, (copy) v_u_9, (copy) v_u_11, (copy) v_u_7, (copy) v_u_2
+    v_u_6:GetAttribute("Mouselocked")
+    v_u_38()
+    if v_u_16 then
+        v_u_14 = ((v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) * v_u_14.Magnitude):Lerp(Vector3.new(0, 0, 0), 1.8 * p39)
+        if v_u_14.Magnitude <= 1 then
+            v_u_16 = false
+            v_u_15 = false
+        end
+    else
+        v_u_14 = v_u_13
+    end
+    local v_u_40 = v_u_9:FindFirstChild("Velocity") or v_u_9:FindFirstChild("BodyVelocity")
+    if v_u_40 and v_u_11.Parent ~= nil then
+        v_u_40.Parent = nil
+        task.delay(0.05, function()
+            -- upvalues: (copy) v_u_40, (ref) v_u_9
+            v_u_40.Parent = v_u_9
+        end)
+    end
+    if v_u_7:GetAttribute("Ragdoll") or (v_u_7:HasTag("CantMove") or (v_u_7:HasTag("Ragdoll") or v_u_40)) then
+        v_u_11.MaxForce = Vector3.new(0, 0, 0)
+        v_u_11.Parent = nil
+    elseif v_u_11.MaxForce == Vector3.new(0, 0, 0) then
+        v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+        v_u_11.Parent = v_u_9
+    end
+    v_u_11.Velocity = v_u_14
+    local v41 = v_u_9:FindFirstChildOfClass("BodyVelocity")
+    if v41 and (v41:GetAttribute("Update") and v41:GetAttribute("Update") == "Root") then
+        local v42 = v41:GetAttribute("Tween") or 0
+        local v43 = v41:GetAttribute("Speed") or 0
+        v_u_2:Create(v41, TweenInfo.new(v42), {
+            ["Velocity"] = v_u_9.CFrame.LookVector * v43
+        }):Play()
+    end
+    local v44 = v_u_9:FindFirstChildOfClass("BodyGyro")
+    if v44 and (v44:GetAttribute("Update") and v44:GetAttribute("Update") == "Cam") then
+        v44.CFrame = workspace.CurrentCamera.CFrame
+    end
+end)
+v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
+v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
+v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.ChaseThemes
+-- Decompiled with Velocity Script Decompiler
+local _ = script.Parent
+local v_u_1 = { workspace:WaitForChild("LobbyMusic") }
+local v_u_2 = math.random(#v_u_1)
+local v_u_3 = nil
+local function v_u_4()
+    -- upvalues: (ref) v_u_2, (copy) v_u_1, (ref) v_u_3, (copy) v_u_4
+    v_u_2 = v_u_2 % #v_u_1 + 1
+    v_u_3 = v_u_1[v_u_2]
+    v_u_3:Play()
+    v_u_3.Stopped:Once(v_u_4)
+end
+v_u_2 = v_u_2 % #v_u_1 + 1
+v_u_3 = v_u_1[v_u_2]
+v_u_3:Play()
+v_u_3.Stopped:Once(v_u_4)
+game:GetService("RunService").Stepped:Connect(function()
+    -- upvalues: (ref) v_u_3
+    for _, v5 in workspace.PLAYERS.KILLER:GetChildren() do
+        if v5:FindFirstChild("Phases") then
+            for v6 = 1, 4 do
+                v5:FindFirstChild("Phases"):FindFirstChild((tostring(v6))).Volume = 0
+            end
+        end
+    end
+    if game.Players.LocalPlayer:GetAttribute("LOADED") == false or (workspace.GAME.STOP_MUSIC_ALL.Value == true or (workspace.GAME.LMS.Value == true or workspace.GAME.STOP_MUSIC.Value == true)) then
+        v_u_3.TimePosition = 0
+        v_u_3.Volume = 0
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0), {
+            ["Volume"] = 0
+        }):Play()
+        return
+    elseif workspace.GAME.TIMER.Value <= 18 then
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(4), {
+            ["Volume"] = 0
+        }):Play()
+    else
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0.25), {
+            ["Volume"] = 3
+        }):Play()
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Input
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("UserInputService")
+local v_u_2 = game:GetService("Players").LocalPlayer
+local v_u_3 = v_u_2.Character
+local v4 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp"))
+local v_u_5 = v4.Client("Input")
+local v_u_6 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Keybinds"))
+local v_u_7 = v4.Client("Reset")
+task.spawn(function()
+    -- upvalues: (copy) v_u_3, (copy) v_u_7
+    v_u_3:WaitForChild("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
+        -- upvalues: (ref) v_u_3, (ref) v_u_7
+        if v_u_3.Humanoid.Health == 0 then
+            v_u_7:Fire(true)
+        end
+    end)
+end)
+task.spawn(function()
+    repeat
+        local v8 = pcall(function()
+            game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+        end)
+        task.wait(1)
+    until v8
+end)
+local v_u_9 = false
+local v_u_10 = false
+v1.InputBegan:Connect(function(p11, p12)
+    -- upvalues: (copy) v_u_6, (ref) v_u_10, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    if p12 then
+        return
+    elseif table.find(v_u_6.Run, p11.KeyCode) then
+        v_u_10 = true
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+        else
+            v_u_9 = not v_u_9
+            v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        end
+    elseif table.find(v_u_6.Flashlight, p11.KeyCode) then
+        v_u_5:Fire(true, { "Flashlight" })
+    elseif table.find(v_u_6.Crouch, p11.KeyCode) then
+        v_u_5:Fire(true, { "Crouch" })
+    end
+end)
+v1.InputEnded:Connect(function(p13, _)
+    -- upvalues: (copy) v_u_6, (copy) v_u_2, (copy) v_u_5, (ref) v_u_10
+    if table.find(v_u_6.Run, p13.KeyCode) then
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+        end
+        v_u_10 = false
+    end
+end)
+local v_u_14 = false
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Down:Connect(function()
+    -- upvalues: (ref) v_u_14, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    v_u_14 = true
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+    else
+        v_u_9 = not v_u_9
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+    end
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Up:Connect(function()
+    -- upvalues: (copy) v_u_2, (copy) v_u_5, (ref) v_u_14
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+    end
+    v_u_14 = false
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Crouch.Button.MouseButton1Click:Connect(function()
+    -- upvalues: (copy) v_u_5
+    v_u_5:Fire(true, { "Crouch" })
+end)
+game:GetService("RunService").Heartbeat:Connect(function()
+    -- upvalues: (copy) v_u_2, (ref) v_u_10, (ref) v_u_14, (copy) v_u_3, (copy) v_u_5, (ref) v_u_9
+    if v_u_2:GetAttribute("HoldToRun") and (v_u_10 or v_u_14) and (v_u_3:GetAttribute("CanRun") and (not v_u_3:HasTag("Battery") and (not v_u_3:GetAttribute("Ragdoll") and (v_u_3:GetAttribute("Stamina") or 0) > 0))) then
+        if not v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", true)
+            return
+        end
+    elseif v_u_2:GetAttribute("HoldToRun") or (not v_u_3:GetAttribute("CanRun") or (v_u_3:HasTag("Battery") or (v_u_3:GetAttribute("Ragdoll") or (v_u_3:GetAttribute("Stamina") or 0) <= 0))) then
+        if v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", false)
+        end
+        v_u_9 = false
+        v_u_10 = false
+    elseif v_u_9 ~= v_u_3:GetAttribute("Running") then
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        v_u_3:SetAttribute("Running", v_u_9)
+        return
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Animate
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = script.Parent
+local v2 = v_u_1:WaitForChild("Torso")
+local v_u_3 = v2:WaitForChild("Right Shoulder")
+local v_u_4 = v2:WaitForChild("Left Shoulder")
+local v_u_5 = v2:WaitForChild("Right Hip")
+local v_u_6 = v2:WaitForChild("Left Hip")
+v2:WaitForChild("Neck")
+local v_u_7 = v_u_1:WaitForChild("Humanoid")
+local v_u_8 = "Standing"
+local v_u_9 = v_u_7.MaxHealth / 2
+local v_u_10 = game:GetService("Workspace").CurrentCamera
+local v_u_11 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
+local v_u_13 = v_u_11.new(Enum.RenderPriority.Camera.Value, function(p12)
+    -- upvalues: (copy) v_u_10
+    if v_u_10.CameraType ~= Enum.CameraType.Scriptable then
+        v_u_10.CFrame = v_u_10.CFrame * p12
+    end
+end)
+v_u_13:Start()
+require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p14)
+    -- upvalues: (copy) v_u_13, (copy) v_u_11
+    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+        v_u_13:Shake(v_u_11.Presets[p14])
+    end
+end)
+local v15, v16 = pcall(function()
+    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
+end)
+local v_u_17 = v15 and v16
+local v_u_18 = ""
+local v_u_19 = nil
+local v_u_20 = nil
+local v_u_21 = nil
+local v_u_22 = 1
+local v_u_23 = {}
+local v_u_24 = {
+    ["idle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=72376427571966",
+            ["weight"] = 9
+        }
+    },
+    ["stop"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=83559231447722",
+            ["weight"] = 11
+        }
+    },
+    ["stopWalk"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=133043783896866",
+            ["weight"] = 11
+        }
+    },
+    ["runForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=78749200572411",
+            ["weight"] = 10
+        }
+    },
+    ["runLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96509043428510",
+            ["weight"] = 10
+        }
+    },
+    ["runRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=97131507395933",
+            ["weight"] = 10
+        }
+    },
+    ["runStart"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=113729068153328",
+            ["weight"] = 11
+        }
+    },
+    ["runStartLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=71403377531705",
+            ["weight"] = 11
+        }
+    },
+    ["runStartRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=75650510533728",
+            ["weight"] = 11
+        }
+    },
+    ["walkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=89929150450773",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111382930561219",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=107545126168718",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=82823739770244",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=140470116427904",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=85839904210745",
+            ["weight"] = 10
+        }
+    },
+    ["walkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111516784776401",
+            ["weight"] = 10
+        }
+    },
+    ["walkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=118831683318213",
+            ["weight"] = 10
+        }
+    },
+    ["Crouchidle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=86063084977279",
+            ["weight"] = 9
+        }
+    },
+    ["CrouchwalkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=93405694022444",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=117819977958017",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88661748313165",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=81174024597617",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88741205365224",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96823064462744",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=114730177951495",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=138684140853282",
+            ["weight"] = 10
+        }
+    },
+    ["jump"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["fall"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=110915217320372",
+            ["weight"] = 10
+        }
+    },
+    ["climb"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["sit"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolnone"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolslash"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toollunge"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    }
+}
+local v_u_25 = {
+    ["wave"] = false,
+    ["point"] = false,
+    ["dance1"] = true,
+    ["dance2"] = true,
+    ["dance3"] = true,
+    ["laugh"] = false,
+    ["cheer"] = false
+}
+function configureAnimationSet(p_u_26, p_u_27)
+    -- upvalues: (copy) v_u_23
+    if v_u_23[p_u_26] ~= nil then
+        for _, v28 in pairs(v_u_23[p_u_26].connections) do
+            v28:disconnect()
+        end
+    end
+    v_u_23[p_u_26] = {}
+    v_u_23[p_u_26].count = 0
+    v_u_23[p_u_26].totalWeight = 0
+    v_u_23[p_u_26].connections = {}
+    local v29 = script:FindFirstChild(p_u_26)
+    if v29 ~= nil then
+        local v30 = v_u_23[p_u_26].connections
+        local v31 = v29.ChildAdded
+        table.insert(v30, v31:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v32 = v_u_23[p_u_26].connections
+        local v33 = v29.ChildRemoved
+        table.insert(v32, v33:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v34 = 1
+        for _, v35 in pairs(v29:GetChildren()) do
+            if v35:IsA("Animation") then
+                local v36 = v_u_23[p_u_26].connections
+                local v37 = v35.Changed
+                table.insert(v36, v37:connect(function(_)
+                    -- upvalues: (copy) p_u_26, (copy) p_u_27
+                    configureAnimationSet(p_u_26, p_u_27)
+                    task.spawn(move, os.clock())
+                end))
+                v_u_23[p_u_26][v34] = {}
+                v_u_23[p_u_26][v34].anim = v35
+                local v38 = v35:FindFirstChild("Weight")
+                if v38 == nil then
+                    v_u_23[p_u_26][v34].weight = 1
+                else
+                    v_u_23[p_u_26][v34].weight = v38.Value
+                end
+                v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+                v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v_u_23[p_u_26][v34].weight
+                v34 = v34 + 1
+            end
+        end
+    end
+    if v_u_23[p_u_26].count <= 0 then
+        for v39, v40 in pairs(p_u_27) do
+            v_u_23[p_u_26][v39] = {}
+            v_u_23[p_u_26][v39].anim = Instance.new("Animation")
+            v_u_23[p_u_26][v39].anim.Name = p_u_26
+            v_u_23[p_u_26][v39].anim.AnimationId = v40.id
+            v_u_23[p_u_26][v39].weight = v40.weight
+            v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+            v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v40.weight
+        end
+    end
+end
+function scriptChildModified(p41)
+    -- upvalues: (copy) v_u_24
+    local v42 = v_u_24[p41.Name]
+    if v42 ~= nil then
+        configureAnimationSet(p41.Name, v42)
+    end
+end
+script.ChildAdded:connect(scriptChildModified)
+script.ChildRemoved:connect(scriptChildModified)
+local v43
+if v_u_7 then
+    v43 = v_u_7:FindFirstChildOfClass("Animator")
+else
+    v43 = nil
+end
+if v43 then
+    local v44 = v43:GetPlayingAnimationTracks()
+    for _, v45 in ipairs(v44) do
+        v45:Stop(0)
+        v45:Destroy()
+    end
+end
+for v46, v47 in pairs(v_u_24) do
+    configureAnimationSet(v46, v47)
+end
+local v_u_48 = "None"
+local v_u_49 = 0
+local v_u_50 = 0
+function stopAllAnimations()
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_19, (ref) v_u_21, (ref) v_u_20
+    local v51 = v_u_18
+    local v52 = v_u_25[v51] ~= nil and v_u_25[v51] == false and "idle" or v51
+    v_u_18 = ""
+    v_u_19 = nil
+    if v_u_21 ~= nil then
+        v_u_21:disconnect()
+    end
+    if v_u_20 ~= nil then
+        v_u_20:Stop()
+        v_u_20:Destroy()
+        v_u_20 = nil
+    end
+    return v52
+end
+function setAnimationSpeed(p53)
+    -- upvalues: (ref) v_u_22, (ref) v_u_20
+    if p53 ~= v_u_22 and v_u_20 then
+        v_u_22 = p53
+        v_u_20:AdjustSpeed(v_u_22)
+    end
+end
+function keyFrameReachedFunc(p54)
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_22, (copy) v_u_7
+    if p54 == "End" then
+        local v55 = v_u_18
+        local v56 = v_u_25[v55] ~= nil and v_u_25[v55] == false and "idle" or v55
+        local v57 = v_u_22
+        playAnimation(v56, 0, v_u_7)
+        setAnimationSpeed(v57)
+    end
+end
+function playAnimation(p58, p59, p60)
+    -- upvalues: (copy) v_u_23, (ref) v_u_19, (ref) v_u_20, (ref) v_u_18, (ref) v_u_22, (ref) v_u_21, (ref) v_u_8, (copy) v_u_13, (copy) v_u_11
+    local v61 = math.random(1, v_u_23[p58].totalWeight)
+    local v62 = 1
+    while v_u_23[p58][v62].weight < v61 do
+        v61 = v61 - v_u_23[p58][v62].weight
+        v62 = v62 + 1
+    end
+    local v63 = v_u_23[p58][v62].anim
+    if v63 ~= v_u_19 then
+        if v_u_20 ~= nil then
+            v_u_20:Stop(p59)
+            v_u_20:Destroy()
+        end
+        local v64 = (not (v_u_18:match("walk") or v_u_18:match("run")) or v_u_18 == "stop") and 0 or v_u_20.TimePosition
+        v_u_22 = 1
+        v_u_20 = p60:LoadAnimation(v63)
+        v_u_20.Priority = Enum.AnimationPriority.Core
+        v_u_20:Play(p59)
+        v_u_20.TimePosition = v64
+        v_u_18 = p58
+        v_u_19 = v63
+        if v_u_21 ~= nil then
+            v_u_21:disconnect()
+        end
+        local v_u_65 = v_u_20:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_8, (ref) v_u_13, (ref) v_u_11
+            if (v_u_8 == "Running" or v_u_8 == "RunningStart") and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                v_u_13:Shake(v_u_11.Presets.RunningShake)
+            end
+        end)
+        v_u_20.Stopped:Once(function()
+            -- upvalues: (ref) v_u_65
+            v_u_65:Disconnect()
+        end)
+        v_u_21 = v_u_20.KeyframeReached:connect(keyFrameReachedFunc)
+    end
+end
+local v_u_66 = ""
+local v_u_67 = nil
+local v_u_68 = nil
+local v_u_69 = nil
+function toolKeyFrameReachedFunc(p70)
+    -- upvalues: (ref) v_u_66, (copy) v_u_7
+    if p70 == "End" then
+        playToolAnimation(v_u_66, 0, v_u_7)
+    end
+end
+function playToolAnimation(p71, p72, p73, p74)
+    -- upvalues: (copy) v_u_23, (ref) v_u_68, (ref) v_u_67, (ref) v_u_66, (ref) v_u_69
+    local v75 = math.random(1, v_u_23[p71].totalWeight)
+    local v76 = 1
+    while v_u_23[p71][v76].weight < v75 do
+        v75 = v75 - v_u_23[p71][v76].weight
+        v76 = v76 + 1
+    end
+    local v77 = v_u_23[p71][v76].anim
+    if v_u_68 ~= v77 then
+        if v_u_67 ~= nil then
+            v_u_67:Stop()
+            v_u_67:Destroy()
+            p72 = 0
+        end
+        v_u_67 = p73:LoadAnimation(v77)
+        if p74 then
+            v_u_67.Priority = p74
+        end
+        v_u_67:Play(p72)
+        v_u_66 = p71
+        v_u_68 = v77
+        v_u_69 = v_u_67.KeyframeReached:connect(toolKeyFrameReachedFunc)
+    end
+end
+function stopToolAnimations()
+    -- upvalues: (ref) v_u_66, (ref) v_u_69, (ref) v_u_68, (ref) v_u_67
+    local v78 = v_u_66
+    if v_u_69 ~= nil then
+        v_u_69:disconnect()
+    end
+    v_u_66 = ""
+    v_u_68 = nil
+    if v_u_67 ~= nil then
+        v_u_67:Stop()
+        v_u_67:Destroy()
+        v_u_67 = nil
+    end
+    return v78
+end
+function onDied()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Dead"
+end
+function onJumping()
+    -- upvalues: (copy) v_u_7, (ref) v_u_50, (ref) v_u_8
+    playAnimation("jump", 0.1, v_u_7)
+    v_u_50 = 0.3
+    v_u_8 = "Jumping"
+end
+function onClimbing(p79)
+    -- upvalues: (copy) v_u_17, (copy) v_u_1, (copy) v_u_7, (ref) v_u_8
+    local v80 = p79 / (not v_u_17 and 1 or v_u_1:GetScale())
+    playAnimation("climb", 0.1, v_u_7)
+    setAnimationSpeed(v80 / 12)
+    v_u_8 = "Climbing"
+end
+function onGettingUp()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "GettingUp"
+end
+function onFreeFall()
+    -- upvalues: (ref) v_u_50, (copy) v_u_7, (ref) v_u_8
+    if v_u_50 <= 0 then
+        playAnimation("fall", 0.3, v_u_7)
+    end
+    v_u_8 = "FreeFall"
+end
+function onFallingDown()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "FallingDown"
+end
+function onSeated()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Seated"
+end
+function onPlatformStanding()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "PlatformStanding"
+end
+function onSwimming(p81)
+    -- upvalues: (ref) v_u_8
+    if p81 > 0 then
+        v_u_8 = "Running"
+    else
+        v_u_8 = "Standing"
+    end
+end
+function getTool()
+    -- upvalues: (copy) v_u_1
+    for _, v82 in ipairs(v_u_1:GetChildren()) do
+        if v82.className == "Tool" then
+            return v82
+        end
+    end
+    return nil
+end
+function getToolAnim(p83)
+    for _, v84 in ipairs(p83:GetChildren()) do
+        if v84.Name == "toolanim" and v84.className == "StringValue" then
+            return v84
+        end
+    end
+    return nil
+end
+function animateTool()
+    -- upvalues: (ref) v_u_48, (copy) v_u_7
+    if v_u_48 == "None" then
+        playToolAnimation("toolnone", 0.1, v_u_7, Enum.AnimationPriority.Idle)
+        return
+    elseif v_u_48 == "Slash" then
+        playToolAnimation("toolslash", 0, v_u_7, Enum.AnimationPriority.Action)
+        return
+    elseif v_u_48 == "Lunge" then
+        playToolAnimation("toollunge", 0, v_u_7, Enum.AnimationPriority.Action)
+    end
+end
+function moveSit()
+    -- upvalues: (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6
+    v_u_3.MaxVelocity = 0.15
+    v_u_4.MaxVelocity = 0.15
+    v_u_3:SetDesiredAngle(1.57)
+    v_u_4:SetDesiredAngle(-1.57)
+    v_u_5:SetDesiredAngle(1.57)
+    v_u_6:SetDesiredAngle(-1.57)
+end
+local v_u_85 = 0
+local v_u_86 = v_u_7.Health
+local v_u_87 = false
+local v_u_88 = false
+local v_u_89 = 0
+function move(p90)
+    -- upvalues: (copy) v_u_1, (ref) v_u_8, (copy) v_u_7, (ref) v_u_85, (ref) v_u_50, (ref) v_u_87, (ref) v_u_89, (copy) v_u_13, (ref) v_u_20, (copy) v_u_25, (ref) v_u_18, (ref) v_u_88, (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6, (copy) v_u_9, (ref) v_u_86, (ref) v_u_48, (ref) v_u_49, (ref) v_u_68
+    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
+        if v_u_1:HasTag("KillAnims") then
+            v_u_8 = "None"
+            stopAllAnimations()
+        elseif v_u_8 ~= "Standing" then
+            v_u_8 = "Standing"
+            playAnimation("idle", 0.1, v_u_7)
+        end
+    else
+        local v91 = 1
+        local v92 = 1
+        local v93 = p90 - v_u_85
+        v_u_85 = p90
+        local v94 = false
+        if v_u_50 > 0 then
+            v_u_50 = v_u_50 - v93
+        end
+        local v95 = (v_u_1:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity * Vector3.new(1, 0, 1)).Magnitude
+        if v_u_8 == "Standing" or v_u_8 == "Stopping" then
+            if v_u_1:GetAttribute("Crouching") == true and v_u_87 == false then
+                v_u_87 = true
+                stopAllAnimations()
+                playAnimation("Crouchidle", 0.1, v_u_7)
+            elseif v_u_1:GetAttribute("Crouching") == false and v_u_87 == true then
+                v_u_87 = false
+                stopAllAnimations()
+                playAnimation("idle", 0.1, v_u_7)
+            end
+        end
+        if v_u_7.FloorMaterial ~= Enum.Material.Air and (v_u_8 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_7.MoveDirection) > 0.45) then
+            if v95 > 0.01 and (v95 <= 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0)) then
+                v_u_89 = 0
+                v_u_13:StopSustained(0.5)
+                v_u_8 = "Walking"
+            elseif v95 > 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v96 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v96 = v96 * -1
+                end
+                local v_u_97 = game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default and 1 or (v96:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 and 2 or (v96:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 and 3 or 1))
+                if v_u_1:HasTag("Battery") or v_u_8 == "Running" and (v_u_8 ~= "RunningStart" or v_u_89 == v_u_97) then
+                    if v_u_8 == "Running" then
+                        v_u_89 = 0
+                    end
+                else
+                    stopAllAnimations()
+                    if v_u_97 == 2 then
+                        v_u_89 = 2
+                        playAnimation("runStartRight", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 3 then
+                        v_u_89 = 3
+                        playAnimation("runStartLeft", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 1 then
+                        v_u_89 = 1
+                        playAnimation("runStart", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    else
+                        v_u_8 = "RunningStart"
+                    end
+                    if v_u_20 and v_u_8 == "RunningStart" then
+                        v_u_20.Priority = Enum.AnimationPriority.Action
+                        v_u_20.Stopped:Once(function()
+                            -- upvalues: (ref) v_u_8, (ref) v_u_89, (ref) v_u_97, (ref) v_u_20
+                            if v_u_8 == "RunningStart" and v_u_89 == v_u_97 then
+                                if v_u_20 then
+                                    v_u_20.TimePosition = 0
+                                end
+                                v_u_8 = "Running"
+                                v_u_89 = 0
+                            end
+                        end)
+                    end
+                end
+            else
+                v_u_89 = 0
+                if v_u_25[v_u_18] == nil and (v_u_8 ~= "Standing" or v95 > 12) and (v_u_8 ~= "Stopping" and v_u_8 ~= "WalkStopping") then
+                    if (v_u_8 == "Standing" and v95 > 12 or (v_u_8 == "Running" or v_u_8 == "RunningStart") and v95 > 21) and v_u_7.MoveDirection == Vector3.new(0, 0, 0) then
+                        v_u_8 = "Stopping"
+                        stopAllAnimations()
+                        playAnimation("stop", 0, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    elseif v_u_8 == "Walking" and (v_u_1:GetAttribute("Crouching") == false and (v95 > 2 and v_u_7.MoveDirection == Vector3.new(0, 0, 0))) then
+                        v_u_8 = "WalkStopping"
+                        stopAllAnimations()
+                        playAnimation("stopWalk", 0.1, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    else
+                        if v_u_1:GetAttribute("Crouching") == true then
+                            playAnimation("Crouchidle", 0.1, v_u_7)
+                        else
+                            playAnimation("idle", 0.1, v_u_7)
+                        end
+                        v_u_8 = "Standing"
+                    end
+                end
+            end
+        end
+        if v_u_8 == "FreeFall" and v_u_50 <= 0 then
+            playAnimation("fall", 0.3, v_u_7)
+        else
+            if v_u_8 == "Seated" then
+                playAnimation("sit", 0.5, v_u_7)
+                return
+            end
+            if v_u_8 == "Walking" or v_u_8 == "WalkStopping" and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v98 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v98 = v98 * -1
+                end
+                if v_u_1:GetAttribute("Crouching") == true then
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 6)
+                else
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 12)
+                end
+            elseif v_u_8 == "Running" then
+                local v99 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v99 = v99 * -1
+                end
+                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                    playAnimation("runForward", 0.1, v_u_7)
+                elseif v99:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runRight", 0.3, v_u_7)
+                elseif v99:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runLeft", 0.3, v_u_7)
+                else
+                    playAnimation("runForward", 0.3, v_u_7)
+                end
+                if v_u_20 then
+                    v_u_20.Priority = Enum.AnimationPriority.Movement
+                end
+                setAnimationSpeed(v95 / 24)
+            elseif v_u_8 == "Dead" or (v_u_8 == "GettingUp" or (v_u_8 == "FallingDown" or (v_u_8 == "Seated" or v_u_8 == "PlatformStanding"))) then
+                stopAllAnimations()
+                v94 = true
+                v92 = 1
+                v91 = 0.1
+            end
+        end
+        if v94 then
+            local v100 = p90 * v92
+            local v101 = v91 * math.sin(v100)
+            v_u_3:SetDesiredAngle(v101 + 0)
+            v_u_4:SetDesiredAngle(v101 - 0)
+            v_u_5:SetDesiredAngle(-v101)
+            v_u_6:SetDesiredAngle(-v101)
+        end
+        if v_u_7.Health <= v_u_9 then
+            if v_u_88 == false then
+                v_u_88 = true
+                if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                    v_u_13:ShakeSustain(v_u_13.Presets.Injured)
+                end
+            end
+        elseif v_u_88 == true then
+            v_u_88 = false
+            v_u_13:StopSustained(1)
+        end
+        v_u_86 = v_u_7.Health
+        local v102 = getTool()
+        if v102 and v102:FindFirstChild("Handle") then
+            local v103 = getToolAnim(v102)
+            if v103 then
+                v_u_48 = v103.Value
+                v103.Parent = nil
+                v_u_49 = p90 + 0.3
+            end
+            if v_u_49 < p90 then
+                v_u_49 = 0
+                v_u_48 = "None"
+            end
+            animateTool()
+        else
+            stopToolAnimations()
+            v_u_48 = "None"
+            v_u_68 = nil
+            v_u_49 = 0
+        end
+    end
+end
+v_u_7.Died:connect(onDied)
+v_u_7.Jumping:connect(onJumping)
+v_u_7.Climbing:connect(onClimbing)
+v_u_7.GettingUp:connect(onGettingUp)
+v_u_7.FreeFalling:connect(onFreeFall)
+v_u_7.FallingDown:connect(onFallingDown)
+v_u_7.Seated:connect(onSeated)
+v_u_7.PlatformStanding:connect(onPlatformStanding)
+v_u_7.Swimming:connect(onSwimming)
+playAnimation("idle", 0.1, v_u_7)
+local _ = "Standing"
+while v_u_1.Parent ~= nil do
+    local _, v104 = wait()
+    move(v104)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Elevator.On Respawn
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("RunService")
+game:GetService("TweenService")
+local v_u_3 = game:GetService("ContentProvider")
+local v_u_4 = game:GetService("Players").LocalPlayer.PlayerGui
+repeat
+    task.wait()
+until game:IsLoaded() and (game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"))
+task.wait(0.01)
+if script:WaitForChild("Check", 10):InvokeServer(game:GetService("Players").LocalPlayer) == true then
+    script:WaitForChild("RemoteEvent", 10):FireServer(true)
+    script.Parent.Parent:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame
+else
+    local v_u_5 = v_u_4:WaitForChild("UI", 10):WaitForChild("Transitions"):WaitForChild("Lobby"):FindFirstChild("LobbyUIContainer") or v_u_4:WaitForChild("UI", 10):WaitForChild("UI"):WaitForChild("LobbyUIContainer", 10)
+    if v_u_5:FindFirstChild("Buttons") then
+        v_u_5.Buttons.Visible = true
+    end
+    v_u_5.Visible = false
+    script:WaitForChild("RemoteEvent", 10):FireServer(false)
+    v_u_3:PreloadAsync({
+        workspace:WaitForChild("Lobby"),
+        script:WaitForChild("Animation"),
+        script:WaitForChild("ElevatorIntro"),
+        script:WaitForChild("WaitAnimation")
+    })
+    require(v1:WaitForChild("Modules"):WaitForChild("Warp"))
+    local v6 = require(v1:WaitForChild("Modules"):WaitForChild("Cutscenes"))
+    local v7 = require(v1:WaitForChild("Modules"):WaitForChild("Maid"))
+    local v_u_8 = script.Parent.Parent
+    local v9 = workspace.LoadingSFX
+    v9:Play()
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = true
+    v_u_8:WaitForChild("Humanoid").AutoRotate = false
+    v_u_8:AddTag("CantMove")
+    v_u_8:AddTag("Cutscene")
+    game:GetService("Players").LocalPlayer:AddTag("Cutscene")
+    function lerp(p10, p11, p12)
+        return p10 + (p11 - p10) * p12
+    end
+    local v_u_13 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator")
+    v_u_13:PivotTo(CFrame.new(483.989, 61.528, 109.666))
+    local v_u_14 = workspace:WaitForChild("Lobby"):WaitForChild("Shaft")
+    v_u_14:PivotTo(CFrame.new(484.935, 277.252, 109.744))
+    local v_u_15 = Instance.new("CFrameValue")
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    local v_u_16 = Instance.new("CFrameValue")
+    v_u_16.Value = CFrame.new(0, 200, 0)
+    local v_u_17 = v_u_14:GetPivot()
+    local v_u_18 = v_u_13:GetPivot()
+    local v19 = next
+    local v20, v21 = v_u_8:GetDescendants()
+    for _, v22 in v19, v20, v21 do
+        if v22:IsA("BasePart") then
+            v22.LocalTransparencyModifier = v22.Transparency
+        end
+    end
+    local v23 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator"):WaitForChild("Elevator Doors"):WaitForChild("DoorRoot")
+    v23.LDoor.DesiredAngle = 0
+    v23.RDoor.DesiredAngle = 0
+    local v_u_24 = workspace.CurrentCamera
+    local v_u_25 = v6.ElevatorAlone
+    local v_u_26 = v_u_25.CameraRig:Clone()
+    v_u_26:PivotTo(workspace:WaitForChild("Lobby"):WaitForChild("Camera Position").CFrame)
+    v_u_26.Parent = workspace.IGNORE
+    v_u_26:FindFirstChild(v_u_25.RootPart)
+    local v_u_27 = v_u_26:FindFirstChild(v_u_25.CameraPart)
+    v_u_24.CameraType = Enum.CameraType.Scriptable
+    local v_u_28 = v_u_24.CFrame
+    local _ = v_u_24.FieldOfView
+    local function v29()
+        -- upvalues: (copy) v_u_14, (copy) v_u_17, (copy) v_u_15, (copy) v_u_13, (copy) v_u_18, (copy) v_u_16, (copy) v_u_26, (copy) v_u_8
+        v_u_14:PivotTo(v_u_17 * v_u_15.Value)
+        v_u_13:PivotTo(v_u_18 * v_u_16.Value)
+        v_u_26:PivotTo(workspace:FindFirstChild("Lobby"):WaitForChild("Camera Position").CFrame * v_u_16.Value)
+        v_u_8:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame * v_u_16.Value
+    end
+    local v30 = game:GetService("RunService").Stepped:Connect(v29)
+    local v31 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(script.Animation)
+    v31:Play()
+    local v32 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("WaitAnimation"))
+    v32:Play()
+    local v33
+    if game:GetService("Players").LocalPlayer:HasTag("LOADED") then
+        v33 = true
+    else
+        local v_u_34 = false
+        game:GetService("Players").LocalPlayer:AddTag("LOADED")
+        game:GetService("Players").LocalPlayer:SetAttribute("LOADED", false)
+        task.spawn(function()
+            -- upvalues: (copy) v_u_15, (copy) v_u_4, (copy) v_u_25, (copy) v_u_13, (copy) v_u_3, (ref) v_u_34
+            local v_u_35 = game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0), {
+                ["Value"] = CFrame.new(0, 100, 0)
+            })
+            v_u_35:Play()
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = true
+            local v_u_36 = {
+                v_u_25.Animation,
+                game:GetService("ReplicatedStorage"),
+                game:GetService("StarterGui"),
+                game:GetService("Workspace")
+            }
+            local v37 = 0
+            local v_u_38 = 0
+            for _, v39 in next, v_u_36 do
+                local v40 = next
+                local v41, v42 = v39:GetDescendants()
+                for _, v43 in v40, v41, v42 do
+                    if v43:IsA("Sound") or (v43:IsA("Animation") or (v43:IsA("MeshPart") or (v43:IsA("ImageLabel") or (v43:IsA("ImageButton") or (v43:IsA("Decal") or (v43:IsA("Texture") or (v43:IsA("ParticleEmitter") or v43:IsA("SurfaceAppearance")))))))) then
+                        v37 = v37 + 1
+                    end
+                end
+            end
+            local v_u_44 = false
+            local v_u_45 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_15, (copy) v_u_35, (ref) v_u_44
+                repeat
+                    v_u_15.Value = CFrame.new(0, 0, 0)
+                    v_u_35:Play()
+                    v_u_35.Completed:Wait()
+                until v_u_44 == true
+            end)
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "Loading assets (0/" .. v37 .. ")"
+            local v_u_46 = nil
+            if game:GetService("RunService"):IsStudio() then
+                if v_u_44 == false then
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                    v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                        -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                        v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                        v_u_45 = true
+                    end)
+                end
+            else
+                task.delay(10, function()
+                    -- upvalues: (ref) v_u_44, (ref) v_u_4, (ref) v_u_13, (ref) v_u_46, (ref) v_u_45
+                    if v_u_44 == false then
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                        v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                            -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                            v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                            v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                            v_u_45 = true
+                        end)
+                    end
+                end)
+            end
+            local v_u_47 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_3, (copy) v_u_36, (ref) v_u_38, (ref) v_u_47, (ref) v_u_4
+                if game:GetService("UserInputService").TouchEnabled or game:GetService("UserInputService").GamepadEnabled then
+                    task.wait(8)
+                else
+                    v_u_3:PreloadAsync(v_u_36, function(_, _)
+                        -- upvalues: (ref) v_u_38
+                        v_u_38 = v_u_38 + 1
+                    end)
+                end
+                v_u_47 = true
+                v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+            end)
+            local v48 = v_u_47
+            local v49 = 0
+            while true do
+                if tick() - v49 > 0.1 then
+                    v49 = tick()
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "\nLoading assets (" .. v_u_38 .. "/" .. v_u_38 + game:GetService("ContentProvider").RequestQueueSize .. ")"
+                end
+                task.wait()
+                if v_u_45 or v48 then
+                    v_u_47 = true
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+                    v_u_44 = true
+                    v_u_35.Completed:Wait()
+                    if v_u_46 then
+                        v_u_46:Disconnect()
+                    end
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                    v_u_35:Cancel()
+                    v_u_34 = true
+                    v_u_15.Value = CFrame.new(0, -8, 0)
+                    return
+                end
+            end
+        end)
+        v33 = v_u_34
+    end
+    repeat
+        v_u_24.CFrame = v_u_27.CFrame
+        v_u_24.FieldOfView = 70
+        task.wait()
+    until v33 == true
+    local v50 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(v_u_25.Animation)
+    repeat
+        task.wait()
+    until v50.Length > 0
+    v32:Stop(0.25)
+    v31:Stop(0.25)
+    local v_u_51 = v6.ElevatorAlone
+    local v_u_52 = v7.new()
+    v50:Play()
+    v_u_52:Mark(v50)
+    task.delay(7, v_u_26.Destroy, v_u_26)
+    v9:Stop()
+    workspace.LandingSFX:Play()
+    local v53 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("ElevatorIntro"))
+    v53:Play()
+    task.spawn(function()
+        -- upvalues: (copy) v_u_2, (copy) v_u_24, (copy) v_u_27, (copy) v_u_51, (copy) v_u_52
+        local v_u_54 = 0.1
+        v_u_52:Mark((v_u_2.PreSimulation:Connect(function(p55)
+            -- upvalues: (ref) v_u_24, (ref) v_u_54, (ref) v_u_27, (ref) v_u_51
+            v_u_24.CameraType = Enum.CameraType.Scriptable
+            v_u_54 = v_u_54 + p55 * 60
+            v_u_24.CFrame = v_u_27.CFrame
+            if v_u_51.FOV then
+                local v56 = v_u_54
+                if v_u_51.FOV[math.ceil(v56)] then
+                    local v57 = v_u_54
+                    v_u_24.FieldOfView = v_u_51.FOV[math.ceil(v57)]
+                end
+            end
+        end)))
+    end)
+    task.delay(v50.Length, function()
+        -- upvalues: (copy) v_u_24, (copy) v_u_28, (copy) v_u_52
+        v_u_24.CFrame = v_u_28
+        v_u_24.CameraType = Enum.CameraType.Custom
+        game:GetService("Players").LocalPlayer:RemoveTag("Cutscene")
+        v_u_52:Sweep()
+    end)
+    game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(0, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    game:GetService("TweenService"):Create(v_u_16, TweenInfo.new(3.65, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    task.wait(4)
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    v_u_16.Value = CFrame.new(0, 0, 0)
+    v29()
+    v_u_15:Destroy()
+    v_u_16:Destroy()
+    v30:Disconnect()
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    task.wait(3)
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    if v53.IsPlaying then
+        v53.Stopped:Wait()
+    end
+    v_u_8:RemoveTag("CantMove")
+    v_u_8:RemoveTag("Cutscene")
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = false
+    v_u_8:WaitForChild("Humanoid").AutoRotate = true
+    script.Ambience:Play()
+    v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby")
+    v_u_5.Visible = true
+    v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby").GroupTransparency = 1
+    game:GetService("TweenService"):Create(v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby"), TweenInfo.new(0.5), {
+        ["GroupTransparency"] = 0
+    }):Play()
+    task.delay(0.5, function()
+        -- upvalues: (copy) v_u_5, (copy) v_u_4
+        v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("UI")
+    end)
+    script.RemoteEvent:FireServer(true)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Elevator.On Respawn.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Voice
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Voice.AudioDeviceInput.Mute
+-- Decompiled with Velocity Script Decompiler
+if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
+    script.Parent.Volume = 0
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Client
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
+local v2 = { "Torso", "Head", "Glow" }
+for _, v_u_3 in script.Parent:GetDescendants() do
+    if not v_u_3.Parent:IsA("Accessory") and (v_u_3:IsA("BasePart") and not table.find(v2, v_u_3.Name)) then
+        v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        v_u_3:GetPropertyChangedSignal("LocalTransparencyModifier"):Connect(function()
+            -- upvalues: (copy) v_u_3
+            v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        end)
+    end
+end
+local v_u_4 = {
+    ["Character"] = script.Parent,
+    ["Humanoid"] = script.Parent:FindFirstChildOfClass("Humanoid"),
+    ["RootPart"] = script.Parent:WaitForChild("HumanoidRootPart")
+}
+local v_u_5 = game:GetService("UserInputService")
+local v_u_6 = v_u_4.Character:WaitForChild("Torso", 100):FindFirstChild("Neck")
+local v_u_7 = v_u_6.C0.Y
+local v_u_8 = CFrame.new
+local v_u_9 = CFrame.Angles
+local v_u_10 = math.asin
+v_u_4.State = "Standing"
+Instance.new("NumberValue")
+local v_u_11 = script:WaitForChild("Replicator")
+function castRay(p12, p13, p14)
+    local v15 = RaycastParams.new()
+    v15.FilterDescendantsInstances = {
+        p12,
+        workspace.IGNORE,
+        workspace.PLAYERS,
+        workspace.Terrain
+    }
+    local v16 = workspace:Raycast(p13, p14, v15)
+    local v17 = v16 and v16.Position or p13 + p14
+    return (p13 - v17).Magnitude, p13, v17, v16
+end
+game:GetService("RunService"):BindToRenderStep("CameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
+    -- upvalues: (copy) v_u_4, (copy) v_u_5
+    if workspace.CurrentCamera.CameraSubject == v_u_4.Humanoid then
+        local v18 = (workspace.CurrentCamera.CFrame.p - workspace.CurrentCamera.Focus.p).magnitude
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 > 2 then
+            local v19, _, _, _ = castRay(v_u_4.Character, v_u_4.RootPart.Position, v_u_4.RootPart.CFrame.RightVector * 1.75)
+            local v20 = v_u_4.RootPart.CFrame.RightVector * v19
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0 + v20)
+            }):Play()
+            return
+        end
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 <= 2 then
+            local v21 = v_u_4.Character:WaitForChild("Head").CFrame.p - v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0.5
+            local v22 = v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 1.25 - v21
+            local _, _, v23, v24 = castRay(v_u_4.Character, v21, v22)
+            if v24 then
+                local _ = v23 - (v22.Magnitude == 0 and Vector3.new(0, 0, 0) or v22.Unit) * 0.1
+            end
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v23)
+            }):Play()
+            return
+        end
+        game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+            ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0)
+        }):Play()
+    end
+end)
+local v_u_25 = 0
+local function v_u_29(p26)
+    -- upvalues: (copy) v_u_4, (copy) v_u_6, (copy) v_u_8, (copy) v_u_7, (copy) v_u_9, (ref) v_u_25, (copy) v_u_11, (copy) v_u_10
+    if game:GetService("Players"):GetPlayerFromCharacter(v_u_4.Character) == game:GetService("Players").LocalPlayer then
+        if v_u_4.Character:HasTag("Cutscene") then
+            v_u_6.C0 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793)
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v_u_6.C0 })
+            end
+        else
+            local v27 = v_u_4.RootPart.CFrame:toObjectSpace(game:GetService("Workspace").CurrentCamera.CFrame).lookVector
+            local v28
+            if v_u_6 then
+                v28 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793) * v_u_9(0, 0, -v_u_10(v27.x)) * v_u_9(-v_u_10(v27.y), 0, 0)
+                v_u_6.C0 = v_u_6.C0:Lerp(v28, 0.9 * p26 * 15)
+            else
+                v28 = nil
+            end
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v28 or v_u_6.C0 })
+            end
+        end
+    else
+        return
+    end
+end
+local v_u_30 = nil
+local v_u_31 = 0
+local v_u_32 = v_u_4.Character:WaitForChild("Torso").AssemblyLinearVelocity
+local v_u_33 = workspace.CurrentCamera
+local v_u_34 = nil
+local v_u_35 = 0
+local v_u_36 = 0
+local v_u_37 = nil
+v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
+    -- upvalues: (copy) v_u_4, (ref) v_u_37, (copy) v_u_29, (copy) v_u_1, (ref) v_u_30, (ref) v_u_32, (ref) v_u_31, (copy) v_u_33, (ref) v_u_36, (ref) v_u_34, (ref) v_u_35
+    if v_u_4.Character == nil then
+        v_u_37:Disconnect()
+    else
+        v_u_29(p38)
+        if v_u_4.Character:GetAttribute("Ragdoll") then
+            local _, _, _, v39, _, v40 = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, Vector3.new(-0, -3, -0), nil, v_u_30)
+            if not v_u_30 then
+                v_u_30 = v40
+            end
+            local v41 = v_u_4.Character.Torso.AssemblyLinearVelocity
+            if not v_u_32 then
+                v_u_32 = v41
+            end
+            if v39 and ((v41 - v_u_32).Y > 4 and tick() - v_u_31 > 0.2) then
+                v_u_31 = tick()
+                local v_u_42 = script["FloorHit" .. math.random(3)]:Clone()
+                v_u_42.Parent = v_u_4.Character:FindFirstChild("HumanoidRootPart")
+                v_u_42:Play()
+                task.spawn(function()
+                    -- upvalues: (copy) v_u_42
+                    if not v_u_42.IsLoaded then
+                        v_u_42.Loaded:Wait()
+                    end
+                    task.delay(v_u_42.TimeLength / v_u_42.PlaybackSpeed, v_u_42.Destroy, v_u_42)
+                end)
+            end
+            v_u_32 = v41
+        else
+            v_u_32 = nil
+        end
+        local v43 = next
+        local v44, v45 = workspace.PLAYERS.KILLER:GetChildren()
+        for _, v46 in v43, v44, v45 do
+            if v46:FindFirstChild("HumanoidRootPart") and v46 ~= v_u_4.Character then
+                local v47 = v_u_4.Character.HumanoidRootPart.Position
+                local v48 = v46.HumanoidRootPart.Position
+                local v49 = v_u_33.CFrame.Position
+                local v50 = v46.HumanoidRootPart.CFrame.LookVector:Dot((v47 - v48).Unit)
+                local _, v51 = v_u_33:WorldToViewportPoint(v48)
+                local v52 = (v48 - v47).Magnitude
+                local v53 = 1 - 8 / (v52 / 2 + 1)
+                local v54 = math.min(0.9, v53)
+                if v52 < 150 and (v51 and v_u_36 < 0.25 or v_u_36 > 0.25) and (v54 < v50 and not (v46:HasTag("Imitation") or v46:HasTag("UNDETECTABLE"))) then
+                    local _, _, _, v55, v56 = v_u_1.Obstruction:CastObstruction(v49, v48 - v49, v_u_34)
+                    if not v_u_34 then
+                        v_u_34 = v56
+                    end
+                    local _, _, _, v57, _ = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, v48 - v47, v_u_34)
+                    if v57 or v55 then
+                        v_u_36 = 0
+                    else
+                        if v_u_36 > 0.25 then
+                            if tick() - v_u_35 > 10 then
+                                script.InView["InView" .. math.random(3)]:Play()
+                            end
+                            v_u_35 = tick()
+                        end
+                        v_u_36 = v_u_36 + p38
+                    end
+                else
+                    v_u_36 = 0
+                    v_u_34 = nil
+                end
+            end
+        end
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Client.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.StepSFX
+-- Decompiled with Velocity Script Decompiler
+if script.Parent:FindFirstChildOfClass("Humanoid") then
+    local function v_u_7()
+        if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial ~= Enum.Material.Air then
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Carpet then
+                local v_u_1 = script.Steps:FindFirstChild("carpet"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("carpet"):GetChildren())]:Clone()
+                v_u_1.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_1.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_1.Volume = v_u_1.Volume / 2
+                end
+                if not v_u_1.IsLoaded then
+                    v_u_1.Loaded:Wait()
+                end
+                v_u_1:Play()
+                task.delay(v_u_1.TimeLength, function()
+                    -- upvalues: (copy) v_u_1
+                    v_u_1:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Foil then
+                local v_u_2 = script.Steps:FindFirstChild("inflatable"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("inflatable"):GetChildren())]:Clone()
+                v_u_2.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_2.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_2.Volume = v_u_2.Volume / 2
+                end
+                if not v_u_2.IsLoaded then
+                    v_u_2.Loaded:Wait()
+                end
+                v_u_2:Play()
+                task.delay(v_u_2.TimeLength, function()
+                    -- upvalues: (copy) v_u_2
+                    v_u_2:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.DiamondPlate or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Metal or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.CorrodedMetal) then
+                local v_u_3 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_3.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_3.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_3.Volume = v_u_3.Volume / 2
+                end
+                if not v_u_3.IsLoaded then
+                    v_u_3.Loaded:Wait()
+                end
+                v_u_3:Play()
+                task.delay(v_u_3.TimeLength, function()
+                    -- upvalues: (copy) v_u_3
+                    v_u_3:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Concrete then
+                local v_u_4 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_4.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_4.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_4.Volume = v_u_4.Volume / 2
+                end
+                if not v_u_4.IsLoaded then
+                    v_u_4.Loaded:Wait()
+                end
+                v_u_4:Play()
+                task.delay(v_u_4.TimeLength, function()
+                    -- upvalues: (copy) v_u_4
+                    v_u_4:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Grass or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Ground or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.LeafyGrass or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Mud)) then
+                local v_u_5 = script.Steps:FindFirstChild("grass").walking:GetChildren()[math.random(1, #script.Steps:FindFirstChild("grass").walking:GetChildren())]:Clone()
+                v_u_5.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_5.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_5.Volume = v_u_5.Volume / 2
+                end
+                if not v_u_5.IsLoaded then
+                    v_u_5.Loaded:Wait()
+                end
+                v_u_5:Play()
+                task.delay(v_u_5.TimeLength, function()
+                    -- upvalues: (copy) v_u_5
+                    v_u_5:Destroy()
+                end)
+                return
+            end
+            local v_u_6 = script.Steps:FindFirstChild("misc"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("misc"):GetChildren())]:Clone()
+            v_u_6.Parent = script.Parent:FindFirstChild("Torso")
+            v_u_6.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+            if script.Parent:GetAttribute("Crouching") == true then
+                v_u_6.Volume = v_u_6.Volume / 2
+            end
+            if not v_u_6.IsLoaded then
+                v_u_6.Loaded:Wait()
+            end
+            v_u_6:Play()
+            task.delay(v_u_6.TimeLength, function()
+                -- upvalues: (copy) v_u_6
+                v_u_6:Destroy()
+            end)
+        end
+    end
+    script.Parent:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator").AnimationPlayed:Connect(function(p8)
+        -- upvalues: (copy) v_u_7
+        local v_u_9 = p8:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("UNDETECTABLE") then
+                v_u_7()
+            end
+        end)
+        local v_u_10 = p8:GetMarkerReachedSignal("Step2"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("INVIS") then
+                v_u_7()
+            end
+        end)
+        p8.Stopped:Once(function()
+            -- upvalues: (ref) v_u_9, (ref) v_u_10
+            v_u_9:Disconnect()
+            v_u_10:Disconnect()
+        end)
+    end)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.biigbooibobb.Movement
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("TweenService")
+local v3 = game:GetService("RunService")
+local v4 = game:GetService("Players")
+local v_u_5 = v1:WaitForChild("Requests")
+local v_u_6 = v4.LocalPlayer
+local v_u_7 = v_u_6.Character or v_u_6.CharacterAdded:Wait()
+local v_u_8 = v_u_7:WaitForChild("Humanoid")
+local v_u_9 = v_u_7:WaitForChild("HumanoidRootPart")
+for _, v10 in v_u_7:GetDescendants() do
+    if v10:IsA("BasePart") then
+        v10.Massless = v_u_9 ~= v10
+    end
+end
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+local v_u_11 = Instance.new("BodyVelocity")
+v_u_11.Name = "MovementBodyVelocity"
+v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+v_u_11.P = (1 / 0)
+v_u_11.Velocity = Vector3.new(0, 0, 0)
+v_u_11.Parent = v_u_9
+v_u_8.WalkSpeed = 0.01
+v_u_8.JumpPower = 0
+local v_u_12 = 16
+local v_u_13 = Vector3.new(0, 0, 0)
+local v_u_14 = Vector3.new(0, 0, 0)
+local v_u_15 = false
+local v_u_16 = false
+local v_u_17 = {}
+v3.Heartbeat:Connect(function(_)
+    -- upvalues: (copy) v_u_17, (copy) v_u_9
+    local v18 = workspace:GetServerTimeNow()
+    v_u_17[v18] = v_u_9.Position
+    for v19 in next, v_u_17 do
+        if v19 < v18 - 1 then
+            v_u_17[v19] = nil
+        end
+    end
+end)
+function castRay(p20, p21, p22)
+    local v23 = RaycastParams.new()
+    v23.FilterDescendantsInstances = { p20, workspace.IGNORE, workspace.PLAYERS }
+    local v24 = workspace:Raycast(p21, p22, v23)
+    local v25 = v24 and v24.Position or p21 + p22
+    return (p21 - v25).Magnitude, p21, v25, v24
+end
+local v_u_26 = 0
+local v_u_27 = v_u_9.Position
+v3:IsStudio()
+local function v_u_38()
+    -- upvalues: (copy) v_u_7, (copy) v_u_8, (ref) v_u_12, (copy) v_u_9, (ref) v_u_13, (ref) v_u_16, (ref) v_u_15, (ref) v_u_14, (ref) v_u_27, (ref) v_u_26, (copy) v_u_5
+    local v28 = v_u_7:GetAttribute("WalkSpeed") or 0
+    local v29 = v_u_7:GetAttribute("RunSpeed") or 0
+    local v30 = v_u_8.MoveDirection
+    if v_u_7:HasTag("Confusion") then
+        v30 = v30 * -1
+    end
+    local v31 = v_u_7:GetAttribute("Crouching")
+    local v32 = v_u_7:GetAttribute("Running")
+    local v33 = v_u_7:HasTag("SlowStop")
+    local v34 = v_u_7:GetAttribute("Stamina") or 0
+    local v35 = v_u_7:HasTag("CantMove") or (v_u_7:HasTag("CustomSpeed") and v_u_7:GetAttribute("CustomSpeed") or v31 and v28 / 2)
+    if v35 then
+        v28 = v35
+    elseif v32 and v34 > 0 then
+        v28 = v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 and v29 and v29 or v28
+    end
+    v_u_12 = v28
+    local v36 = v_u_15
+    if v36 then
+        if v30.Magnitude > 0 and (v_u_16 and v_u_9.CFrame.LookVector:Dot(v30) < 0.45) or v30.Magnitude == 0 then
+            if v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 then
+                v36 = not v31
+            else
+                v36 = false
+            end
+        else
+            v36 = false
+        end
+    end
+    v_u_16 = v36
+    if v_u_16 then
+        local _, _, _, v37 = castRay(v_u_7, v_u_9.CFrame.Position, v_u_9.CFrame.LookVector * 1.5)
+        if not v37 then
+            v30 = v_u_9.CFrame.LookVector
+        end
+    end
+    if v30.Magnitude > 0 then
+        v_u_13 = v30 * v_u_12
+        if not v_u_16 then
+            v_u_14 = v_u_13
+        end
+        if not v32 or (v29 > v_u_12 or not v33) then
+            v33 = v_u_16
+        end
+        v_u_15 = v33
+    else
+        v_u_13 = Vector3.new(0, 0, 0)
+    end
+    if (v_u_9.Position - v_u_27).Magnitude > 0.25 and tick() - v_u_26 > 0.011111111111111112 then
+        v_u_5.Movement:FireServer(v_u_9.CFrame, workspace:GetServerTimeNow(), v_u_7)
+        v_u_27 = v_u_9.Position
+        v_u_26 = tick()
+    end
+end
+v3.Heartbeat:Connect(function(p39)
+    -- upvalues: (copy) v_u_6, (copy) v_u_38, (ref) v_u_16, (ref) v_u_14, (ref) v_u_13, (ref) v_u_15, (copy) v_u_9, (copy) v_u_11, (copy) v_u_7, (copy) v_u_2
+    v_u_6:GetAttribute("Mouselocked")
+    v_u_38()
+    if v_u_16 then
+        v_u_14 = ((v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) * v_u_14.Magnitude):Lerp(Vector3.new(0, 0, 0), 1.8 * p39)
+        if v_u_14.Magnitude <= 1 then
+            v_u_16 = false
+            v_u_15 = false
+        end
+    else
+        v_u_14 = v_u_13
+    end
+    local v_u_40 = v_u_9:FindFirstChild("Velocity") or v_u_9:FindFirstChild("BodyVelocity")
+    if v_u_40 and v_u_11.Parent ~= nil then
+        v_u_40.Parent = nil
+        task.delay(0.05, function()
+            -- upvalues: (copy) v_u_40, (ref) v_u_9
+            v_u_40.Parent = v_u_9
+        end)
+    end
+    if v_u_7:GetAttribute("Ragdoll") or (v_u_7:HasTag("CantMove") or (v_u_7:HasTag("Ragdoll") or v_u_40)) then
+        v_u_11.MaxForce = Vector3.new(0, 0, 0)
+        v_u_11.Parent = nil
+    elseif v_u_11.MaxForce == Vector3.new(0, 0, 0) then
+        v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+        v_u_11.Parent = v_u_9
+    end
+    v_u_11.Velocity = v_u_14
+    local v41 = v_u_9:FindFirstChildOfClass("BodyVelocity")
+    if v41 and (v41:GetAttribute("Update") and v41:GetAttribute("Update") == "Root") then
+        local v42 = v41:GetAttribute("Tween") or 0
+        local v43 = v41:GetAttribute("Speed") or 0
+        v_u_2:Create(v41, TweenInfo.new(v42), {
+            ["Velocity"] = v_u_9.CFrame.LookVector * v43
+        }):Play()
+    end
+    local v44 = v_u_9:FindFirstChildOfClass("BodyGyro")
+    if v44 and (v44:GetAttribute("Update") and v44:GetAttribute("Update") == "Cam") then
+        v44.CFrame = workspace.CurrentCamera.CFrame
+    end
+end)
+v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
+v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
+v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.ChaseThemes
+-- Decompiled with Velocity Script Decompiler
+local _ = script.Parent
+local v_u_1 = { workspace:WaitForChild("LobbyMusic") }
+local v_u_2 = math.random(#v_u_1)
+local v_u_3 = nil
+local function v_u_4()
+    -- upvalues: (ref) v_u_2, (copy) v_u_1, (ref) v_u_3, (copy) v_u_4
+    v_u_2 = v_u_2 % #v_u_1 + 1
+    v_u_3 = v_u_1[v_u_2]
+    v_u_3:Play()
+    v_u_3.Stopped:Once(v_u_4)
+end
+v_u_2 = v_u_2 % #v_u_1 + 1
+v_u_3 = v_u_1[v_u_2]
+v_u_3:Play()
+v_u_3.Stopped:Once(v_u_4)
+game:GetService("RunService").Stepped:Connect(function()
+    -- upvalues: (ref) v_u_3
+    for _, v5 in workspace.PLAYERS.KILLER:GetChildren() do
+        if v5:FindFirstChild("Phases") then
+            for v6 = 1, 4 do
+                v5:FindFirstChild("Phases"):FindFirstChild((tostring(v6))).Volume = 0
+            end
+        end
+    end
+    if game.Players.LocalPlayer:GetAttribute("LOADED") == false or (workspace.GAME.STOP_MUSIC_ALL.Value == true or (workspace.GAME.LMS.Value == true or workspace.GAME.STOP_MUSIC.Value == true)) then
+        v_u_3.TimePosition = 0
+        v_u_3.Volume = 0
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0), {
+            ["Volume"] = 0
+        }):Play()
+        return
+    elseif workspace.GAME.TIMER.Value <= 18 then
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(4), {
+            ["Volume"] = 0
+        }):Play()
+    else
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0.25), {
+            ["Volume"] = 3
+        }):Play()
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Input
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("UserInputService")
+local v_u_2 = game:GetService("Players").LocalPlayer
+local v_u_3 = v_u_2.Character
+local v4 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp"))
+local v_u_5 = v4.Client("Input")
+local v_u_6 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Keybinds"))
+local v_u_7 = v4.Client("Reset")
+task.spawn(function()
+    -- upvalues: (copy) v_u_3, (copy) v_u_7
+    v_u_3:WaitForChild("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
+        -- upvalues: (ref) v_u_3, (ref) v_u_7
+        if v_u_3.Humanoid.Health == 0 then
+            v_u_7:Fire(true)
+        end
+    end)
+end)
+task.spawn(function()
+    repeat
+        local v8 = pcall(function()
+            game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+        end)
+        task.wait(1)
+    until v8
+end)
+local v_u_9 = false
+local v_u_10 = false
+v1.InputBegan:Connect(function(p11, p12)
+    -- upvalues: (copy) v_u_6, (ref) v_u_10, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    if p12 then
+        return
+    elseif table.find(v_u_6.Run, p11.KeyCode) then
+        v_u_10 = true
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+        else
+            v_u_9 = not v_u_9
+            v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        end
+    elseif table.find(v_u_6.Flashlight, p11.KeyCode) then
+        v_u_5:Fire(true, { "Flashlight" })
+    elseif table.find(v_u_6.Crouch, p11.KeyCode) then
+        v_u_5:Fire(true, { "Crouch" })
+    end
+end)
+v1.InputEnded:Connect(function(p13, _)
+    -- upvalues: (copy) v_u_6, (copy) v_u_2, (copy) v_u_5, (ref) v_u_10
+    if table.find(v_u_6.Run, p13.KeyCode) then
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+        end
+        v_u_10 = false
+    end
+end)
+local v_u_14 = false
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Down:Connect(function()
+    -- upvalues: (ref) v_u_14, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    v_u_14 = true
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+    else
+        v_u_9 = not v_u_9
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+    end
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Up:Connect(function()
+    -- upvalues: (copy) v_u_2, (copy) v_u_5, (ref) v_u_14
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+    end
+    v_u_14 = false
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Crouch.Button.MouseButton1Click:Connect(function()
+    -- upvalues: (copy) v_u_5
+    v_u_5:Fire(true, { "Crouch" })
+end)
+game:GetService("RunService").Heartbeat:Connect(function()
+    -- upvalues: (copy) v_u_2, (ref) v_u_10, (ref) v_u_14, (copy) v_u_3, (copy) v_u_5, (ref) v_u_9
+    if v_u_2:GetAttribute("HoldToRun") and (v_u_10 or v_u_14) and (v_u_3:GetAttribute("CanRun") and (not v_u_3:HasTag("Battery") and (not v_u_3:GetAttribute("Ragdoll") and (v_u_3:GetAttribute("Stamina") or 0) > 0))) then
+        if not v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", true)
+            return
+        end
+    elseif v_u_2:GetAttribute("HoldToRun") or (not v_u_3:GetAttribute("CanRun") or (v_u_3:HasTag("Battery") or (v_u_3:GetAttribute("Ragdoll") or (v_u_3:GetAttribute("Stamina") or 0) <= 0))) then
+        if v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", false)
+        end
+        v_u_9 = false
+        v_u_10 = false
+    elseif v_u_9 ~= v_u_3:GetAttribute("Running") then
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        v_u_3:SetAttribute("Running", v_u_9)
+        return
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Animate
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = script.Parent
+local v2 = v_u_1:WaitForChild("Torso")
+local v_u_3 = v2:WaitForChild("Right Shoulder")
+local v_u_4 = v2:WaitForChild("Left Shoulder")
+local v_u_5 = v2:WaitForChild("Right Hip")
+local v_u_6 = v2:WaitForChild("Left Hip")
+v2:WaitForChild("Neck")
+local v_u_7 = v_u_1:WaitForChild("Humanoid")
+local v_u_8 = "Standing"
+local v_u_9 = v_u_7.MaxHealth / 2
+local v_u_10 = game:GetService("Workspace").CurrentCamera
+local v_u_11 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
+local v_u_13 = v_u_11.new(Enum.RenderPriority.Camera.Value, function(p12)
+    -- upvalues: (copy) v_u_10
+    if v_u_10.CameraType ~= Enum.CameraType.Scriptable then
+        v_u_10.CFrame = v_u_10.CFrame * p12
+    end
+end)
+v_u_13:Start()
+require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p14)
+    -- upvalues: (copy) v_u_13, (copy) v_u_11
+    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+        v_u_13:Shake(v_u_11.Presets[p14])
+    end
+end)
+local v15, v16 = pcall(function()
+    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
+end)
+local v_u_17 = v15 and v16
+local v_u_18 = ""
+local v_u_19 = nil
+local v_u_20 = nil
+local v_u_21 = nil
+local v_u_22 = 1
+local v_u_23 = {}
+local v_u_24 = {
+    ["idle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=72376427571966",
+            ["weight"] = 9
+        }
+    },
+    ["stop"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=83559231447722",
+            ["weight"] = 11
+        }
+    },
+    ["stopWalk"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=133043783896866",
+            ["weight"] = 11
+        }
+    },
+    ["runForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=78749200572411",
+            ["weight"] = 10
+        }
+    },
+    ["runLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96509043428510",
+            ["weight"] = 10
+        }
+    },
+    ["runRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=97131507395933",
+            ["weight"] = 10
+        }
+    },
+    ["runStart"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=113729068153328",
+            ["weight"] = 11
+        }
+    },
+    ["runStartLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=71403377531705",
+            ["weight"] = 11
+        }
+    },
+    ["runStartRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=75650510533728",
+            ["weight"] = 11
+        }
+    },
+    ["walkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=89929150450773",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111382930561219",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=107545126168718",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=82823739770244",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=140470116427904",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=85839904210745",
+            ["weight"] = 10
+        }
+    },
+    ["walkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111516784776401",
+            ["weight"] = 10
+        }
+    },
+    ["walkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=118831683318213",
+            ["weight"] = 10
+        }
+    },
+    ["Crouchidle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=86063084977279",
+            ["weight"] = 9
+        }
+    },
+    ["CrouchwalkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=93405694022444",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=117819977958017",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88661748313165",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=81174024597617",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88741205365224",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96823064462744",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=114730177951495",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=138684140853282",
+            ["weight"] = 10
+        }
+    },
+    ["jump"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["fall"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=110915217320372",
+            ["weight"] = 10
+        }
+    },
+    ["climb"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["sit"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolnone"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolslash"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toollunge"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    }
+}
+local v_u_25 = {
+    ["wave"] = false,
+    ["point"] = false,
+    ["dance1"] = true,
+    ["dance2"] = true,
+    ["dance3"] = true,
+    ["laugh"] = false,
+    ["cheer"] = false
+}
+function configureAnimationSet(p_u_26, p_u_27)
+    -- upvalues: (copy) v_u_23
+    if v_u_23[p_u_26] ~= nil then
+        for _, v28 in pairs(v_u_23[p_u_26].connections) do
+            v28:disconnect()
+        end
+    end
+    v_u_23[p_u_26] = {}
+    v_u_23[p_u_26].count = 0
+    v_u_23[p_u_26].totalWeight = 0
+    v_u_23[p_u_26].connections = {}
+    local v29 = script:FindFirstChild(p_u_26)
+    if v29 ~= nil then
+        local v30 = v_u_23[p_u_26].connections
+        local v31 = v29.ChildAdded
+        table.insert(v30, v31:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v32 = v_u_23[p_u_26].connections
+        local v33 = v29.ChildRemoved
+        table.insert(v32, v33:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v34 = 1
+        for _, v35 in pairs(v29:GetChildren()) do
+            if v35:IsA("Animation") then
+                local v36 = v_u_23[p_u_26].connections
+                local v37 = v35.Changed
+                table.insert(v36, v37:connect(function(_)
+                    -- upvalues: (copy) p_u_26, (copy) p_u_27
+                    configureAnimationSet(p_u_26, p_u_27)
+                    task.spawn(move, os.clock())
+                end))
+                v_u_23[p_u_26][v34] = {}
+                v_u_23[p_u_26][v34].anim = v35
+                local v38 = v35:FindFirstChild("Weight")
+                if v38 == nil then
+                    v_u_23[p_u_26][v34].weight = 1
+                else
+                    v_u_23[p_u_26][v34].weight = v38.Value
+                end
+                v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+                v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v_u_23[p_u_26][v34].weight
+                v34 = v34 + 1
+            end
+        end
+    end
+    if v_u_23[p_u_26].count <= 0 then
+        for v39, v40 in pairs(p_u_27) do
+            v_u_23[p_u_26][v39] = {}
+            v_u_23[p_u_26][v39].anim = Instance.new("Animation")
+            v_u_23[p_u_26][v39].anim.Name = p_u_26
+            v_u_23[p_u_26][v39].anim.AnimationId = v40.id
+            v_u_23[p_u_26][v39].weight = v40.weight
+            v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+            v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v40.weight
+        end
+    end
+end
+function scriptChildModified(p41)
+    -- upvalues: (copy) v_u_24
+    local v42 = v_u_24[p41.Name]
+    if v42 ~= nil then
+        configureAnimationSet(p41.Name, v42)
+    end
+end
+script.ChildAdded:connect(scriptChildModified)
+script.ChildRemoved:connect(scriptChildModified)
+local v43
+if v_u_7 then
+    v43 = v_u_7:FindFirstChildOfClass("Animator")
+else
+    v43 = nil
+end
+if v43 then
+    local v44 = v43:GetPlayingAnimationTracks()
+    for _, v45 in ipairs(v44) do
+        v45:Stop(0)
+        v45:Destroy()
+    end
+end
+for v46, v47 in pairs(v_u_24) do
+    configureAnimationSet(v46, v47)
+end
+local v_u_48 = "None"
+local v_u_49 = 0
+local v_u_50 = 0
+function stopAllAnimations()
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_19, (ref) v_u_21, (ref) v_u_20
+    local v51 = v_u_18
+    local v52 = v_u_25[v51] ~= nil and v_u_25[v51] == false and "idle" or v51
+    v_u_18 = ""
+    v_u_19 = nil
+    if v_u_21 ~= nil then
+        v_u_21:disconnect()
+    end
+    if v_u_20 ~= nil then
+        v_u_20:Stop()
+        v_u_20:Destroy()
+        v_u_20 = nil
+    end
+    return v52
+end
+function setAnimationSpeed(p53)
+    -- upvalues: (ref) v_u_22, (ref) v_u_20
+    if p53 ~= v_u_22 and v_u_20 then
+        v_u_22 = p53
+        v_u_20:AdjustSpeed(v_u_22)
+    end
+end
+function keyFrameReachedFunc(p54)
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_22, (copy) v_u_7
+    if p54 == "End" then
+        local v55 = v_u_18
+        local v56 = v_u_25[v55] ~= nil and v_u_25[v55] == false and "idle" or v55
+        local v57 = v_u_22
+        playAnimation(v56, 0, v_u_7)
+        setAnimationSpeed(v57)
+    end
+end
+function playAnimation(p58, p59, p60)
+    -- upvalues: (copy) v_u_23, (ref) v_u_19, (ref) v_u_20, (ref) v_u_18, (ref) v_u_22, (ref) v_u_21, (ref) v_u_8, (copy) v_u_13, (copy) v_u_11
+    local v61 = math.random(1, v_u_23[p58].totalWeight)
+    local v62 = 1
+    while v_u_23[p58][v62].weight < v61 do
+        v61 = v61 - v_u_23[p58][v62].weight
+        v62 = v62 + 1
+    end
+    local v63 = v_u_23[p58][v62].anim
+    if v63 ~= v_u_19 then
+        if v_u_20 ~= nil then
+            v_u_20:Stop(p59)
+            v_u_20:Destroy()
+        end
+        local v64 = (not (v_u_18:match("walk") or v_u_18:match("run")) or v_u_18 == "stop") and 0 or v_u_20.TimePosition
+        v_u_22 = 1
+        v_u_20 = p60:LoadAnimation(v63)
+        v_u_20.Priority = Enum.AnimationPriority.Core
+        v_u_20:Play(p59)
+        v_u_20.TimePosition = v64
+        v_u_18 = p58
+        v_u_19 = v63
+        if v_u_21 ~= nil then
+            v_u_21:disconnect()
+        end
+        local v_u_65 = v_u_20:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_8, (ref) v_u_13, (ref) v_u_11
+            if (v_u_8 == "Running" or v_u_8 == "RunningStart") and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                v_u_13:Shake(v_u_11.Presets.RunningShake)
+            end
+        end)
+        v_u_20.Stopped:Once(function()
+            -- upvalues: (ref) v_u_65
+            v_u_65:Disconnect()
+        end)
+        v_u_21 = v_u_20.KeyframeReached:connect(keyFrameReachedFunc)
+    end
+end
+local v_u_66 = ""
+local v_u_67 = nil
+local v_u_68 = nil
+local v_u_69 = nil
+function toolKeyFrameReachedFunc(p70)
+    -- upvalues: (ref) v_u_66, (copy) v_u_7
+    if p70 == "End" then
+        playToolAnimation(v_u_66, 0, v_u_7)
+    end
+end
+function playToolAnimation(p71, p72, p73, p74)
+    -- upvalues: (copy) v_u_23, (ref) v_u_68, (ref) v_u_67, (ref) v_u_66, (ref) v_u_69
+    local v75 = math.random(1, v_u_23[p71].totalWeight)
+    local v76 = 1
+    while v_u_23[p71][v76].weight < v75 do
+        v75 = v75 - v_u_23[p71][v76].weight
+        v76 = v76 + 1
+    end
+    local v77 = v_u_23[p71][v76].anim
+    if v_u_68 ~= v77 then
+        if v_u_67 ~= nil then
+            v_u_67:Stop()
+            v_u_67:Destroy()
+            p72 = 0
+        end
+        v_u_67 = p73:LoadAnimation(v77)
+        if p74 then
+            v_u_67.Priority = p74
+        end
+        v_u_67:Play(p72)
+        v_u_66 = p71
+        v_u_68 = v77
+        v_u_69 = v_u_67.KeyframeReached:connect(toolKeyFrameReachedFunc)
+    end
+end
+function stopToolAnimations()
+    -- upvalues: (ref) v_u_66, (ref) v_u_69, (ref) v_u_68, (ref) v_u_67
+    local v78 = v_u_66
+    if v_u_69 ~= nil then
+        v_u_69:disconnect()
+    end
+    v_u_66 = ""
+    v_u_68 = nil
+    if v_u_67 ~= nil then
+        v_u_67:Stop()
+        v_u_67:Destroy()
+        v_u_67 = nil
+    end
+    return v78
+end
+function onDied()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Dead"
+end
+function onJumping()
+    -- upvalues: (copy) v_u_7, (ref) v_u_50, (ref) v_u_8
+    playAnimation("jump", 0.1, v_u_7)
+    v_u_50 = 0.3
+    v_u_8 = "Jumping"
+end
+function onClimbing(p79)
+    -- upvalues: (copy) v_u_17, (copy) v_u_1, (copy) v_u_7, (ref) v_u_8
+    local v80 = p79 / (not v_u_17 and 1 or v_u_1:GetScale())
+    playAnimation("climb", 0.1, v_u_7)
+    setAnimationSpeed(v80 / 12)
+    v_u_8 = "Climbing"
+end
+function onGettingUp()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "GettingUp"
+end
+function onFreeFall()
+    -- upvalues: (ref) v_u_50, (copy) v_u_7, (ref) v_u_8
+    if v_u_50 <= 0 then
+        playAnimation("fall", 0.3, v_u_7)
+    end
+    v_u_8 = "FreeFall"
+end
+function onFallingDown()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "FallingDown"
+end
+function onSeated()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Seated"
+end
+function onPlatformStanding()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "PlatformStanding"
+end
+function onSwimming(p81)
+    -- upvalues: (ref) v_u_8
+    if p81 > 0 then
+        v_u_8 = "Running"
+    else
+        v_u_8 = "Standing"
+    end
+end
+function getTool()
+    -- upvalues: (copy) v_u_1
+    for _, v82 in ipairs(v_u_1:GetChildren()) do
+        if v82.className == "Tool" then
+            return v82
+        end
+    end
+    return nil
+end
+function getToolAnim(p83)
+    for _, v84 in ipairs(p83:GetChildren()) do
+        if v84.Name == "toolanim" and v84.className == "StringValue" then
+            return v84
+        end
+    end
+    return nil
+end
+function animateTool()
+    -- upvalues: (ref) v_u_48, (copy) v_u_7
+    if v_u_48 == "None" then
+        playToolAnimation("toolnone", 0.1, v_u_7, Enum.AnimationPriority.Idle)
+        return
+    elseif v_u_48 == "Slash" then
+        playToolAnimation("toolslash", 0, v_u_7, Enum.AnimationPriority.Action)
+        return
+    elseif v_u_48 == "Lunge" then
+        playToolAnimation("toollunge", 0, v_u_7, Enum.AnimationPriority.Action)
+    end
+end
+function moveSit()
+    -- upvalues: (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6
+    v_u_3.MaxVelocity = 0.15
+    v_u_4.MaxVelocity = 0.15
+    v_u_3:SetDesiredAngle(1.57)
+    v_u_4:SetDesiredAngle(-1.57)
+    v_u_5:SetDesiredAngle(1.57)
+    v_u_6:SetDesiredAngle(-1.57)
+end
+local v_u_85 = 0
+local v_u_86 = v_u_7.Health
+local v_u_87 = false
+local v_u_88 = false
+local v_u_89 = 0
+function move(p90)
+    -- upvalues: (copy) v_u_1, (ref) v_u_8, (copy) v_u_7, (ref) v_u_85, (ref) v_u_50, (ref) v_u_87, (ref) v_u_89, (copy) v_u_13, (ref) v_u_20, (copy) v_u_25, (ref) v_u_18, (ref) v_u_88, (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6, (copy) v_u_9, (ref) v_u_86, (ref) v_u_48, (ref) v_u_49, (ref) v_u_68
+    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
+        if v_u_1:HasTag("KillAnims") then
+            v_u_8 = "None"
+            stopAllAnimations()
+        elseif v_u_8 ~= "Standing" then
+            v_u_8 = "Standing"
+            playAnimation("idle", 0.1, v_u_7)
+        end
+    else
+        local v91 = 1
+        local v92 = 1
+        local v93 = p90 - v_u_85
+        v_u_85 = p90
+        local v94 = false
+        if v_u_50 > 0 then
+            v_u_50 = v_u_50 - v93
+        end
+        local v95 = (v_u_1:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity * Vector3.new(1, 0, 1)).Magnitude
+        if v_u_8 == "Standing" or v_u_8 == "Stopping" then
+            if v_u_1:GetAttribute("Crouching") == true and v_u_87 == false then
+                v_u_87 = true
+                stopAllAnimations()
+                playAnimation("Crouchidle", 0.1, v_u_7)
+            elseif v_u_1:GetAttribute("Crouching") == false and v_u_87 == true then
+                v_u_87 = false
+                stopAllAnimations()
+                playAnimation("idle", 0.1, v_u_7)
+            end
+        end
+        if v_u_7.FloorMaterial ~= Enum.Material.Air and (v_u_8 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_7.MoveDirection) > 0.45) then
+            if v95 > 0.01 and (v95 <= 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0)) then
+                v_u_89 = 0
+                v_u_13:StopSustained(0.5)
+                v_u_8 = "Walking"
+            elseif v95 > 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v96 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v96 = v96 * -1
+                end
+                local v_u_97 = game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default and 1 or (v96:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 and 2 or (v96:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 and 3 or 1))
+                if v_u_1:HasTag("Battery") or v_u_8 == "Running" and (v_u_8 ~= "RunningStart" or v_u_89 == v_u_97) then
+                    if v_u_8 == "Running" then
+                        v_u_89 = 0
+                    end
+                else
+                    stopAllAnimations()
+                    if v_u_97 == 2 then
+                        v_u_89 = 2
+                        playAnimation("runStartRight", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 3 then
+                        v_u_89 = 3
+                        playAnimation("runStartLeft", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 1 then
+                        v_u_89 = 1
+                        playAnimation("runStart", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    else
+                        v_u_8 = "RunningStart"
+                    end
+                    if v_u_20 and v_u_8 == "RunningStart" then
+                        v_u_20.Priority = Enum.AnimationPriority.Action
+                        v_u_20.Stopped:Once(function()
+                            -- upvalues: (ref) v_u_8, (ref) v_u_89, (ref) v_u_97, (ref) v_u_20
+                            if v_u_8 == "RunningStart" and v_u_89 == v_u_97 then
+                                if v_u_20 then
+                                    v_u_20.TimePosition = 0
+                                end
+                                v_u_8 = "Running"
+                                v_u_89 = 0
+                            end
+                        end)
+                    end
+                end
+            else
+                v_u_89 = 0
+                if v_u_25[v_u_18] == nil and (v_u_8 ~= "Standing" or v95 > 12) and (v_u_8 ~= "Stopping" and v_u_8 ~= "WalkStopping") then
+                    if (v_u_8 == "Standing" and v95 > 12 or (v_u_8 == "Running" or v_u_8 == "RunningStart") and v95 > 21) and v_u_7.MoveDirection == Vector3.new(0, 0, 0) then
+                        v_u_8 = "Stopping"
+                        stopAllAnimations()
+                        playAnimation("stop", 0, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    elseif v_u_8 == "Walking" and (v_u_1:GetAttribute("Crouching") == false and (v95 > 2 and v_u_7.MoveDirection == Vector3.new(0, 0, 0))) then
+                        v_u_8 = "WalkStopping"
+                        stopAllAnimations()
+                        playAnimation("stopWalk", 0.1, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    else
+                        if v_u_1:GetAttribute("Crouching") == true then
+                            playAnimation("Crouchidle", 0.1, v_u_7)
+                        else
+                            playAnimation("idle", 0.1, v_u_7)
+                        end
+                        v_u_8 = "Standing"
+                    end
+                end
+            end
+        end
+        if v_u_8 == "FreeFall" and v_u_50 <= 0 then
+            playAnimation("fall", 0.3, v_u_7)
+        else
+            if v_u_8 == "Seated" then
+                playAnimation("sit", 0.5, v_u_7)
+                return
+            end
+            if v_u_8 == "Walking" or v_u_8 == "WalkStopping" and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v98 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v98 = v98 * -1
+                end
+                if v_u_1:GetAttribute("Crouching") == true then
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 6)
+                else
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 12)
+                end
+            elseif v_u_8 == "Running" then
+                local v99 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v99 = v99 * -1
+                end
+                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                    playAnimation("runForward", 0.1, v_u_7)
+                elseif v99:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runRight", 0.3, v_u_7)
+                elseif v99:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runLeft", 0.3, v_u_7)
+                else
+                    playAnimation("runForward", 0.3, v_u_7)
+                end
+                if v_u_20 then
+                    v_u_20.Priority = Enum.AnimationPriority.Movement
+                end
+                setAnimationSpeed(v95 / 24)
+            elseif v_u_8 == "Dead" or (v_u_8 == "GettingUp" or (v_u_8 == "FallingDown" or (v_u_8 == "Seated" or v_u_8 == "PlatformStanding"))) then
+                stopAllAnimations()
+                v94 = true
+                v92 = 1
+                v91 = 0.1
+            end
+        end
+        if v94 then
+            local v100 = p90 * v92
+            local v101 = v91 * math.sin(v100)
+            v_u_3:SetDesiredAngle(v101 + 0)
+            v_u_4:SetDesiredAngle(v101 - 0)
+            v_u_5:SetDesiredAngle(-v101)
+            v_u_6:SetDesiredAngle(-v101)
+        end
+        if v_u_7.Health <= v_u_9 then
+            if v_u_88 == false then
+                v_u_88 = true
+                if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                    v_u_13:ShakeSustain(v_u_13.Presets.Injured)
+                end
+            end
+        elseif v_u_88 == true then
+            v_u_88 = false
+            v_u_13:StopSustained(1)
+        end
+        v_u_86 = v_u_7.Health
+        local v102 = getTool()
+        if v102 and v102:FindFirstChild("Handle") then
+            local v103 = getToolAnim(v102)
+            if v103 then
+                v_u_48 = v103.Value
+                v103.Parent = nil
+                v_u_49 = p90 + 0.3
+            end
+            if v_u_49 < p90 then
+                v_u_49 = 0
+                v_u_48 = "None"
+            end
+            animateTool()
+        else
+            stopToolAnimations()
+            v_u_48 = "None"
+            v_u_68 = nil
+            v_u_49 = 0
+        end
+    end
+end
+v_u_7.Died:connect(onDied)
+v_u_7.Jumping:connect(onJumping)
+v_u_7.Climbing:connect(onClimbing)
+v_u_7.GettingUp:connect(onGettingUp)
+v_u_7.FreeFalling:connect(onFreeFall)
+v_u_7.FallingDown:connect(onFallingDown)
+v_u_7.Seated:connect(onSeated)
+v_u_7.PlatformStanding:connect(onPlatformStanding)
+v_u_7.Swimming:connect(onSwimming)
+playAnimation("idle", 0.1, v_u_7)
+local _ = "Standing"
+while v_u_1.Parent ~= nil do
+    local _, v104 = wait()
+    move(v104)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Elevator.On Respawn
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("RunService")
+game:GetService("TweenService")
+local v_u_3 = game:GetService("ContentProvider")
+local v_u_4 = game:GetService("Players").LocalPlayer.PlayerGui
+repeat
+    task.wait()
+until game:IsLoaded() and (game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"))
+task.wait(0.01)
+if script:WaitForChild("Check", 10):InvokeServer(game:GetService("Players").LocalPlayer) == true then
+    script:WaitForChild("RemoteEvent", 10):FireServer(true)
+    script.Parent.Parent:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame
+else
+    local v_u_5 = v_u_4:WaitForChild("UI", 10):WaitForChild("Transitions"):WaitForChild("Lobby"):FindFirstChild("LobbyUIContainer") or v_u_4:WaitForChild("UI", 10):WaitForChild("UI"):WaitForChild("LobbyUIContainer", 10)
+    if v_u_5:FindFirstChild("Buttons") then
+        v_u_5.Buttons.Visible = true
+    end
+    v_u_5.Visible = false
+    script:WaitForChild("RemoteEvent", 10):FireServer(false)
+    v_u_3:PreloadAsync({
+        workspace:WaitForChild("Lobby"),
+        script:WaitForChild("Animation"),
+        script:WaitForChild("ElevatorIntro"),
+        script:WaitForChild("WaitAnimation")
+    })
+    require(v1:WaitForChild("Modules"):WaitForChild("Warp"))
+    local v6 = require(v1:WaitForChild("Modules"):WaitForChild("Cutscenes"))
+    local v7 = require(v1:WaitForChild("Modules"):WaitForChild("Maid"))
+    local v_u_8 = script.Parent.Parent
+    local v9 = workspace.LoadingSFX
+    v9:Play()
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = true
+    v_u_8:WaitForChild("Humanoid").AutoRotate = false
+    v_u_8:AddTag("CantMove")
+    v_u_8:AddTag("Cutscene")
+    game:GetService("Players").LocalPlayer:AddTag("Cutscene")
+    function lerp(p10, p11, p12)
+        return p10 + (p11 - p10) * p12
+    end
+    local v_u_13 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator")
+    v_u_13:PivotTo(CFrame.new(483.989, 61.528, 109.666))
+    local v_u_14 = workspace:WaitForChild("Lobby"):WaitForChild("Shaft")
+    v_u_14:PivotTo(CFrame.new(484.935, 277.252, 109.744))
+    local v_u_15 = Instance.new("CFrameValue")
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    local v_u_16 = Instance.new("CFrameValue")
+    v_u_16.Value = CFrame.new(0, 200, 0)
+    local v_u_17 = v_u_14:GetPivot()
+    local v_u_18 = v_u_13:GetPivot()
+    local v19 = next
+    local v20, v21 = v_u_8:GetDescendants()
+    for _, v22 in v19, v20, v21 do
+        if v22:IsA("BasePart") then
+            v22.LocalTransparencyModifier = v22.Transparency
+        end
+    end
+    local v23 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator"):WaitForChild("Elevator Doors"):WaitForChild("DoorRoot")
+    v23.LDoor.DesiredAngle = 0
+    v23.RDoor.DesiredAngle = 0
+    local v_u_24 = workspace.CurrentCamera
+    local v_u_25 = v6.ElevatorAlone
+    local v_u_26 = v_u_25.CameraRig:Clone()
+    v_u_26:PivotTo(workspace:WaitForChild("Lobby"):WaitForChild("Camera Position").CFrame)
+    v_u_26.Parent = workspace.IGNORE
+    v_u_26:FindFirstChild(v_u_25.RootPart)
+    local v_u_27 = v_u_26:FindFirstChild(v_u_25.CameraPart)
+    v_u_24.CameraType = Enum.CameraType.Scriptable
+    local v_u_28 = v_u_24.CFrame
+    local _ = v_u_24.FieldOfView
+    local function v29()
+        -- upvalues: (copy) v_u_14, (copy) v_u_17, (copy) v_u_15, (copy) v_u_13, (copy) v_u_18, (copy) v_u_16, (copy) v_u_26, (copy) v_u_8
+        v_u_14:PivotTo(v_u_17 * v_u_15.Value)
+        v_u_13:PivotTo(v_u_18 * v_u_16.Value)
+        v_u_26:PivotTo(workspace:FindFirstChild("Lobby"):WaitForChild("Camera Position").CFrame * v_u_16.Value)
+        v_u_8:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame * v_u_16.Value
+    end
+    local v30 = game:GetService("RunService").Stepped:Connect(v29)
+    local v31 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(script.Animation)
+    v31:Play()
+    local v32 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("WaitAnimation"))
+    v32:Play()
+    local v33
+    if game:GetService("Players").LocalPlayer:HasTag("LOADED") then
+        v33 = true
+    else
+        local v_u_34 = false
+        game:GetService("Players").LocalPlayer:AddTag("LOADED")
+        game:GetService("Players").LocalPlayer:SetAttribute("LOADED", false)
+        task.spawn(function()
+            -- upvalues: (copy) v_u_15, (copy) v_u_4, (copy) v_u_25, (copy) v_u_13, (copy) v_u_3, (ref) v_u_34
+            local v_u_35 = game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0), {
+                ["Value"] = CFrame.new(0, 100, 0)
+            })
+            v_u_35:Play()
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = true
+            local v_u_36 = {
+                v_u_25.Animation,
+                game:GetService("ReplicatedStorage"),
+                game:GetService("StarterGui"),
+                game:GetService("Workspace")
+            }
+            local v37 = 0
+            local v_u_38 = 0
+            for _, v39 in next, v_u_36 do
+                local v40 = next
+                local v41, v42 = v39:GetDescendants()
+                for _, v43 in v40, v41, v42 do
+                    if v43:IsA("Sound") or (v43:IsA("Animation") or (v43:IsA("MeshPart") or (v43:IsA("ImageLabel") or (v43:IsA("ImageButton") or (v43:IsA("Decal") or (v43:IsA("Texture") or (v43:IsA("ParticleEmitter") or v43:IsA("SurfaceAppearance")))))))) then
+                        v37 = v37 + 1
+                    end
+                end
+            end
+            local v_u_44 = false
+            local v_u_45 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_15, (copy) v_u_35, (ref) v_u_44
+                repeat
+                    v_u_15.Value = CFrame.new(0, 0, 0)
+                    v_u_35:Play()
+                    v_u_35.Completed:Wait()
+                until v_u_44 == true
+            end)
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "Loading assets (0/" .. v37 .. ")"
+            local v_u_46 = nil
+            if game:GetService("RunService"):IsStudio() then
+                if v_u_44 == false then
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                    v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                        -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                        v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                        v_u_45 = true
+                    end)
+                end
+            else
+                task.delay(10, function()
+                    -- upvalues: (ref) v_u_44, (ref) v_u_4, (ref) v_u_13, (ref) v_u_46, (ref) v_u_45
+                    if v_u_44 == false then
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                        v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                            -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                            v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                            v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                            v_u_45 = true
+                        end)
+                    end
+                end)
+            end
+            local v_u_47 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_3, (copy) v_u_36, (ref) v_u_38, (ref) v_u_47, (ref) v_u_4
+                if game:GetService("UserInputService").TouchEnabled or game:GetService("UserInputService").GamepadEnabled then
+                    task.wait(8)
+                else
+                    v_u_3:PreloadAsync(v_u_36, function(_, _)
+                        -- upvalues: (ref) v_u_38
+                        v_u_38 = v_u_38 + 1
+                    end)
+                end
+                v_u_47 = true
+                v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+            end)
+            local v48 = v_u_47
+            local v49 = 0
+            while true do
+                if tick() - v49 > 0.1 then
+                    v49 = tick()
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "\nLoading assets (" .. v_u_38 .. "/" .. v_u_38 + game:GetService("ContentProvider").RequestQueueSize .. ")"
+                end
+                task.wait()
+                if v_u_45 or v48 then
+                    v_u_47 = true
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+                    v_u_44 = true
+                    v_u_35.Completed:Wait()
+                    if v_u_46 then
+                        v_u_46:Disconnect()
+                    end
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                    v_u_35:Cancel()
+                    v_u_34 = true
+                    v_u_15.Value = CFrame.new(0, -8, 0)
+                    return
+                end
+            end
+        end)
+        v33 = v_u_34
+    end
+    repeat
+        v_u_24.CFrame = v_u_27.CFrame
+        v_u_24.FieldOfView = 70
+        task.wait()
+    until v33 == true
+    local v50 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(v_u_25.Animation)
+    repeat
+        task.wait()
+    until v50.Length > 0
+    v32:Stop(0.25)
+    v31:Stop(0.25)
+    local v_u_51 = v6.ElevatorAlone
+    local v_u_52 = v7.new()
+    v50:Play()
+    v_u_52:Mark(v50)
+    task.delay(7, v_u_26.Destroy, v_u_26)
+    v9:Stop()
+    workspace.LandingSFX:Play()
+    local v53 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("ElevatorIntro"))
+    v53:Play()
+    task.spawn(function()
+        -- upvalues: (copy) v_u_2, (copy) v_u_24, (copy) v_u_27, (copy) v_u_51, (copy) v_u_52
+        local v_u_54 = 0.1
+        v_u_52:Mark((v_u_2.PreSimulation:Connect(function(p55)
+            -- upvalues: (ref) v_u_24, (ref) v_u_54, (ref) v_u_27, (ref) v_u_51
+            v_u_24.CameraType = Enum.CameraType.Scriptable
+            v_u_54 = v_u_54 + p55 * 60
+            v_u_24.CFrame = v_u_27.CFrame
+            if v_u_51.FOV then
+                local v56 = v_u_54
+                if v_u_51.FOV[math.ceil(v56)] then
+                    local v57 = v_u_54
+                    v_u_24.FieldOfView = v_u_51.FOV[math.ceil(v57)]
+                end
+            end
+        end)))
+    end)
+    task.delay(v50.Length, function()
+        -- upvalues: (copy) v_u_24, (copy) v_u_28, (copy) v_u_52
+        v_u_24.CFrame = v_u_28
+        v_u_24.CameraType = Enum.CameraType.Custom
+        game:GetService("Players").LocalPlayer:RemoveTag("Cutscene")
+        v_u_52:Sweep()
+    end)
+    game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(0, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    game:GetService("TweenService"):Create(v_u_16, TweenInfo.new(3.65, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    task.wait(4)
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    v_u_16.Value = CFrame.new(0, 0, 0)
+    v29()
+    v_u_15:Destroy()
+    v_u_16:Destroy()
+    v30:Disconnect()
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    task.wait(3)
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    if v53.IsPlaying then
+        v53.Stopped:Wait()
+    end
+    v_u_8:RemoveTag("CantMove")
+    v_u_8:RemoveTag("Cutscene")
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = false
+    v_u_8:WaitForChild("Humanoid").AutoRotate = true
+    script.Ambience:Play()
+    v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby")
+    v_u_5.Visible = true
+    v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby").GroupTransparency = 1
+    game:GetService("TweenService"):Create(v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby"), TweenInfo.new(0.5), {
+        ["GroupTransparency"] = 0
+    }):Play()
+    task.delay(0.5, function()
+        -- upvalues: (copy) v_u_5, (copy) v_u_4
+        v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("UI")
+    end)
+    script.RemoteEvent:FireServer(true)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Elevator.On Respawn.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Voice
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Voice.AudioDeviceInput.Mute
+-- Decompiled with Velocity Script Decompiler
+if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
+    script.Parent.Volume = 0
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Client
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
+local v2 = { "Torso", "Head", "Glow" }
+for _, v_u_3 in script.Parent:GetDescendants() do
+    if not v_u_3.Parent:IsA("Accessory") and (v_u_3:IsA("BasePart") and not table.find(v2, v_u_3.Name)) then
+        v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        v_u_3:GetPropertyChangedSignal("LocalTransparencyModifier"):Connect(function()
+            -- upvalues: (copy) v_u_3
+            v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        end)
+    end
+end
+local v_u_4 = {
+    ["Character"] = script.Parent,
+    ["Humanoid"] = script.Parent:FindFirstChildOfClass("Humanoid"),
+    ["RootPart"] = script.Parent:WaitForChild("HumanoidRootPart")
+}
+local v_u_5 = game:GetService("UserInputService")
+local v_u_6 = v_u_4.Character:WaitForChild("Torso", 100):FindFirstChild("Neck")
+local v_u_7 = v_u_6.C0.Y
+local v_u_8 = CFrame.new
+local v_u_9 = CFrame.Angles
+local v_u_10 = math.asin
+v_u_4.State = "Standing"
+Instance.new("NumberValue")
+local v_u_11 = script:WaitForChild("Replicator")
+function castRay(p12, p13, p14)
+    local v15 = RaycastParams.new()
+    v15.FilterDescendantsInstances = {
+        p12,
+        workspace.IGNORE,
+        workspace.PLAYERS,
+        workspace.Terrain
+    }
+    local v16 = workspace:Raycast(p13, p14, v15)
+    local v17 = v16 and v16.Position or p13 + p14
+    return (p13 - v17).Magnitude, p13, v17, v16
+end
+game:GetService("RunService"):BindToRenderStep("CameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
+    -- upvalues: (copy) v_u_4, (copy) v_u_5
+    if workspace.CurrentCamera.CameraSubject == v_u_4.Humanoid then
+        local v18 = (workspace.CurrentCamera.CFrame.p - workspace.CurrentCamera.Focus.p).magnitude
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 > 2 then
+            local v19, _, _, _ = castRay(v_u_4.Character, v_u_4.RootPart.Position, v_u_4.RootPart.CFrame.RightVector * 1.75)
+            local v20 = v_u_4.RootPart.CFrame.RightVector * v19
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0 + v20)
+            }):Play()
+            return
+        end
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 <= 2 then
+            local v21 = v_u_4.Character:WaitForChild("Head").CFrame.p - v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0.5
+            local v22 = v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 1.25 - v21
+            local _, _, v23, v24 = castRay(v_u_4.Character, v21, v22)
+            if v24 then
+                local _ = v23 - (v22.Magnitude == 0 and Vector3.new(0, 0, 0) or v22.Unit) * 0.1
+            end
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v23)
+            }):Play()
+            return
+        end
+        game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+            ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0)
+        }):Play()
+    end
+end)
+local v_u_25 = 0
+local function v_u_29(p26)
+    -- upvalues: (copy) v_u_4, (copy) v_u_6, (copy) v_u_8, (copy) v_u_7, (copy) v_u_9, (ref) v_u_25, (copy) v_u_11, (copy) v_u_10
+    if game:GetService("Players"):GetPlayerFromCharacter(v_u_4.Character) == game:GetService("Players").LocalPlayer then
+        if v_u_4.Character:HasTag("Cutscene") then
+            v_u_6.C0 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793)
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v_u_6.C0 })
+            end
+        else
+            local v27 = v_u_4.RootPart.CFrame:toObjectSpace(game:GetService("Workspace").CurrentCamera.CFrame).lookVector
+            local v28
+            if v_u_6 then
+                v28 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793) * v_u_9(0, 0, -v_u_10(v27.x)) * v_u_9(-v_u_10(v27.y), 0, 0)
+                v_u_6.C0 = v_u_6.C0:Lerp(v28, 0.9 * p26 * 15)
+            else
+                v28 = nil
+            end
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v28 or v_u_6.C0 })
+            end
+        end
+    else
+        return
+    end
+end
+local v_u_30 = nil
+local v_u_31 = 0
+local v_u_32 = v_u_4.Character:WaitForChild("Torso").AssemblyLinearVelocity
+local v_u_33 = workspace.CurrentCamera
+local v_u_34 = nil
+local v_u_35 = 0
+local v_u_36 = 0
+local v_u_37 = nil
+v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
+    -- upvalues: (copy) v_u_4, (ref) v_u_37, (copy) v_u_29, (copy) v_u_1, (ref) v_u_30, (ref) v_u_32, (ref) v_u_31, (copy) v_u_33, (ref) v_u_36, (ref) v_u_34, (ref) v_u_35
+    if v_u_4.Character == nil then
+        v_u_37:Disconnect()
+    else
+        v_u_29(p38)
+        if v_u_4.Character:GetAttribute("Ragdoll") then
+            local _, _, _, v39, _, v40 = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, Vector3.new(-0, -3, -0), nil, v_u_30)
+            if not v_u_30 then
+                v_u_30 = v40
+            end
+            local v41 = v_u_4.Character.Torso.AssemblyLinearVelocity
+            if not v_u_32 then
+                v_u_32 = v41
+            end
+            if v39 and ((v41 - v_u_32).Y > 4 and tick() - v_u_31 > 0.2) then
+                v_u_31 = tick()
+                local v_u_42 = script["FloorHit" .. math.random(3)]:Clone()
+                v_u_42.Parent = v_u_4.Character:FindFirstChild("HumanoidRootPart")
+                v_u_42:Play()
+                task.spawn(function()
+                    -- upvalues: (copy) v_u_42
+                    if not v_u_42.IsLoaded then
+                        v_u_42.Loaded:Wait()
+                    end
+                    task.delay(v_u_42.TimeLength / v_u_42.PlaybackSpeed, v_u_42.Destroy, v_u_42)
+                end)
+            end
+            v_u_32 = v41
+        else
+            v_u_32 = nil
+        end
+        local v43 = next
+        local v44, v45 = workspace.PLAYERS.KILLER:GetChildren()
+        for _, v46 in v43, v44, v45 do
+            if v46:FindFirstChild("HumanoidRootPart") and v46 ~= v_u_4.Character then
+                local v47 = v_u_4.Character.HumanoidRootPart.Position
+                local v48 = v46.HumanoidRootPart.Position
+                local v49 = v_u_33.CFrame.Position
+                local v50 = v46.HumanoidRootPart.CFrame.LookVector:Dot((v47 - v48).Unit)
+                local _, v51 = v_u_33:WorldToViewportPoint(v48)
+                local v52 = (v48 - v47).Magnitude
+                local v53 = 1 - 8 / (v52 / 2 + 1)
+                local v54 = math.min(0.9, v53)
+                if v52 < 150 and (v51 and v_u_36 < 0.25 or v_u_36 > 0.25) and (v54 < v50 and not (v46:HasTag("Imitation") or v46:HasTag("UNDETECTABLE"))) then
+                    local _, _, _, v55, v56 = v_u_1.Obstruction:CastObstruction(v49, v48 - v49, v_u_34)
+                    if not v_u_34 then
+                        v_u_34 = v56
+                    end
+                    local _, _, _, v57, _ = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, v48 - v47, v_u_34)
+                    if v57 or v55 then
+                        v_u_36 = 0
+                    else
+                        if v_u_36 > 0.25 then
+                            if tick() - v_u_35 > 10 then
+                                script.InView["InView" .. math.random(3)]:Play()
+                            end
+                            v_u_35 = tick()
+                        end
+                        v_u_36 = v_u_36 + p38
+                    end
+                else
+                    v_u_36 = 0
+                    v_u_34 = nil
+                end
+            end
+        end
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Client.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.StepSFX
+-- Decompiled with Velocity Script Decompiler
+if script.Parent:FindFirstChildOfClass("Humanoid") then
+    local function v_u_7()
+        if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial ~= Enum.Material.Air then
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Carpet then
+                local v_u_1 = script.Steps:FindFirstChild("carpet"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("carpet"):GetChildren())]:Clone()
+                v_u_1.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_1.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_1.Volume = v_u_1.Volume / 2
+                end
+                if not v_u_1.IsLoaded then
+                    v_u_1.Loaded:Wait()
+                end
+                v_u_1:Play()
+                task.delay(v_u_1.TimeLength, function()
+                    -- upvalues: (copy) v_u_1
+                    v_u_1:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Foil then
+                local v_u_2 = script.Steps:FindFirstChild("inflatable"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("inflatable"):GetChildren())]:Clone()
+                v_u_2.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_2.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_2.Volume = v_u_2.Volume / 2
+                end
+                if not v_u_2.IsLoaded then
+                    v_u_2.Loaded:Wait()
+                end
+                v_u_2:Play()
+                task.delay(v_u_2.TimeLength, function()
+                    -- upvalues: (copy) v_u_2
+                    v_u_2:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.DiamondPlate or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Metal or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.CorrodedMetal) then
+                local v_u_3 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_3.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_3.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_3.Volume = v_u_3.Volume / 2
+                end
+                if not v_u_3.IsLoaded then
+                    v_u_3.Loaded:Wait()
+                end
+                v_u_3:Play()
+                task.delay(v_u_3.TimeLength, function()
+                    -- upvalues: (copy) v_u_3
+                    v_u_3:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Concrete then
+                local v_u_4 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_4.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_4.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_4.Volume = v_u_4.Volume / 2
+                end
+                if not v_u_4.IsLoaded then
+                    v_u_4.Loaded:Wait()
+                end
+                v_u_4:Play()
+                task.delay(v_u_4.TimeLength, function()
+                    -- upvalues: (copy) v_u_4
+                    v_u_4:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Grass or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Ground or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.LeafyGrass or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Mud)) then
+                local v_u_5 = script.Steps:FindFirstChild("grass").walking:GetChildren()[math.random(1, #script.Steps:FindFirstChild("grass").walking:GetChildren())]:Clone()
+                v_u_5.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_5.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_5.Volume = v_u_5.Volume / 2
+                end
+                if not v_u_5.IsLoaded then
+                    v_u_5.Loaded:Wait()
+                end
+                v_u_5:Play()
+                task.delay(v_u_5.TimeLength, function()
+                    -- upvalues: (copy) v_u_5
+                    v_u_5:Destroy()
+                end)
+                return
+            end
+            local v_u_6 = script.Steps:FindFirstChild("misc"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("misc"):GetChildren())]:Clone()
+            v_u_6.Parent = script.Parent:FindFirstChild("Torso")
+            v_u_6.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+            if script.Parent:GetAttribute("Crouching") == true then
+                v_u_6.Volume = v_u_6.Volume / 2
+            end
+            if not v_u_6.IsLoaded then
+                v_u_6.Loaded:Wait()
+            end
+            v_u_6:Play()
+            task.delay(v_u_6.TimeLength, function()
+                -- upvalues: (copy) v_u_6
+                v_u_6:Destroy()
+            end)
+        end
+    end
+    script.Parent:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator").AnimationPlayed:Connect(function(p8)
+        -- upvalues: (copy) v_u_7
+        local v_u_9 = p8:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("UNDETECTABLE") then
+                v_u_7()
+            end
+        end)
+        local v_u_10 = p8:GetMarkerReachedSignal("Step2"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("INVIS") then
+                v_u_7()
+            end
+        end)
+        p8.Stopped:Once(function()
+            -- upvalues: (ref) v_u_9, (ref) v_u_10
+            v_u_9:Disconnect()
+            v_u_10:Disconnect()
+        end)
+    end)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.DantelinoPC.Movement
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("TweenService")
+local v3 = game:GetService("RunService")
+local v4 = game:GetService("Players")
+local v_u_5 = v1:WaitForChild("Requests")
+local v_u_6 = v4.LocalPlayer
+local v_u_7 = v_u_6.Character or v_u_6.CharacterAdded:Wait()
+local v_u_8 = v_u_7:WaitForChild("Humanoid")
+local v_u_9 = v_u_7:WaitForChild("HumanoidRootPart")
+for _, v10 in v_u_7:GetDescendants() do
+    if v10:IsA("BasePart") then
+        v10.Massless = v_u_9 ~= v10
+    end
+end
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+local v_u_11 = Instance.new("BodyVelocity")
+v_u_11.Name = "MovementBodyVelocity"
+v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+v_u_11.P = (1 / 0)
+v_u_11.Velocity = Vector3.new(0, 0, 0)
+v_u_11.Parent = v_u_9
+v_u_8.WalkSpeed = 0.01
+v_u_8.JumpPower = 0
+local v_u_12 = 16
+local v_u_13 = Vector3.new(0, 0, 0)
+local v_u_14 = Vector3.new(0, 0, 0)
+local v_u_15 = false
+local v_u_16 = false
+local v_u_17 = {}
+v3.Heartbeat:Connect(function(_)
+    -- upvalues: (copy) v_u_17, (copy) v_u_9
+    local v18 = workspace:GetServerTimeNow()
+    v_u_17[v18] = v_u_9.Position
+    for v19 in next, v_u_17 do
+        if v19 < v18 - 1 then
+            v_u_17[v19] = nil
+        end
+    end
+end)
+function castRay(p20, p21, p22)
+    local v23 = RaycastParams.new()
+    v23.FilterDescendantsInstances = { p20, workspace.IGNORE, workspace.PLAYERS }
+    local v24 = workspace:Raycast(p21, p22, v23)
+    local v25 = v24 and v24.Position or p21 + p22
+    return (p21 - v25).Magnitude, p21, v25, v24
+end
+local v_u_26 = 0
+local v_u_27 = v_u_9.Position
+v3:IsStudio()
+local function v_u_38()
+    -- upvalues: (copy) v_u_7, (copy) v_u_8, (ref) v_u_12, (copy) v_u_9, (ref) v_u_13, (ref) v_u_16, (ref) v_u_15, (ref) v_u_14, (ref) v_u_27, (ref) v_u_26, (copy) v_u_5
+    local v28 = v_u_7:GetAttribute("WalkSpeed") or 0
+    local v29 = v_u_7:GetAttribute("RunSpeed") or 0
+    local v30 = v_u_8.MoveDirection
+    if v_u_7:HasTag("Confusion") then
+        v30 = v30 * -1
+    end
+    local v31 = v_u_7:GetAttribute("Crouching")
+    local v32 = v_u_7:GetAttribute("Running")
+    local v33 = v_u_7:HasTag("SlowStop")
+    local v34 = v_u_7:GetAttribute("Stamina") or 0
+    local v35 = v_u_7:HasTag("CantMove") or (v_u_7:HasTag("CustomSpeed") and v_u_7:GetAttribute("CustomSpeed") or v31 and v28 / 2)
+    if v35 then
+        v28 = v35
+    elseif v32 and v34 > 0 then
+        v28 = v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 and v29 and v29 or v28
+    end
+    v_u_12 = v28
+    local v36 = v_u_15
+    if v36 then
+        if v30.Magnitude > 0 and (v_u_16 and v_u_9.CFrame.LookVector:Dot(v30) < 0.45) or v30.Magnitude == 0 then
+            if v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 then
+                v36 = not v31
+            else
+                v36 = false
+            end
+        else
+            v36 = false
+        end
+    end
+    v_u_16 = v36
+    if v_u_16 then
+        local _, _, _, v37 = castRay(v_u_7, v_u_9.CFrame.Position, v_u_9.CFrame.LookVector * 1.5)
+        if not v37 then
+            v30 = v_u_9.CFrame.LookVector
+        end
+    end
+    if v30.Magnitude > 0 then
+        v_u_13 = v30 * v_u_12
+        if not v_u_16 then
+            v_u_14 = v_u_13
+        end
+        if not v32 or (v29 > v_u_12 or not v33) then
+            v33 = v_u_16
+        end
+        v_u_15 = v33
+    else
+        v_u_13 = Vector3.new(0, 0, 0)
+    end
+    if (v_u_9.Position - v_u_27).Magnitude > 0.25 and tick() - v_u_26 > 0.011111111111111112 then
+        v_u_5.Movement:FireServer(v_u_9.CFrame, workspace:GetServerTimeNow(), v_u_7)
+        v_u_27 = v_u_9.Position
+        v_u_26 = tick()
+    end
+end
+v3.Heartbeat:Connect(function(p39)
+    -- upvalues: (copy) v_u_6, (copy) v_u_38, (ref) v_u_16, (ref) v_u_14, (ref) v_u_13, (ref) v_u_15, (copy) v_u_9, (copy) v_u_11, (copy) v_u_7, (copy) v_u_2
+    v_u_6:GetAttribute("Mouselocked")
+    v_u_38()
+    if v_u_16 then
+        v_u_14 = ((v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) * v_u_14.Magnitude):Lerp(Vector3.new(0, 0, 0), 1.8 * p39)
+        if v_u_14.Magnitude <= 1 then
+            v_u_16 = false
+            v_u_15 = false
+        end
+    else
+        v_u_14 = v_u_13
+    end
+    local v_u_40 = v_u_9:FindFirstChild("Velocity") or v_u_9:FindFirstChild("BodyVelocity")
+    if v_u_40 and v_u_11.Parent ~= nil then
+        v_u_40.Parent = nil
+        task.delay(0.05, function()
+            -- upvalues: (copy) v_u_40, (ref) v_u_9
+            v_u_40.Parent = v_u_9
+        end)
+    end
+    if v_u_7:GetAttribute("Ragdoll") or (v_u_7:HasTag("CantMove") or (v_u_7:HasTag("Ragdoll") or v_u_40)) then
+        v_u_11.MaxForce = Vector3.new(0, 0, 0)
+        v_u_11.Parent = nil
+    elseif v_u_11.MaxForce == Vector3.new(0, 0, 0) then
+        v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+        v_u_11.Parent = v_u_9
+    end
+    v_u_11.Velocity = v_u_14
+    local v41 = v_u_9:FindFirstChildOfClass("BodyVelocity")
+    if v41 and (v41:GetAttribute("Update") and v41:GetAttribute("Update") == "Root") then
+        local v42 = v41:GetAttribute("Tween") or 0
+        local v43 = v41:GetAttribute("Speed") or 0
+        v_u_2:Create(v41, TweenInfo.new(v42), {
+            ["Velocity"] = v_u_9.CFrame.LookVector * v43
+        }):Play()
+    end
+    local v44 = v_u_9:FindFirstChildOfClass("BodyGyro")
+    if v44 and (v44:GetAttribute("Update") and v44:GetAttribute("Update") == "Cam") then
+        v44.CFrame = workspace.CurrentCamera.CFrame
+    end
+end)
+v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
+v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
+v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.ChaseThemes
+-- Decompiled with Velocity Script Decompiler
+local _ = script.Parent
+local v_u_1 = { workspace:WaitForChild("LobbyMusic") }
+local v_u_2 = math.random(#v_u_1)
+local v_u_3 = nil
+local function v_u_4()
+    -- upvalues: (ref) v_u_2, (copy) v_u_1, (ref) v_u_3, (copy) v_u_4
+    v_u_2 = v_u_2 % #v_u_1 + 1
+    v_u_3 = v_u_1[v_u_2]
+    v_u_3:Play()
+    v_u_3.Stopped:Once(v_u_4)
+end
+v_u_2 = v_u_2 % #v_u_1 + 1
+v_u_3 = v_u_1[v_u_2]
+v_u_3:Play()
+v_u_3.Stopped:Once(v_u_4)
+game:GetService("RunService").Stepped:Connect(function()
+    -- upvalues: (ref) v_u_3
+    for _, v5 in workspace.PLAYERS.KILLER:GetChildren() do
+        if v5:FindFirstChild("Phases") then
+            for v6 = 1, 4 do
+                v5:FindFirstChild("Phases"):FindFirstChild((tostring(v6))).Volume = 0
+            end
+        end
+    end
+    if game.Players.LocalPlayer:GetAttribute("LOADED") == false or (workspace.GAME.STOP_MUSIC_ALL.Value == true or (workspace.GAME.LMS.Value == true or workspace.GAME.STOP_MUSIC.Value == true)) then
+        v_u_3.TimePosition = 0
+        v_u_3.Volume = 0
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0), {
+            ["Volume"] = 0
+        }):Play()
+        return
+    elseif workspace.GAME.TIMER.Value <= 18 then
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(4), {
+            ["Volume"] = 0
+        }):Play()
+    else
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0.25), {
+            ["Volume"] = 3
+        }):Play()
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Input
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("UserInputService")
+local v_u_2 = game:GetService("Players").LocalPlayer
+local v_u_3 = v_u_2.Character
+local v4 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp"))
+local v_u_5 = v4.Client("Input")
+local v_u_6 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Keybinds"))
+local v_u_7 = v4.Client("Reset")
+task.spawn(function()
+    -- upvalues: (copy) v_u_3, (copy) v_u_7
+    v_u_3:WaitForChild("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
+        -- upvalues: (ref) v_u_3, (ref) v_u_7
+        if v_u_3.Humanoid.Health == 0 then
+            v_u_7:Fire(true)
+        end
+    end)
+end)
+task.spawn(function()
+    repeat
+        local v8 = pcall(function()
+            game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+        end)
+        task.wait(1)
+    until v8
+end)
+local v_u_9 = false
+local v_u_10 = false
+v1.InputBegan:Connect(function(p11, p12)
+    -- upvalues: (copy) v_u_6, (ref) v_u_10, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    if p12 then
+        return
+    elseif table.find(v_u_6.Run, p11.KeyCode) then
+        v_u_10 = true
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+        else
+            v_u_9 = not v_u_9
+            v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        end
+    elseif table.find(v_u_6.Flashlight, p11.KeyCode) then
+        v_u_5:Fire(true, { "Flashlight" })
+    elseif table.find(v_u_6.Crouch, p11.KeyCode) then
+        v_u_5:Fire(true, { "Crouch" })
+    end
+end)
+v1.InputEnded:Connect(function(p13, _)
+    -- upvalues: (copy) v_u_6, (copy) v_u_2, (copy) v_u_5, (ref) v_u_10
+    if table.find(v_u_6.Run, p13.KeyCode) then
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+        end
+        v_u_10 = false
+    end
+end)
+local v_u_14 = false
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Down:Connect(function()
+    -- upvalues: (ref) v_u_14, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    v_u_14 = true
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+    else
+        v_u_9 = not v_u_9
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+    end
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Up:Connect(function()
+    -- upvalues: (copy) v_u_2, (copy) v_u_5, (ref) v_u_14
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+    end
+    v_u_14 = false
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Crouch.Button.MouseButton1Click:Connect(function()
+    -- upvalues: (copy) v_u_5
+    v_u_5:Fire(true, { "Crouch" })
+end)
+game:GetService("RunService").Heartbeat:Connect(function()
+    -- upvalues: (copy) v_u_2, (ref) v_u_10, (ref) v_u_14, (copy) v_u_3, (copy) v_u_5, (ref) v_u_9
+    if v_u_2:GetAttribute("HoldToRun") and (v_u_10 or v_u_14) and (v_u_3:GetAttribute("CanRun") and (not v_u_3:HasTag("Battery") and (not v_u_3:GetAttribute("Ragdoll") and (v_u_3:GetAttribute("Stamina") or 0) > 0))) then
+        if not v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", true)
+            return
+        end
+    elseif v_u_2:GetAttribute("HoldToRun") or (not v_u_3:GetAttribute("CanRun") or (v_u_3:HasTag("Battery") or (v_u_3:GetAttribute("Ragdoll") or (v_u_3:GetAttribute("Stamina") or 0) <= 0))) then
+        if v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", false)
+        end
+        v_u_9 = false
+        v_u_10 = false
+    elseif v_u_9 ~= v_u_3:GetAttribute("Running") then
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        v_u_3:SetAttribute("Running", v_u_9)
+        return
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Animate
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = script.Parent
+local v2 = v_u_1:WaitForChild("Torso")
+local v_u_3 = v2:WaitForChild("Right Shoulder")
+local v_u_4 = v2:WaitForChild("Left Shoulder")
+local v_u_5 = v2:WaitForChild("Right Hip")
+local v_u_6 = v2:WaitForChild("Left Hip")
+v2:WaitForChild("Neck")
+local v_u_7 = v_u_1:WaitForChild("Humanoid")
+local v_u_8 = "Standing"
+local v_u_9 = v_u_7.MaxHealth / 2
+local v_u_10 = game:GetService("Workspace").CurrentCamera
+local v_u_11 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
+local v_u_13 = v_u_11.new(Enum.RenderPriority.Camera.Value, function(p12)
+    -- upvalues: (copy) v_u_10
+    if v_u_10.CameraType ~= Enum.CameraType.Scriptable then
+        v_u_10.CFrame = v_u_10.CFrame * p12
+    end
+end)
+v_u_13:Start()
+require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p14)
+    -- upvalues: (copy) v_u_13, (copy) v_u_11
+    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+        v_u_13:Shake(v_u_11.Presets[p14])
+    end
+end)
+local v15, v16 = pcall(function()
+    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
+end)
+local v_u_17 = v15 and v16
+local v_u_18 = ""
+local v_u_19 = nil
+local v_u_20 = nil
+local v_u_21 = nil
+local v_u_22 = 1
+local v_u_23 = {}
+local v_u_24 = {
+    ["idle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=72376427571966",
+            ["weight"] = 9
+        }
+    },
+    ["stop"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=83559231447722",
+            ["weight"] = 11
+        }
+    },
+    ["stopWalk"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=133043783896866",
+            ["weight"] = 11
+        }
+    },
+    ["runForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=78749200572411",
+            ["weight"] = 10
+        }
+    },
+    ["runLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96509043428510",
+            ["weight"] = 10
+        }
+    },
+    ["runRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=97131507395933",
+            ["weight"] = 10
+        }
+    },
+    ["runStart"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=113729068153328",
+            ["weight"] = 11
+        }
+    },
+    ["runStartLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=71403377531705",
+            ["weight"] = 11
+        }
+    },
+    ["runStartRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=75650510533728",
+            ["weight"] = 11
+        }
+    },
+    ["walkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=89929150450773",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111382930561219",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=107545126168718",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=82823739770244",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=140470116427904",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=85839904210745",
+            ["weight"] = 10
+        }
+    },
+    ["walkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111516784776401",
+            ["weight"] = 10
+        }
+    },
+    ["walkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=118831683318213",
+            ["weight"] = 10
+        }
+    },
+    ["Crouchidle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=86063084977279",
+            ["weight"] = 9
+        }
+    },
+    ["CrouchwalkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=93405694022444",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=117819977958017",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88661748313165",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=81174024597617",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88741205365224",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96823064462744",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=114730177951495",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=138684140853282",
+            ["weight"] = 10
+        }
+    },
+    ["jump"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["fall"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=110915217320372",
+            ["weight"] = 10
+        }
+    },
+    ["climb"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["sit"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolnone"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolslash"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toollunge"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    }
+}
+local v_u_25 = {
+    ["wave"] = false,
+    ["point"] = false,
+    ["dance1"] = true,
+    ["dance2"] = true,
+    ["dance3"] = true,
+    ["laugh"] = false,
+    ["cheer"] = false
+}
+function configureAnimationSet(p_u_26, p_u_27)
+    -- upvalues: (copy) v_u_23
+    if v_u_23[p_u_26] ~= nil then
+        for _, v28 in pairs(v_u_23[p_u_26].connections) do
+            v28:disconnect()
+        end
+    end
+    v_u_23[p_u_26] = {}
+    v_u_23[p_u_26].count = 0
+    v_u_23[p_u_26].totalWeight = 0
+    v_u_23[p_u_26].connections = {}
+    local v29 = script:FindFirstChild(p_u_26)
+    if v29 ~= nil then
+        local v30 = v_u_23[p_u_26].connections
+        local v31 = v29.ChildAdded
+        table.insert(v30, v31:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v32 = v_u_23[p_u_26].connections
+        local v33 = v29.ChildRemoved
+        table.insert(v32, v33:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v34 = 1
+        for _, v35 in pairs(v29:GetChildren()) do
+            if v35:IsA("Animation") then
+                local v36 = v_u_23[p_u_26].connections
+                local v37 = v35.Changed
+                table.insert(v36, v37:connect(function(_)
+                    -- upvalues: (copy) p_u_26, (copy) p_u_27
+                    configureAnimationSet(p_u_26, p_u_27)
+                    task.spawn(move, os.clock())
+                end))
+                v_u_23[p_u_26][v34] = {}
+                v_u_23[p_u_26][v34].anim = v35
+                local v38 = v35:FindFirstChild("Weight")
+                if v38 == nil then
+                    v_u_23[p_u_26][v34].weight = 1
+                else
+                    v_u_23[p_u_26][v34].weight = v38.Value
+                end
+                v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+                v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v_u_23[p_u_26][v34].weight
+                v34 = v34 + 1
+            end
+        end
+    end
+    if v_u_23[p_u_26].count <= 0 then
+        for v39, v40 in pairs(p_u_27) do
+            v_u_23[p_u_26][v39] = {}
+            v_u_23[p_u_26][v39].anim = Instance.new("Animation")
+            v_u_23[p_u_26][v39].anim.Name = p_u_26
+            v_u_23[p_u_26][v39].anim.AnimationId = v40.id
+            v_u_23[p_u_26][v39].weight = v40.weight
+            v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+            v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v40.weight
+        end
+    end
+end
+function scriptChildModified(p41)
+    -- upvalues: (copy) v_u_24
+    local v42 = v_u_24[p41.Name]
+    if v42 ~= nil then
+        configureAnimationSet(p41.Name, v42)
+    end
+end
+script.ChildAdded:connect(scriptChildModified)
+script.ChildRemoved:connect(scriptChildModified)
+local v43
+if v_u_7 then
+    v43 = v_u_7:FindFirstChildOfClass("Animator")
+else
+    v43 = nil
+end
+if v43 then
+    local v44 = v43:GetPlayingAnimationTracks()
+    for _, v45 in ipairs(v44) do
+        v45:Stop(0)
+        v45:Destroy()
+    end
+end
+for v46, v47 in pairs(v_u_24) do
+    configureAnimationSet(v46, v47)
+end
+local v_u_48 = "None"
+local v_u_49 = 0
+local v_u_50 = 0
+function stopAllAnimations()
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_19, (ref) v_u_21, (ref) v_u_20
+    local v51 = v_u_18
+    local v52 = v_u_25[v51] ~= nil and v_u_25[v51] == false and "idle" or v51
+    v_u_18 = ""
+    v_u_19 = nil
+    if v_u_21 ~= nil then
+        v_u_21:disconnect()
+    end
+    if v_u_20 ~= nil then
+        v_u_20:Stop()
+        v_u_20:Destroy()
+        v_u_20 = nil
+    end
+    return v52
+end
+function setAnimationSpeed(p53)
+    -- upvalues: (ref) v_u_22, (ref) v_u_20
+    if p53 ~= v_u_22 and v_u_20 then
+        v_u_22 = p53
+        v_u_20:AdjustSpeed(v_u_22)
+    end
+end
+function keyFrameReachedFunc(p54)
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_22, (copy) v_u_7
+    if p54 == "End" then
+        local v55 = v_u_18
+        local v56 = v_u_25[v55] ~= nil and v_u_25[v55] == false and "idle" or v55
+        local v57 = v_u_22
+        playAnimation(v56, 0, v_u_7)
+        setAnimationSpeed(v57)
+    end
+end
+function playAnimation(p58, p59, p60)
+    -- upvalues: (copy) v_u_23, (ref) v_u_19, (ref) v_u_20, (ref) v_u_18, (ref) v_u_22, (ref) v_u_21, (ref) v_u_8, (copy) v_u_13, (copy) v_u_11
+    local v61 = math.random(1, v_u_23[p58].totalWeight)
+    local v62 = 1
+    while v_u_23[p58][v62].weight < v61 do
+        v61 = v61 - v_u_23[p58][v62].weight
+        v62 = v62 + 1
+    end
+    local v63 = v_u_23[p58][v62].anim
+    if v63 ~= v_u_19 then
+        if v_u_20 ~= nil then
+            v_u_20:Stop(p59)
+            v_u_20:Destroy()
+        end
+        local v64 = (not (v_u_18:match("walk") or v_u_18:match("run")) or v_u_18 == "stop") and 0 or v_u_20.TimePosition
+        v_u_22 = 1
+        v_u_20 = p60:LoadAnimation(v63)
+        v_u_20.Priority = Enum.AnimationPriority.Core
+        v_u_20:Play(p59)
+        v_u_20.TimePosition = v64
+        v_u_18 = p58
+        v_u_19 = v63
+        if v_u_21 ~= nil then
+            v_u_21:disconnect()
+        end
+        local v_u_65 = v_u_20:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_8, (ref) v_u_13, (ref) v_u_11
+            if (v_u_8 == "Running" or v_u_8 == "RunningStart") and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                v_u_13:Shake(v_u_11.Presets.RunningShake)
+            end
+        end)
+        v_u_20.Stopped:Once(function()
+            -- upvalues: (ref) v_u_65
+            v_u_65:Disconnect()
+        end)
+        v_u_21 = v_u_20.KeyframeReached:connect(keyFrameReachedFunc)
+    end
+end
+local v_u_66 = ""
+local v_u_67 = nil
+local v_u_68 = nil
+local v_u_69 = nil
+function toolKeyFrameReachedFunc(p70)
+    -- upvalues: (ref) v_u_66, (copy) v_u_7
+    if p70 == "End" then
+        playToolAnimation(v_u_66, 0, v_u_7)
+    end
+end
+function playToolAnimation(p71, p72, p73, p74)
+    -- upvalues: (copy) v_u_23, (ref) v_u_68, (ref) v_u_67, (ref) v_u_66, (ref) v_u_69
+    local v75 = math.random(1, v_u_23[p71].totalWeight)
+    local v76 = 1
+    while v_u_23[p71][v76].weight < v75 do
+        v75 = v75 - v_u_23[p71][v76].weight
+        v76 = v76 + 1
+    end
+    local v77 = v_u_23[p71][v76].anim
+    if v_u_68 ~= v77 then
+        if v_u_67 ~= nil then
+            v_u_67:Stop()
+            v_u_67:Destroy()
+            p72 = 0
+        end
+        v_u_67 = p73:LoadAnimation(v77)
+        if p74 then
+            v_u_67.Priority = p74
+        end
+        v_u_67:Play(p72)
+        v_u_66 = p71
+        v_u_68 = v77
+        v_u_69 = v_u_67.KeyframeReached:connect(toolKeyFrameReachedFunc)
+    end
+end
+function stopToolAnimations()
+    -- upvalues: (ref) v_u_66, (ref) v_u_69, (ref) v_u_68, (ref) v_u_67
+    local v78 = v_u_66
+    if v_u_69 ~= nil then
+        v_u_69:disconnect()
+    end
+    v_u_66 = ""
+    v_u_68 = nil
+    if v_u_67 ~= nil then
+        v_u_67:Stop()
+        v_u_67:Destroy()
+        v_u_67 = nil
+    end
+    return v78
+end
+function onDied()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Dead"
+end
+function onJumping()
+    -- upvalues: (copy) v_u_7, (ref) v_u_50, (ref) v_u_8
+    playAnimation("jump", 0.1, v_u_7)
+    v_u_50 = 0.3
+    v_u_8 = "Jumping"
+end
+function onClimbing(p79)
+    -- upvalues: (copy) v_u_17, (copy) v_u_1, (copy) v_u_7, (ref) v_u_8
+    local v80 = p79 / (not v_u_17 and 1 or v_u_1:GetScale())
+    playAnimation("climb", 0.1, v_u_7)
+    setAnimationSpeed(v80 / 12)
+    v_u_8 = "Climbing"
+end
+function onGettingUp()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "GettingUp"
+end
+function onFreeFall()
+    -- upvalues: (ref) v_u_50, (copy) v_u_7, (ref) v_u_8
+    if v_u_50 <= 0 then
+        playAnimation("fall", 0.3, v_u_7)
+    end
+    v_u_8 = "FreeFall"
+end
+function onFallingDown()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "FallingDown"
+end
+function onSeated()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Seated"
+end
+function onPlatformStanding()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "PlatformStanding"
+end
+function onSwimming(p81)
+    -- upvalues: (ref) v_u_8
+    if p81 > 0 then
+        v_u_8 = "Running"
+    else
+        v_u_8 = "Standing"
+    end
+end
+function getTool()
+    -- upvalues: (copy) v_u_1
+    for _, v82 in ipairs(v_u_1:GetChildren()) do
+        if v82.className == "Tool" then
+            return v82
+        end
+    end
+    return nil
+end
+function getToolAnim(p83)
+    for _, v84 in ipairs(p83:GetChildren()) do
+        if v84.Name == "toolanim" and v84.className == "StringValue" then
+            return v84
+        end
+    end
+    return nil
+end
+function animateTool()
+    -- upvalues: (ref) v_u_48, (copy) v_u_7
+    if v_u_48 == "None" then
+        playToolAnimation("toolnone", 0.1, v_u_7, Enum.AnimationPriority.Idle)
+        return
+    elseif v_u_48 == "Slash" then
+        playToolAnimation("toolslash", 0, v_u_7, Enum.AnimationPriority.Action)
+        return
+    elseif v_u_48 == "Lunge" then
+        playToolAnimation("toollunge", 0, v_u_7, Enum.AnimationPriority.Action)
+    end
+end
+function moveSit()
+    -- upvalues: (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6
+    v_u_3.MaxVelocity = 0.15
+    v_u_4.MaxVelocity = 0.15
+    v_u_3:SetDesiredAngle(1.57)
+    v_u_4:SetDesiredAngle(-1.57)
+    v_u_5:SetDesiredAngle(1.57)
+    v_u_6:SetDesiredAngle(-1.57)
+end
+local v_u_85 = 0
+local v_u_86 = v_u_7.Health
+local v_u_87 = false
+local v_u_88 = false
+local v_u_89 = 0
+function move(p90)
+    -- upvalues: (copy) v_u_1, (ref) v_u_8, (copy) v_u_7, (ref) v_u_85, (ref) v_u_50, (ref) v_u_87, (ref) v_u_89, (copy) v_u_13, (ref) v_u_20, (copy) v_u_25, (ref) v_u_18, (ref) v_u_88, (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6, (copy) v_u_9, (ref) v_u_86, (ref) v_u_48, (ref) v_u_49, (ref) v_u_68
+    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
+        if v_u_1:HasTag("KillAnims") then
+            v_u_8 = "None"
+            stopAllAnimations()
+        elseif v_u_8 ~= "Standing" then
+            v_u_8 = "Standing"
+            playAnimation("idle", 0.1, v_u_7)
+        end
+    else
+        local v91 = 1
+        local v92 = 1
+        local v93 = p90 - v_u_85
+        v_u_85 = p90
+        local v94 = false
+        if v_u_50 > 0 then
+            v_u_50 = v_u_50 - v93
+        end
+        local v95 = (v_u_1:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity * Vector3.new(1, 0, 1)).Magnitude
+        if v_u_8 == "Standing" or v_u_8 == "Stopping" then
+            if v_u_1:GetAttribute("Crouching") == true and v_u_87 == false then
+                v_u_87 = true
+                stopAllAnimations()
+                playAnimation("Crouchidle", 0.1, v_u_7)
+            elseif v_u_1:GetAttribute("Crouching") == false and v_u_87 == true then
+                v_u_87 = false
+                stopAllAnimations()
+                playAnimation("idle", 0.1, v_u_7)
+            end
+        end
+        if v_u_7.FloorMaterial ~= Enum.Material.Air and (v_u_8 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_7.MoveDirection) > 0.45) then
+            if v95 > 0.01 and (v95 <= 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0)) then
+                v_u_89 = 0
+                v_u_13:StopSustained(0.5)
+                v_u_8 = "Walking"
+            elseif v95 > 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v96 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v96 = v96 * -1
+                end
+                local v_u_97 = game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default and 1 or (v96:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 and 2 or (v96:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 and 3 or 1))
+                if v_u_1:HasTag("Battery") or v_u_8 == "Running" and (v_u_8 ~= "RunningStart" or v_u_89 == v_u_97) then
+                    if v_u_8 == "Running" then
+                        v_u_89 = 0
+                    end
+                else
+                    stopAllAnimations()
+                    if v_u_97 == 2 then
+                        v_u_89 = 2
+                        playAnimation("runStartRight", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 3 then
+                        v_u_89 = 3
+                        playAnimation("runStartLeft", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 1 then
+                        v_u_89 = 1
+                        playAnimation("runStart", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    else
+                        v_u_8 = "RunningStart"
+                    end
+                    if v_u_20 and v_u_8 == "RunningStart" then
+                        v_u_20.Priority = Enum.AnimationPriority.Action
+                        v_u_20.Stopped:Once(function()
+                            -- upvalues: (ref) v_u_8, (ref) v_u_89, (ref) v_u_97, (ref) v_u_20
+                            if v_u_8 == "RunningStart" and v_u_89 == v_u_97 then
+                                if v_u_20 then
+                                    v_u_20.TimePosition = 0
+                                end
+                                v_u_8 = "Running"
+                                v_u_89 = 0
+                            end
+                        end)
+                    end
+                end
+            else
+                v_u_89 = 0
+                if v_u_25[v_u_18] == nil and (v_u_8 ~= "Standing" or v95 > 12) and (v_u_8 ~= "Stopping" and v_u_8 ~= "WalkStopping") then
+                    if (v_u_8 == "Standing" and v95 > 12 or (v_u_8 == "Running" or v_u_8 == "RunningStart") and v95 > 21) and v_u_7.MoveDirection == Vector3.new(0, 0, 0) then
+                        v_u_8 = "Stopping"
+                        stopAllAnimations()
+                        playAnimation("stop", 0, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    elseif v_u_8 == "Walking" and (v_u_1:GetAttribute("Crouching") == false and (v95 > 2 and v_u_7.MoveDirection == Vector3.new(0, 0, 0))) then
+                        v_u_8 = "WalkStopping"
+                        stopAllAnimations()
+                        playAnimation("stopWalk", 0.1, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    else
+                        if v_u_1:GetAttribute("Crouching") == true then
+                            playAnimation("Crouchidle", 0.1, v_u_7)
+                        else
+                            playAnimation("idle", 0.1, v_u_7)
+                        end
+                        v_u_8 = "Standing"
+                    end
+                end
+            end
+        end
+        if v_u_8 == "FreeFall" and v_u_50 <= 0 then
+            playAnimation("fall", 0.3, v_u_7)
+        else
+            if v_u_8 == "Seated" then
+                playAnimation("sit", 0.5, v_u_7)
+                return
+            end
+            if v_u_8 == "Walking" or v_u_8 == "WalkStopping" and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v98 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v98 = v98 * -1
+                end
+                if v_u_1:GetAttribute("Crouching") == true then
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 6)
+                else
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 12)
+                end
+            elseif v_u_8 == "Running" then
+                local v99 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v99 = v99 * -1
+                end
+                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                    playAnimation("runForward", 0.1, v_u_7)
+                elseif v99:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runRight", 0.3, v_u_7)
+                elseif v99:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runLeft", 0.3, v_u_7)
+                else
+                    playAnimation("runForward", 0.3, v_u_7)
+                end
+                if v_u_20 then
+                    v_u_20.Priority = Enum.AnimationPriority.Movement
+                end
+                setAnimationSpeed(v95 / 24)
+            elseif v_u_8 == "Dead" or (v_u_8 == "GettingUp" or (v_u_8 == "FallingDown" or (v_u_8 == "Seated" or v_u_8 == "PlatformStanding"))) then
+                stopAllAnimations()
+                v94 = true
+                v92 = 1
+                v91 = 0.1
+            end
+        end
+        if v94 then
+            local v100 = p90 * v92
+            local v101 = v91 * math.sin(v100)
+            v_u_3:SetDesiredAngle(v101 + 0)
+            v_u_4:SetDesiredAngle(v101 - 0)
+            v_u_5:SetDesiredAngle(-v101)
+            v_u_6:SetDesiredAngle(-v101)
+        end
+        if v_u_7.Health <= v_u_9 then
+            if v_u_88 == false then
+                v_u_88 = true
+                if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                    v_u_13:ShakeSustain(v_u_13.Presets.Injured)
+                end
+            end
+        elseif v_u_88 == true then
+            v_u_88 = false
+            v_u_13:StopSustained(1)
+        end
+        v_u_86 = v_u_7.Health
+        local v102 = getTool()
+        if v102 and v102:FindFirstChild("Handle") then
+            local v103 = getToolAnim(v102)
+            if v103 then
+                v_u_48 = v103.Value
+                v103.Parent = nil
+                v_u_49 = p90 + 0.3
+            end
+            if v_u_49 < p90 then
+                v_u_49 = 0
+                v_u_48 = "None"
+            end
+            animateTool()
+        else
+            stopToolAnimations()
+            v_u_48 = "None"
+            v_u_68 = nil
+            v_u_49 = 0
+        end
+    end
+end
+v_u_7.Died:connect(onDied)
+v_u_7.Jumping:connect(onJumping)
+v_u_7.Climbing:connect(onClimbing)
+v_u_7.GettingUp:connect(onGettingUp)
+v_u_7.FreeFalling:connect(onFreeFall)
+v_u_7.FallingDown:connect(onFallingDown)
+v_u_7.Seated:connect(onSeated)
+v_u_7.PlatformStanding:connect(onPlatformStanding)
+v_u_7.Swimming:connect(onSwimming)
+playAnimation("idle", 0.1, v_u_7)
+local _ = "Standing"
+while v_u_1.Parent ~= nil do
+    local _, v104 = wait()
+    move(v104)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Elevator.On Respawn
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("RunService")
+game:GetService("TweenService")
+local v_u_3 = game:GetService("ContentProvider")
+local v_u_4 = game:GetService("Players").LocalPlayer.PlayerGui
+repeat
+    task.wait()
+until game:IsLoaded() and (game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"))
+task.wait(0.01)
+if script:WaitForChild("Check", 10):InvokeServer(game:GetService("Players").LocalPlayer) == true then
+    script:WaitForChild("RemoteEvent", 10):FireServer(true)
+    script.Parent.Parent:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame
+else
+    local v_u_5 = v_u_4:WaitForChild("UI", 10):WaitForChild("Transitions"):WaitForChild("Lobby"):FindFirstChild("LobbyUIContainer") or v_u_4:WaitForChild("UI", 10):WaitForChild("UI"):WaitForChild("LobbyUIContainer", 10)
+    if v_u_5:FindFirstChild("Buttons") then
+        v_u_5.Buttons.Visible = true
+    end
+    v_u_5.Visible = false
+    script:WaitForChild("RemoteEvent", 10):FireServer(false)
+    v_u_3:PreloadAsync({
+        workspace:WaitForChild("Lobby"),
+        script:WaitForChild("Animation"),
+        script:WaitForChild("ElevatorIntro"),
+        script:WaitForChild("WaitAnimation")
+    })
+    require(v1:WaitForChild("Modules"):WaitForChild("Warp"))
+    local v6 = require(v1:WaitForChild("Modules"):WaitForChild("Cutscenes"))
+    local v7 = require(v1:WaitForChild("Modules"):WaitForChild("Maid"))
+    local v_u_8 = script.Parent.Parent
+    local v9 = workspace.LoadingSFX
+    v9:Play()
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = true
+    v_u_8:WaitForChild("Humanoid").AutoRotate = false
+    v_u_8:AddTag("CantMove")
+    v_u_8:AddTag("Cutscene")
+    game:GetService("Players").LocalPlayer:AddTag("Cutscene")
+    function lerp(p10, p11, p12)
+        return p10 + (p11 - p10) * p12
+    end
+    local v_u_13 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator")
+    v_u_13:PivotTo(CFrame.new(483.989, 61.528, 109.666))
+    local v_u_14 = workspace:WaitForChild("Lobby"):WaitForChild("Shaft")
+    v_u_14:PivotTo(CFrame.new(484.935, 277.252, 109.744))
+    local v_u_15 = Instance.new("CFrameValue")
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    local v_u_16 = Instance.new("CFrameValue")
+    v_u_16.Value = CFrame.new(0, 200, 0)
+    local v_u_17 = v_u_14:GetPivot()
+    local v_u_18 = v_u_13:GetPivot()
+    local v19 = next
+    local v20, v21 = v_u_8:GetDescendants()
+    for _, v22 in v19, v20, v21 do
+        if v22:IsA("BasePart") then
+            v22.LocalTransparencyModifier = v22.Transparency
+        end
+    end
+    local v23 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator"):WaitForChild("Elevator Doors"):WaitForChild("DoorRoot")
+    v23.LDoor.DesiredAngle = 0
+    v23.RDoor.DesiredAngle = 0
+    local v_u_24 = workspace.CurrentCamera
+    local v_u_25 = v6.ElevatorAlone
+    local v_u_26 = v_u_25.CameraRig:Clone()
+    v_u_26:PivotTo(workspace:WaitForChild("Lobby"):WaitForChild("Camera Position").CFrame)
+    v_u_26.Parent = workspace.IGNORE
+    v_u_26:FindFirstChild(v_u_25.RootPart)
+    local v_u_27 = v_u_26:FindFirstChild(v_u_25.CameraPart)
+    v_u_24.CameraType = Enum.CameraType.Scriptable
+    local v_u_28 = v_u_24.CFrame
+    local _ = v_u_24.FieldOfView
+    local function v29()
+        -- upvalues: (copy) v_u_14, (copy) v_u_17, (copy) v_u_15, (copy) v_u_13, (copy) v_u_18, (copy) v_u_16, (copy) v_u_26, (copy) v_u_8
+        v_u_14:PivotTo(v_u_17 * v_u_15.Value)
+        v_u_13:PivotTo(v_u_18 * v_u_16.Value)
+        v_u_26:PivotTo(workspace:FindFirstChild("Lobby"):WaitForChild("Camera Position").CFrame * v_u_16.Value)
+        v_u_8:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame * v_u_16.Value
+    end
+    local v30 = game:GetService("RunService").Stepped:Connect(v29)
+    local v31 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(script.Animation)
+    v31:Play()
+    local v32 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("WaitAnimation"))
+    v32:Play()
+    local v33
+    if game:GetService("Players").LocalPlayer:HasTag("LOADED") then
+        v33 = true
+    else
+        local v_u_34 = false
+        game:GetService("Players").LocalPlayer:AddTag("LOADED")
+        game:GetService("Players").LocalPlayer:SetAttribute("LOADED", false)
+        task.spawn(function()
+            -- upvalues: (copy) v_u_15, (copy) v_u_4, (copy) v_u_25, (copy) v_u_13, (copy) v_u_3, (ref) v_u_34
+            local v_u_35 = game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0), {
+                ["Value"] = CFrame.new(0, 100, 0)
+            })
+            v_u_35:Play()
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = true
+            local v_u_36 = {
+                v_u_25.Animation,
+                game:GetService("ReplicatedStorage"),
+                game:GetService("StarterGui"),
+                game:GetService("Workspace")
+            }
+            local v37 = 0
+            local v_u_38 = 0
+            for _, v39 in next, v_u_36 do
+                local v40 = next
+                local v41, v42 = v39:GetDescendants()
+                for _, v43 in v40, v41, v42 do
+                    if v43:IsA("Sound") or (v43:IsA("Animation") or (v43:IsA("MeshPart") or (v43:IsA("ImageLabel") or (v43:IsA("ImageButton") or (v43:IsA("Decal") or (v43:IsA("Texture") or (v43:IsA("ParticleEmitter") or v43:IsA("SurfaceAppearance")))))))) then
+                        v37 = v37 + 1
+                    end
+                end
+            end
+            local v_u_44 = false
+            local v_u_45 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_15, (copy) v_u_35, (ref) v_u_44
+                repeat
+                    v_u_15.Value = CFrame.new(0, 0, 0)
+                    v_u_35:Play()
+                    v_u_35.Completed:Wait()
+                until v_u_44 == true
+            end)
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "Loading assets (0/" .. v37 .. ")"
+            local v_u_46 = nil
+            if game:GetService("RunService"):IsStudio() then
+                if v_u_44 == false then
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                    v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                        -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                        v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                        v_u_45 = true
+                    end)
+                end
+            else
+                task.delay(10, function()
+                    -- upvalues: (ref) v_u_44, (ref) v_u_4, (ref) v_u_13, (ref) v_u_46, (ref) v_u_45
+                    if v_u_44 == false then
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                        v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                            -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                            v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                            v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                            v_u_45 = true
+                        end)
+                    end
+                end)
+            end
+            local v_u_47 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_3, (copy) v_u_36, (ref) v_u_38, (ref) v_u_47, (ref) v_u_4
+                if game:GetService("UserInputService").TouchEnabled or game:GetService("UserInputService").GamepadEnabled then
+                    task.wait(8)
+                else
+                    v_u_3:PreloadAsync(v_u_36, function(_, _)
+                        -- upvalues: (ref) v_u_38
+                        v_u_38 = v_u_38 + 1
+                    end)
+                end
+                v_u_47 = true
+                v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+            end)
+            local v48 = v_u_47
+            local v49 = 0
+            while true do
+                if tick() - v49 > 0.1 then
+                    v49 = tick()
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "\nLoading assets (" .. v_u_38 .. "/" .. v_u_38 + game:GetService("ContentProvider").RequestQueueSize .. ")"
+                end
+                task.wait()
+                if v_u_45 or v48 then
+                    v_u_47 = true
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+                    v_u_44 = true
+                    v_u_35.Completed:Wait()
+                    if v_u_46 then
+                        v_u_46:Disconnect()
+                    end
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                    v_u_35:Cancel()
+                    v_u_34 = true
+                    v_u_15.Value = CFrame.new(0, -8, 0)
+                    return
+                end
+            end
+        end)
+        v33 = v_u_34
+    end
+    repeat
+        v_u_24.CFrame = v_u_27.CFrame
+        v_u_24.FieldOfView = 70
+        task.wait()
+    until v33 == true
+    local v50 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(v_u_25.Animation)
+    repeat
+        task.wait()
+    until v50.Length > 0
+    v32:Stop(0.25)
+    v31:Stop(0.25)
+    local v_u_51 = v6.ElevatorAlone
+    local v_u_52 = v7.new()
+    v50:Play()
+    v_u_52:Mark(v50)
+    task.delay(7, v_u_26.Destroy, v_u_26)
+    v9:Stop()
+    workspace.LandingSFX:Play()
+    local v53 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("ElevatorIntro"))
+    v53:Play()
+    task.spawn(function()
+        -- upvalues: (copy) v_u_2, (copy) v_u_24, (copy) v_u_27, (copy) v_u_51, (copy) v_u_52
+        local v_u_54 = 0.1
+        v_u_52:Mark((v_u_2.PreSimulation:Connect(function(p55)
+            -- upvalues: (ref) v_u_24, (ref) v_u_54, (ref) v_u_27, (ref) v_u_51
+            v_u_24.CameraType = Enum.CameraType.Scriptable
+            v_u_54 = v_u_54 + p55 * 60
+            v_u_24.CFrame = v_u_27.CFrame
+            if v_u_51.FOV then
+                local v56 = v_u_54
+                if v_u_51.FOV[math.ceil(v56)] then
+                    local v57 = v_u_54
+                    v_u_24.FieldOfView = v_u_51.FOV[math.ceil(v57)]
+                end
+            end
+        end)))
+    end)
+    task.delay(v50.Length, function()
+        -- upvalues: (copy) v_u_24, (copy) v_u_28, (copy) v_u_52
+        v_u_24.CFrame = v_u_28
+        v_u_24.CameraType = Enum.CameraType.Custom
+        game:GetService("Players").LocalPlayer:RemoveTag("Cutscene")
+        v_u_52:Sweep()
+    end)
+    game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(0, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    game:GetService("TweenService"):Create(v_u_16, TweenInfo.new(3.65, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    task.wait(4)
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    v_u_16.Value = CFrame.new(0, 0, 0)
+    v29()
+    v_u_15:Destroy()
+    v_u_16:Destroy()
+    v30:Disconnect()
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    task.wait(3)
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    if v53.IsPlaying then
+        v53.Stopped:Wait()
+    end
+    v_u_8:RemoveTag("CantMove")
+    v_u_8:RemoveTag("Cutscene")
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = false
+    v_u_8:WaitForChild("Humanoid").AutoRotate = true
+    script.Ambience:Play()
+    v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby")
+    v_u_5.Visible = true
+    v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby").GroupTransparency = 1
+    game:GetService("TweenService"):Create(v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby"), TweenInfo.new(0.5), {
+        ["GroupTransparency"] = 0
+    }):Play()
+    task.delay(0.5, function()
+        -- upvalues: (copy) v_u_5, (copy) v_u_4
+        v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("UI")
+    end)
+    script.RemoteEvent:FireServer(true)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Elevator.On Respawn.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Voice
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Voice.AudioDeviceInput.Mute
+-- Decompiled with Velocity Script Decompiler
+if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
+    script.Parent.Volume = 0
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Client
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
+local v2 = { "Torso", "Head", "Glow" }
+for _, v_u_3 in script.Parent:GetDescendants() do
+    if not v_u_3.Parent:IsA("Accessory") and (v_u_3:IsA("BasePart") and not table.find(v2, v_u_3.Name)) then
+        v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        v_u_3:GetPropertyChangedSignal("LocalTransparencyModifier"):Connect(function()
+            -- upvalues: (copy) v_u_3
+            v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        end)
+    end
+end
+local v_u_4 = {
+    ["Character"] = script.Parent,
+    ["Humanoid"] = script.Parent:FindFirstChildOfClass("Humanoid"),
+    ["RootPart"] = script.Parent:WaitForChild("HumanoidRootPart")
+}
+local v_u_5 = game:GetService("UserInputService")
+local v_u_6 = v_u_4.Character:WaitForChild("Torso", 100):FindFirstChild("Neck")
+local v_u_7 = v_u_6.C0.Y
+local v_u_8 = CFrame.new
+local v_u_9 = CFrame.Angles
+local v_u_10 = math.asin
+v_u_4.State = "Standing"
+Instance.new("NumberValue")
+local v_u_11 = script:WaitForChild("Replicator")
+function castRay(p12, p13, p14)
+    local v15 = RaycastParams.new()
+    v15.FilterDescendantsInstances = {
+        p12,
+        workspace.IGNORE,
+        workspace.PLAYERS,
+        workspace.Terrain
+    }
+    local v16 = workspace:Raycast(p13, p14, v15)
+    local v17 = v16 and v16.Position or p13 + p14
+    return (p13 - v17).Magnitude, p13, v17, v16
+end
+game:GetService("RunService"):BindToRenderStep("CameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
+    -- upvalues: (copy) v_u_4, (copy) v_u_5
+    if workspace.CurrentCamera.CameraSubject == v_u_4.Humanoid then
+        local v18 = (workspace.CurrentCamera.CFrame.p - workspace.CurrentCamera.Focus.p).magnitude
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 > 2 then
+            local v19, _, _, _ = castRay(v_u_4.Character, v_u_4.RootPart.Position, v_u_4.RootPart.CFrame.RightVector * 1.75)
+            local v20 = v_u_4.RootPart.CFrame.RightVector * v19
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0 + v20)
+            }):Play()
+            return
+        end
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 <= 2 then
+            local v21 = v_u_4.Character:WaitForChild("Head").CFrame.p - v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0.5
+            local v22 = v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 1.25 - v21
+            local _, _, v23, v24 = castRay(v_u_4.Character, v21, v22)
+            if v24 then
+                local _ = v23 - (v22.Magnitude == 0 and Vector3.new(0, 0, 0) or v22.Unit) * 0.1
+            end
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v23)
+            }):Play()
+            return
+        end
+        game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+            ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0)
+        }):Play()
+    end
+end)
+local v_u_25 = 0
+local function v_u_29(p26)
+    -- upvalues: (copy) v_u_4, (copy) v_u_6, (copy) v_u_8, (copy) v_u_7, (copy) v_u_9, (ref) v_u_25, (copy) v_u_11, (copy) v_u_10
+    if game:GetService("Players"):GetPlayerFromCharacter(v_u_4.Character) == game:GetService("Players").LocalPlayer then
+        if v_u_4.Character:HasTag("Cutscene") then
+            v_u_6.C0 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793)
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v_u_6.C0 })
+            end
+        else
+            local v27 = v_u_4.RootPart.CFrame:toObjectSpace(game:GetService("Workspace").CurrentCamera.CFrame).lookVector
+            local v28
+            if v_u_6 then
+                v28 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793) * v_u_9(0, 0, -v_u_10(v27.x)) * v_u_9(-v_u_10(v27.y), 0, 0)
+                v_u_6.C0 = v_u_6.C0:Lerp(v28, 0.9 * p26 * 15)
+            else
+                v28 = nil
+            end
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v28 or v_u_6.C0 })
+            end
+        end
+    else
+        return
+    end
+end
+local v_u_30 = nil
+local v_u_31 = 0
+local v_u_32 = v_u_4.Character:WaitForChild("Torso").AssemblyLinearVelocity
+local v_u_33 = workspace.CurrentCamera
+local v_u_34 = nil
+local v_u_35 = 0
+local v_u_36 = 0
+local v_u_37 = nil
+v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
+    -- upvalues: (copy) v_u_4, (ref) v_u_37, (copy) v_u_29, (copy) v_u_1, (ref) v_u_30, (ref) v_u_32, (ref) v_u_31, (copy) v_u_33, (ref) v_u_36, (ref) v_u_34, (ref) v_u_35
+    if v_u_4.Character == nil then
+        v_u_37:Disconnect()
+    else
+        v_u_29(p38)
+        if v_u_4.Character:GetAttribute("Ragdoll") then
+            local _, _, _, v39, _, v40 = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, Vector3.new(-0, -3, -0), nil, v_u_30)
+            if not v_u_30 then
+                v_u_30 = v40
+            end
+            local v41 = v_u_4.Character.Torso.AssemblyLinearVelocity
+            if not v_u_32 then
+                v_u_32 = v41
+            end
+            if v39 and ((v41 - v_u_32).Y > 4 and tick() - v_u_31 > 0.2) then
+                v_u_31 = tick()
+                local v_u_42 = script["FloorHit" .. math.random(3)]:Clone()
+                v_u_42.Parent = v_u_4.Character:FindFirstChild("HumanoidRootPart")
+                v_u_42:Play()
+                task.spawn(function()
+                    -- upvalues: (copy) v_u_42
+                    if not v_u_42.IsLoaded then
+                        v_u_42.Loaded:Wait()
+                    end
+                    task.delay(v_u_42.TimeLength / v_u_42.PlaybackSpeed, v_u_42.Destroy, v_u_42)
+                end)
+            end
+            v_u_32 = v41
+        else
+            v_u_32 = nil
+        end
+        local v43 = next
+        local v44, v45 = workspace.PLAYERS.KILLER:GetChildren()
+        for _, v46 in v43, v44, v45 do
+            if v46:FindFirstChild("HumanoidRootPart") and v46 ~= v_u_4.Character then
+                local v47 = v_u_4.Character.HumanoidRootPart.Position
+                local v48 = v46.HumanoidRootPart.Position
+                local v49 = v_u_33.CFrame.Position
+                local v50 = v46.HumanoidRootPart.CFrame.LookVector:Dot((v47 - v48).Unit)
+                local _, v51 = v_u_33:WorldToViewportPoint(v48)
+                local v52 = (v48 - v47).Magnitude
+                local v53 = 1 - 8 / (v52 / 2 + 1)
+                local v54 = math.min(0.9, v53)
+                if v52 < 150 and (v51 and v_u_36 < 0.25 or v_u_36 > 0.25) and (v54 < v50 and not (v46:HasTag("Imitation") or v46:HasTag("UNDETECTABLE"))) then
+                    local _, _, _, v55, v56 = v_u_1.Obstruction:CastObstruction(v49, v48 - v49, v_u_34)
+                    if not v_u_34 then
+                        v_u_34 = v56
+                    end
+                    local _, _, _, v57, _ = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, v48 - v47, v_u_34)
+                    if v57 or v55 then
+                        v_u_36 = 0
+                    else
+                        if v_u_36 > 0.25 then
+                            if tick() - v_u_35 > 10 then
+                                script.InView["InView" .. math.random(3)]:Play()
+                            end
+                            v_u_35 = tick()
+                        end
+                        v_u_36 = v_u_36 + p38
+                    end
+                else
+                    v_u_36 = 0
+                    v_u_34 = nil
+                end
+            end
+        end
+    end
+end)
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Client.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.StepSFX
+-- Decompiled with Velocity Script Decompiler
+if script.Parent:FindFirstChildOfClass("Humanoid") then
+    local function v_u_7()
+        if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial ~= Enum.Material.Air then
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Carpet then
+                local v_u_1 = script.Steps:FindFirstChild("carpet"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("carpet"):GetChildren())]:Clone()
+                v_u_1.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_1.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_1.Volume = v_u_1.Volume / 2
+                end
+                if not v_u_1.IsLoaded then
+                    v_u_1.Loaded:Wait()
+                end
+                v_u_1:Play()
+                task.delay(v_u_1.TimeLength, function()
+                    -- upvalues: (copy) v_u_1
+                    v_u_1:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Foil then
+                local v_u_2 = script.Steps:FindFirstChild("inflatable"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("inflatable"):GetChildren())]:Clone()
+                v_u_2.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_2.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_2.Volume = v_u_2.Volume / 2
+                end
+                if not v_u_2.IsLoaded then
+                    v_u_2.Loaded:Wait()
+                end
+                v_u_2:Play()
+                task.delay(v_u_2.TimeLength, function()
+                    -- upvalues: (copy) v_u_2
+                    v_u_2:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.DiamondPlate or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Metal or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.CorrodedMetal) then
+                local v_u_3 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_3.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_3.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_3.Volume = v_u_3.Volume / 2
+                end
+                if not v_u_3.IsLoaded then
+                    v_u_3.Loaded:Wait()
+                end
+                v_u_3:Play()
+                task.delay(v_u_3.TimeLength, function()
+                    -- upvalues: (copy) v_u_3
+                    v_u_3:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Concrete then
+                local v_u_4 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_4.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_4.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_4.Volume = v_u_4.Volume / 2
+                end
+                if not v_u_4.IsLoaded then
+                    v_u_4.Loaded:Wait()
+                end
+                v_u_4:Play()
+                task.delay(v_u_4.TimeLength, function()
+                    -- upvalues: (copy) v_u_4
+                    v_u_4:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Grass or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Ground or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.LeafyGrass or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Mud)) then
+                local v_u_5 = script.Steps:FindFirstChild("grass").walking:GetChildren()[math.random(1, #script.Steps:FindFirstChild("grass").walking:GetChildren())]:Clone()
+                v_u_5.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_5.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_5.Volume = v_u_5.Volume / 2
+                end
+                if not v_u_5.IsLoaded then
+                    v_u_5.Loaded:Wait()
+                end
+                v_u_5:Play()
+                task.delay(v_u_5.TimeLength, function()
+                    -- upvalues: (copy) v_u_5
+                    v_u_5:Destroy()
+                end)
+                return
+            end
+            local v_u_6 = script.Steps:FindFirstChild("misc"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("misc"):GetChildren())]:Clone()
+            v_u_6.Parent = script.Parent:FindFirstChild("Torso")
+            v_u_6.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+            if script.Parent:GetAttribute("Crouching") == true then
+                v_u_6.Volume = v_u_6.Volume / 2
+            end
+            if not v_u_6.IsLoaded then
+                v_u_6.Loaded:Wait()
+            end
+            v_u_6:Play()
+            task.delay(v_u_6.TimeLength, function()
+                -- upvalues: (copy) v_u_6
+                v_u_6:Destroy()
+            end)
+        end
+    end
+    script.Parent:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator").AnimationPlayed:Connect(function(p8)
+        -- upvalues: (copy) v_u_7
+        local v_u_9 = p8:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("UNDETECTABLE") then
+                v_u_7()
+            end
+        end)
+        local v_u_10 = p8:GetMarkerReachedSignal("Step2"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("INVIS") then
+                v_u_7()
+            end
+        end)
+        p8.Stopped:Once(function()
+            -- upvalues: (ref) v_u_9, (ref) v_u_10
+            v_u_9:Disconnect()
+            v_u_10:Disconnect()
+        end)
+    end)
+end
+
+-- PATH: Workspace.PLAYERS.LOBBY.masonmiller790.Movement
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("TweenService")
+local v3 = game:GetService("RunService")
+local v4 = game:GetService("Players")
+local v_u_5 = v1:WaitForChild("Requests")
+local v_u_6 = v4.LocalPlayer
+local v_u_7 = v_u_6.Character or v_u_6.CharacterAdded:Wait()
+local v_u_8 = v_u_7:WaitForChild("Humanoid")
+local v_u_9 = v_u_7:WaitForChild("HumanoidRootPart")
+for _, v10 in v_u_7:GetDescendants() do
+    if v10:IsA("BasePart") then
+        v10.Massless = v_u_9 ~= v10
+    end
+end
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+v_u_8:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+local v_u_11 = Instance.new("BodyVelocity")
+v_u_11.Name = "MovementBodyVelocity"
+v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+v_u_11.P = (1 / 0)
+v_u_11.Velocity = Vector3.new(0, 0, 0)
+v_u_11.Parent = v_u_9
+v_u_8.WalkSpeed = 0.01
+v_u_8.JumpPower = 0
+local v_u_12 = 16
+local v_u_13 = Vector3.new(0, 0, 0)
+local v_u_14 = Vector3.new(0, 0, 0)
+local v_u_15 = false
+local v_u_16 = false
+local v_u_17 = {}
+v3.Heartbeat:Connect(function(_)
+    -- upvalues: (copy) v_u_17, (copy) v_u_9
+    local v18 = workspace:GetServerTimeNow()
+    v_u_17[v18] = v_u_9.Position
+    for v19 in next, v_u_17 do
+        if v19 < v18 - 1 then
+            v_u_17[v19] = nil
+        end
+    end
+end)
+function castRay(p20, p21, p22)
+    local v23 = RaycastParams.new()
+    v23.FilterDescendantsInstances = { p20, workspace.IGNORE, workspace.PLAYERS }
+    local v24 = workspace:Raycast(p21, p22, v23)
+    local v25 = v24 and v24.Position or p21 + p22
+    return (p21 - v25).Magnitude, p21, v25, v24
+end
+local v_u_26 = 0
+local v_u_27 = v_u_9.Position
+v3:IsStudio()
+local function v_u_38()
+    -- upvalues: (copy) v_u_7, (copy) v_u_8, (ref) v_u_12, (copy) v_u_9, (ref) v_u_13, (ref) v_u_16, (ref) v_u_15, (ref) v_u_14, (ref) v_u_27, (ref) v_u_26, (copy) v_u_5
+    local v28 = v_u_7:GetAttribute("WalkSpeed") or 0
+    local v29 = v_u_7:GetAttribute("RunSpeed") or 0
+    local v30 = v_u_8.MoveDirection
+    if v_u_7:HasTag("Confusion") then
+        v30 = v30 * -1
+    end
+    local v31 = v_u_7:GetAttribute("Crouching")
+    local v32 = v_u_7:GetAttribute("Running")
+    local v33 = v_u_7:HasTag("SlowStop")
+    local v34 = v_u_7:GetAttribute("Stamina") or 0
+    local v35 = v_u_7:HasTag("CantMove") or (v_u_7:HasTag("CustomSpeed") and v_u_7:GetAttribute("CustomSpeed") or v31 and v28 / 2)
+    if v35 then
+        v28 = v35
+    elseif v32 and v34 > 0 then
+        v28 = v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 and v29 and v29 or v28
+    end
+    v_u_12 = v28
+    local v36 = v_u_15
+    if v36 then
+        if v30.Magnitude > 0 and (v_u_16 and v_u_9.CFrame.LookVector:Dot(v30) < 0.45) or v30.Magnitude == 0 then
+            if v_u_9.CFrame.LookVector:Dot(v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) > 0.45 then
+                v36 = not v31
+            else
+                v36 = false
+            end
+        else
+            v36 = false
+        end
+    end
+    v_u_16 = v36
+    if v_u_16 then
+        local _, _, _, v37 = castRay(v_u_7, v_u_9.CFrame.Position, v_u_9.CFrame.LookVector * 1.5)
+        if not v37 then
+            v30 = v_u_9.CFrame.LookVector
+        end
+    end
+    if v30.Magnitude > 0 then
+        v_u_13 = v30 * v_u_12
+        if not v_u_16 then
+            v_u_14 = v_u_13
+        end
+        if not v32 or (v29 > v_u_12 or not v33) then
+            v33 = v_u_16
+        end
+        v_u_15 = v33
+    else
+        v_u_13 = Vector3.new(0, 0, 0)
+    end
+    if (v_u_9.Position - v_u_27).Magnitude > 0.25 and tick() - v_u_26 > 0.011111111111111112 then
+        v_u_5.Movement:FireServer(v_u_9.CFrame, workspace:GetServerTimeNow(), v_u_7)
+        v_u_27 = v_u_9.Position
+        v_u_26 = tick()
+    end
+end
+v3.Heartbeat:Connect(function(p39)
+    -- upvalues: (copy) v_u_6, (copy) v_u_38, (ref) v_u_16, (ref) v_u_14, (ref) v_u_13, (ref) v_u_15, (copy) v_u_9, (copy) v_u_11, (copy) v_u_7, (copy) v_u_2
+    v_u_6:GetAttribute("Mouselocked")
+    v_u_38()
+    if v_u_16 then
+        v_u_14 = ((v_u_13.Magnitude > 0 and v_u_13.Unit or Vector3.new(0, 0, 0)) * v_u_14.Magnitude):Lerp(Vector3.new(0, 0, 0), 1.8 * p39)
+        if v_u_14.Magnitude <= 1 then
+            v_u_16 = false
+            v_u_15 = false
+        end
+    else
+        v_u_14 = v_u_13
+    end
+    local v_u_40 = v_u_9:FindFirstChild("Velocity") or v_u_9:FindFirstChild("BodyVelocity")
+    if v_u_40 and v_u_11.Parent ~= nil then
+        v_u_40.Parent = nil
+        task.delay(0.05, function()
+            -- upvalues: (copy) v_u_40, (ref) v_u_9
+            v_u_40.Parent = v_u_9
+        end)
+    end
+    if v_u_7:GetAttribute("Ragdoll") or (v_u_7:HasTag("CantMove") or (v_u_7:HasTag("Ragdoll") or v_u_40)) then
+        v_u_11.MaxForce = Vector3.new(0, 0, 0)
+        v_u_11.Parent = nil
+    elseif v_u_11.MaxForce == Vector3.new(0, 0, 0) then
+        v_u_11.MaxForce = Vector3.new(1000, -5, 1000)
+        v_u_11.Parent = v_u_9
+    end
+    v_u_11.Velocity = v_u_14
+    local v41 = v_u_9:FindFirstChildOfClass("BodyVelocity")
+    if v41 and (v41:GetAttribute("Update") and v41:GetAttribute("Update") == "Root") then
+        local v42 = v41:GetAttribute("Tween") or 0
+        local v43 = v41:GetAttribute("Speed") or 0
+        v_u_2:Create(v41, TweenInfo.new(v42), {
+            ["Velocity"] = v_u_9.CFrame.LookVector * v43
+        }):Play()
+    end
+    local v44 = v_u_9:FindFirstChildOfClass("BodyGyro")
+    if v44 and (v44:GetAttribute("Update") and v44:GetAttribute("Update") == "Cam") then
+        v44.CFrame = workspace.CurrentCamera.CFrame
+    end
+end)
+v_u_7:GetAttributeChangedSignal("Running"):Connect(v_u_38)
+v_u_7:GetAttributeChangedSignal("Crouching"):Connect(v_u_38)
+v_u_8:GetPropertyChangedSignal("MoveDirection"):Connect(v_u_38)
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.ChaseThemes
+-- Decompiled with Velocity Script Decompiler
+local _ = script.Parent
+local v_u_1 = { workspace:WaitForChild("LobbyMusic") }
+local v_u_2 = math.random(#v_u_1)
+local v_u_3 = nil
+local function v_u_4()
+    -- upvalues: (ref) v_u_2, (copy) v_u_1, (ref) v_u_3, (copy) v_u_4
+    v_u_2 = v_u_2 % #v_u_1 + 1
+    v_u_3 = v_u_1[v_u_2]
+    v_u_3:Play()
+    v_u_3.Stopped:Once(v_u_4)
+end
+v_u_2 = v_u_2 % #v_u_1 + 1
+v_u_3 = v_u_1[v_u_2]
+v_u_3:Play()
+v_u_3.Stopped:Once(v_u_4)
+game:GetService("RunService").Stepped:Connect(function()
+    -- upvalues: (ref) v_u_3
+    for _, v5 in workspace.PLAYERS.KILLER:GetChildren() do
+        if v5:FindFirstChild("Phases") then
+            for v6 = 1, 4 do
+                v5:FindFirstChild("Phases"):FindFirstChild((tostring(v6))).Volume = 0
+            end
+        end
+    end
+    if game.Players.LocalPlayer:GetAttribute("LOADED") == false or (workspace.GAME.STOP_MUSIC_ALL.Value == true or (workspace.GAME.LMS.Value == true or workspace.GAME.STOP_MUSIC.Value == true)) then
+        v_u_3.TimePosition = 0
+        v_u_3.Volume = 0
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0), {
+            ["Volume"] = 0
+        }):Play()
+        return
+    elseif workspace.GAME.TIMER.Value <= 18 then
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(4), {
+            ["Volume"] = 0
+        }):Play()
+    else
+        game:GetService("TweenService"):Create(v_u_3, TweenInfo.new(0.25), {
+            ["Volume"] = 3
+        }):Play()
+    end
+end)
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Input
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("UserInputService")
+local v_u_2 = game:GetService("Players").LocalPlayer
+local v_u_3 = v_u_2.Character
+local v4 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp"))
+local v_u_5 = v4.Client("Input")
+local v_u_6 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Keybinds"))
+local v_u_7 = v4.Client("Reset")
+task.spawn(function()
+    -- upvalues: (copy) v_u_3, (copy) v_u_7
+    v_u_3:WaitForChild("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
+        -- upvalues: (ref) v_u_3, (ref) v_u_7
+        if v_u_3.Humanoid.Health == 0 then
+            v_u_7:Fire(true)
+        end
+    end)
+end)
+task.spawn(function()
+    repeat
+        local v8 = pcall(function()
+            game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+        end)
+        task.wait(1)
+    until v8
+end)
+local v_u_9 = false
+local v_u_10 = false
+v1.InputBegan:Connect(function(p11, p12)
+    -- upvalues: (copy) v_u_6, (ref) v_u_10, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    if p12 then
+        return
+    elseif table.find(v_u_6.Run, p11.KeyCode) then
+        v_u_10 = true
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+        else
+            v_u_9 = not v_u_9
+            v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        end
+    elseif table.find(v_u_6.Flashlight, p11.KeyCode) then
+        v_u_5:Fire(true, { "Flashlight" })
+    elseif table.find(v_u_6.Crouch, p11.KeyCode) then
+        v_u_5:Fire(true, { "Crouch" })
+    end
+end)
+v1.InputEnded:Connect(function(p13, _)
+    -- upvalues: (copy) v_u_6, (copy) v_u_2, (copy) v_u_5, (ref) v_u_10
+    if table.find(v_u_6.Run, p13.KeyCode) then
+        if v_u_2:GetAttribute("HoldToRun") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+        end
+        v_u_10 = false
+    end
+end)
+local v_u_14 = false
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Down:Connect(function()
+    -- upvalues: (ref) v_u_14, (copy) v_u_2, (ref) v_u_9, (copy) v_u_5
+    v_u_14 = true
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+    else
+        v_u_9 = not v_u_9
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+    end
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Sprint.Button.MouseButton1Up:Connect(function()
+    -- upvalues: (copy) v_u_2, (copy) v_u_5, (ref) v_u_14
+    if v_u_2:GetAttribute("HoldToRun") then
+        v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+    end
+    v_u_14 = false
+end)
+game:GetService("Players").LocalPlayer.PlayerGui.UI.UI:WaitForChild("MobileOverlay").Holder.Crouch.Button.MouseButton1Click:Connect(function()
+    -- upvalues: (copy) v_u_5
+    v_u_5:Fire(true, { "Crouch" })
+end)
+game:GetService("RunService").Heartbeat:Connect(function()
+    -- upvalues: (copy) v_u_2, (ref) v_u_10, (ref) v_u_14, (copy) v_u_3, (copy) v_u_5, (ref) v_u_9
+    if v_u_2:GetAttribute("HoldToRun") and (v_u_10 or v_u_14) and (v_u_3:GetAttribute("CanRun") and (not v_u_3:HasTag("Battery") and (not v_u_3:GetAttribute("Ragdoll") and (v_u_3:GetAttribute("Stamina") or 0) > 0))) then
+        if not v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { true, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", true)
+            return
+        end
+    elseif v_u_2:GetAttribute("HoldToRun") or (not v_u_3:GetAttribute("CanRun") or (v_u_3:HasTag("Battery") or (v_u_3:GetAttribute("Ragdoll") or (v_u_3:GetAttribute("Stamina") or 0) <= 0))) then
+        if v_u_3:GetAttribute("Running") then
+            v_u_5:Fire(true, { false, Enum.KeyCode.LeftShift.Value })
+            v_u_3:SetAttribute("Running", false)
+        end
+        v_u_9 = false
+        v_u_10 = false
+    elseif v_u_9 ~= v_u_3:GetAttribute("Running") then
+        v_u_5:Fire(true, { v_u_9, Enum.KeyCode.LeftShift.Value })
+        v_u_3:SetAttribute("Running", v_u_9)
+        return
+    end
+end)
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Animate
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = script.Parent
+local v2 = v_u_1:WaitForChild("Torso")
+local v_u_3 = v2:WaitForChild("Right Shoulder")
+local v_u_4 = v2:WaitForChild("Left Shoulder")
+local v_u_5 = v2:WaitForChild("Right Hip")
+local v_u_6 = v2:WaitForChild("Left Hip")
+v2:WaitForChild("Neck")
+local v_u_7 = v_u_1:WaitForChild("Humanoid")
+local v_u_8 = "Standing"
+local v_u_9 = v_u_7.MaxHealth / 2
+local v_u_10 = game:GetService("Workspace").CurrentCamera
+local v_u_11 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("CameraShaker"))
+local v_u_13 = v_u_11.new(Enum.RenderPriority.Camera.Value, function(p12)
+    -- upvalues: (copy) v_u_10
+    if v_u_10.CameraType ~= Enum.CameraType.Scriptable then
+        v_u_10.CFrame = v_u_10.CFrame * p12
+    end
+end)
+v_u_13:Start()
+require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Warp")).Client("Shake"):Connect(function(p14)
+    -- upvalues: (copy) v_u_13, (copy) v_u_11
+    if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+        v_u_13:Shake(v_u_11.Presets[p14])
+    end
+end)
+local v15, v16 = pcall(function()
+    return UserSettings():IsUserFeatureEnabled("UserAnimateScaleRun")
+end)
+local v_u_17 = v15 and v16
+local v_u_18 = ""
+local v_u_19 = nil
+local v_u_20 = nil
+local v_u_21 = nil
+local v_u_22 = 1
+local v_u_23 = {}
+local v_u_24 = {
+    ["idle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=72376427571966",
+            ["weight"] = 9
+        }
+    },
+    ["stop"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=83559231447722",
+            ["weight"] = 11
+        }
+    },
+    ["stopWalk"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=133043783896866",
+            ["weight"] = 11
+        }
+    },
+    ["runForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=78749200572411",
+            ["weight"] = 10
+        }
+    },
+    ["runLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96509043428510",
+            ["weight"] = 10
+        }
+    },
+    ["runRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=97131507395933",
+            ["weight"] = 10
+        }
+    },
+    ["runStart"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=113729068153328",
+            ["weight"] = 11
+        }
+    },
+    ["runStartLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=71403377531705",
+            ["weight"] = 11
+        }
+    },
+    ["runStartRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=75650510533728",
+            ["weight"] = 11
+        }
+    },
+    ["walkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=89929150450773",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111382930561219",
+            ["weight"] = 10
+        }
+    },
+    ["walkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=107545126168718",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=82823739770244",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=140470116427904",
+            ["weight"] = 10
+        }
+    },
+    ["walkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=85839904210745",
+            ["weight"] = 10
+        }
+    },
+    ["walkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=111516784776401",
+            ["weight"] = 10
+        }
+    },
+    ["walkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=118831683318213",
+            ["weight"] = 10
+        }
+    },
+    ["Crouchidle"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=86063084977279",
+            ["weight"] = 9
+        }
+    },
+    ["CrouchwalkForward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=93405694022444",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=117819977958017",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkForwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88661748313165",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackward"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=81174024597617",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=88741205365224",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkBackwardRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=96823064462744",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkRight"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=114730177951495",
+            ["weight"] = 10
+        }
+    },
+    ["CrouchwalkLeft"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=138684140853282",
+            ["weight"] = 10
+        }
+    },
+    ["jump"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["fall"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=110915217320372",
+            ["weight"] = 10
+        }
+    },
+    ["climb"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["sit"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolnone"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toolslash"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    },
+    ["toollunge"] = {
+        {
+            ["id"] = "http://www.roblox.com/asset/?id=108364603284786",
+            ["weight"] = 10
+        }
+    }
+}
+local v_u_25 = {
+    ["wave"] = false,
+    ["point"] = false,
+    ["dance1"] = true,
+    ["dance2"] = true,
+    ["dance3"] = true,
+    ["laugh"] = false,
+    ["cheer"] = false
+}
+function configureAnimationSet(p_u_26, p_u_27)
+    -- upvalues: (copy) v_u_23
+    if v_u_23[p_u_26] ~= nil then
+        for _, v28 in pairs(v_u_23[p_u_26].connections) do
+            v28:disconnect()
+        end
+    end
+    v_u_23[p_u_26] = {}
+    v_u_23[p_u_26].count = 0
+    v_u_23[p_u_26].totalWeight = 0
+    v_u_23[p_u_26].connections = {}
+    local v29 = script:FindFirstChild(p_u_26)
+    if v29 ~= nil then
+        local v30 = v_u_23[p_u_26].connections
+        local v31 = v29.ChildAdded
+        table.insert(v30, v31:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v32 = v_u_23[p_u_26].connections
+        local v33 = v29.ChildRemoved
+        table.insert(v32, v33:connect(function(_)
+            -- upvalues: (copy) p_u_26, (copy) p_u_27
+            configureAnimationSet(p_u_26, p_u_27)
+        end))
+        local v34 = 1
+        for _, v35 in pairs(v29:GetChildren()) do
+            if v35:IsA("Animation") then
+                local v36 = v_u_23[p_u_26].connections
+                local v37 = v35.Changed
+                table.insert(v36, v37:connect(function(_)
+                    -- upvalues: (copy) p_u_26, (copy) p_u_27
+                    configureAnimationSet(p_u_26, p_u_27)
+                    task.spawn(move, os.clock())
+                end))
+                v_u_23[p_u_26][v34] = {}
+                v_u_23[p_u_26][v34].anim = v35
+                local v38 = v35:FindFirstChild("Weight")
+                if v38 == nil then
+                    v_u_23[p_u_26][v34].weight = 1
+                else
+                    v_u_23[p_u_26][v34].weight = v38.Value
+                end
+                v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+                v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v_u_23[p_u_26][v34].weight
+                v34 = v34 + 1
+            end
+        end
+    end
+    if v_u_23[p_u_26].count <= 0 then
+        for v39, v40 in pairs(p_u_27) do
+            v_u_23[p_u_26][v39] = {}
+            v_u_23[p_u_26][v39].anim = Instance.new("Animation")
+            v_u_23[p_u_26][v39].anim.Name = p_u_26
+            v_u_23[p_u_26][v39].anim.AnimationId = v40.id
+            v_u_23[p_u_26][v39].weight = v40.weight
+            v_u_23[p_u_26].count = v_u_23[p_u_26].count + 1
+            v_u_23[p_u_26].totalWeight = v_u_23[p_u_26].totalWeight + v40.weight
+        end
+    end
+end
+function scriptChildModified(p41)
+    -- upvalues: (copy) v_u_24
+    local v42 = v_u_24[p41.Name]
+    if v42 ~= nil then
+        configureAnimationSet(p41.Name, v42)
+    end
+end
+script.ChildAdded:connect(scriptChildModified)
+script.ChildRemoved:connect(scriptChildModified)
+local v43
+if v_u_7 then
+    v43 = v_u_7:FindFirstChildOfClass("Animator")
+else
+    v43 = nil
+end
+if v43 then
+    local v44 = v43:GetPlayingAnimationTracks()
+    for _, v45 in ipairs(v44) do
+        v45:Stop(0)
+        v45:Destroy()
+    end
+end
+for v46, v47 in pairs(v_u_24) do
+    configureAnimationSet(v46, v47)
+end
+local v_u_48 = "None"
+local v_u_49 = 0
+local v_u_50 = 0
+function stopAllAnimations()
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_19, (ref) v_u_21, (ref) v_u_20
+    local v51 = v_u_18
+    local v52 = v_u_25[v51] ~= nil and v_u_25[v51] == false and "idle" or v51
+    v_u_18 = ""
+    v_u_19 = nil
+    if v_u_21 ~= nil then
+        v_u_21:disconnect()
+    end
+    if v_u_20 ~= nil then
+        v_u_20:Stop()
+        v_u_20:Destroy()
+        v_u_20 = nil
+    end
+    return v52
+end
+function setAnimationSpeed(p53)
+    -- upvalues: (ref) v_u_22, (ref) v_u_20
+    if p53 ~= v_u_22 and v_u_20 then
+        v_u_22 = p53
+        v_u_20:AdjustSpeed(v_u_22)
+    end
+end
+function keyFrameReachedFunc(p54)
+    -- upvalues: (ref) v_u_18, (copy) v_u_25, (ref) v_u_22, (copy) v_u_7
+    if p54 == "End" then
+        local v55 = v_u_18
+        local v56 = v_u_25[v55] ~= nil and v_u_25[v55] == false and "idle" or v55
+        local v57 = v_u_22
+        playAnimation(v56, 0, v_u_7)
+        setAnimationSpeed(v57)
+    end
+end
+function playAnimation(p58, p59, p60)
+    -- upvalues: (copy) v_u_23, (ref) v_u_19, (ref) v_u_20, (ref) v_u_18, (ref) v_u_22, (ref) v_u_21, (ref) v_u_8, (copy) v_u_13, (copy) v_u_11
+    local v61 = math.random(1, v_u_23[p58].totalWeight)
+    local v62 = 1
+    while v_u_23[p58][v62].weight < v61 do
+        v61 = v61 - v_u_23[p58][v62].weight
+        v62 = v62 + 1
+    end
+    local v63 = v_u_23[p58][v62].anim
+    if v63 ~= v_u_19 then
+        if v_u_20 ~= nil then
+            v_u_20:Stop(p59)
+            v_u_20:Destroy()
+        end
+        local v64 = (not (v_u_18:match("walk") or v_u_18:match("run")) or v_u_18 == "stop") and 0 or v_u_20.TimePosition
+        v_u_22 = 1
+        v_u_20 = p60:LoadAnimation(v63)
+        v_u_20.Priority = Enum.AnimationPriority.Core
+        v_u_20:Play(p59)
+        v_u_20.TimePosition = v64
+        v_u_18 = p58
+        v_u_19 = v63
+        if v_u_21 ~= nil then
+            v_u_21:disconnect()
+        end
+        local v_u_65 = v_u_20:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_8, (ref) v_u_13, (ref) v_u_11
+            if (v_u_8 == "Running" or v_u_8 == "RunningStart") and game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                v_u_13:Shake(v_u_11.Presets.RunningShake)
+            end
+        end)
+        v_u_20.Stopped:Once(function()
+            -- upvalues: (ref) v_u_65
+            v_u_65:Disconnect()
+        end)
+        v_u_21 = v_u_20.KeyframeReached:connect(keyFrameReachedFunc)
+    end
+end
+local v_u_66 = ""
+local v_u_67 = nil
+local v_u_68 = nil
+local v_u_69 = nil
+function toolKeyFrameReachedFunc(p70)
+    -- upvalues: (ref) v_u_66, (copy) v_u_7
+    if p70 == "End" then
+        playToolAnimation(v_u_66, 0, v_u_7)
+    end
+end
+function playToolAnimation(p71, p72, p73, p74)
+    -- upvalues: (copy) v_u_23, (ref) v_u_68, (ref) v_u_67, (ref) v_u_66, (ref) v_u_69
+    local v75 = math.random(1, v_u_23[p71].totalWeight)
+    local v76 = 1
+    while v_u_23[p71][v76].weight < v75 do
+        v75 = v75 - v_u_23[p71][v76].weight
+        v76 = v76 + 1
+    end
+    local v77 = v_u_23[p71][v76].anim
+    if v_u_68 ~= v77 then
+        if v_u_67 ~= nil then
+            v_u_67:Stop()
+            v_u_67:Destroy()
+            p72 = 0
+        end
+        v_u_67 = p73:LoadAnimation(v77)
+        if p74 then
+            v_u_67.Priority = p74
+        end
+        v_u_67:Play(p72)
+        v_u_66 = p71
+        v_u_68 = v77
+        v_u_69 = v_u_67.KeyframeReached:connect(toolKeyFrameReachedFunc)
+    end
+end
+function stopToolAnimations()
+    -- upvalues: (ref) v_u_66, (ref) v_u_69, (ref) v_u_68, (ref) v_u_67
+    local v78 = v_u_66
+    if v_u_69 ~= nil then
+        v_u_69:disconnect()
+    end
+    v_u_66 = ""
+    v_u_68 = nil
+    if v_u_67 ~= nil then
+        v_u_67:Stop()
+        v_u_67:Destroy()
+        v_u_67 = nil
+    end
+    return v78
+end
+function onDied()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Dead"
+end
+function onJumping()
+    -- upvalues: (copy) v_u_7, (ref) v_u_50, (ref) v_u_8
+    playAnimation("jump", 0.1, v_u_7)
+    v_u_50 = 0.3
+    v_u_8 = "Jumping"
+end
+function onClimbing(p79)
+    -- upvalues: (copy) v_u_17, (copy) v_u_1, (copy) v_u_7, (ref) v_u_8
+    local v80 = p79 / (not v_u_17 and 1 or v_u_1:GetScale())
+    playAnimation("climb", 0.1, v_u_7)
+    setAnimationSpeed(v80 / 12)
+    v_u_8 = "Climbing"
+end
+function onGettingUp()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "GettingUp"
+end
+function onFreeFall()
+    -- upvalues: (ref) v_u_50, (copy) v_u_7, (ref) v_u_8
+    if v_u_50 <= 0 then
+        playAnimation("fall", 0.3, v_u_7)
+    end
+    v_u_8 = "FreeFall"
+end
+function onFallingDown()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "FallingDown"
+end
+function onSeated()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "Seated"
+end
+function onPlatformStanding()
+    -- upvalues: (ref) v_u_8
+    v_u_8 = "PlatformStanding"
+end
+function onSwimming(p81)
+    -- upvalues: (ref) v_u_8
+    if p81 > 0 then
+        v_u_8 = "Running"
+    else
+        v_u_8 = "Standing"
+    end
+end
+function getTool()
+    -- upvalues: (copy) v_u_1
+    for _, v82 in ipairs(v_u_1:GetChildren()) do
+        if v82.className == "Tool" then
+            return v82
+        end
+    end
+    return nil
+end
+function getToolAnim(p83)
+    for _, v84 in ipairs(p83:GetChildren()) do
+        if v84.Name == "toolanim" and v84.className == "StringValue" then
+            return v84
+        end
+    end
+    return nil
+end
+function animateTool()
+    -- upvalues: (ref) v_u_48, (copy) v_u_7
+    if v_u_48 == "None" then
+        playToolAnimation("toolnone", 0.1, v_u_7, Enum.AnimationPriority.Idle)
+        return
+    elseif v_u_48 == "Slash" then
+        playToolAnimation("toolslash", 0, v_u_7, Enum.AnimationPriority.Action)
+        return
+    elseif v_u_48 == "Lunge" then
+        playToolAnimation("toollunge", 0, v_u_7, Enum.AnimationPriority.Action)
+    end
+end
+function moveSit()
+    -- upvalues: (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6
+    v_u_3.MaxVelocity = 0.15
+    v_u_4.MaxVelocity = 0.15
+    v_u_3:SetDesiredAngle(1.57)
+    v_u_4:SetDesiredAngle(-1.57)
+    v_u_5:SetDesiredAngle(1.57)
+    v_u_6:SetDesiredAngle(-1.57)
+end
+local v_u_85 = 0
+local v_u_86 = v_u_7.Health
+local v_u_87 = false
+local v_u_88 = false
+local v_u_89 = 0
+function move(p90)
+    -- upvalues: (copy) v_u_1, (ref) v_u_8, (copy) v_u_7, (ref) v_u_85, (ref) v_u_50, (ref) v_u_87, (ref) v_u_89, (copy) v_u_13, (ref) v_u_20, (copy) v_u_25, (ref) v_u_18, (ref) v_u_88, (copy) v_u_3, (copy) v_u_4, (copy) v_u_5, (copy) v_u_6, (copy) v_u_9, (ref) v_u_86, (ref) v_u_48, (ref) v_u_49, (ref) v_u_68
+    if v_u_1:HasTag("CantMove") or (v_u_1:GetAttribute("Stun") == true or (v_u_1:HasTag("StopAnim") or v_u_1:HasTag("KillAnims"))) then
+        if v_u_1:HasTag("KillAnims") then
+            v_u_8 = "None"
+            stopAllAnimations()
+        elseif v_u_8 ~= "Standing" then
+            v_u_8 = "Standing"
+            playAnimation("idle", 0.1, v_u_7)
+        end
+    else
+        local v91 = 1
+        local v92 = 1
+        local v93 = p90 - v_u_85
+        v_u_85 = p90
+        local v94 = false
+        if v_u_50 > 0 then
+            v_u_50 = v_u_50 - v93
+        end
+        local v95 = (v_u_1:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity * Vector3.new(1, 0, 1)).Magnitude
+        if v_u_8 == "Standing" or v_u_8 == "Stopping" then
+            if v_u_1:GetAttribute("Crouching") == true and v_u_87 == false then
+                v_u_87 = true
+                stopAllAnimations()
+                playAnimation("Crouchidle", 0.1, v_u_7)
+            elseif v_u_1:GetAttribute("Crouching") == false and v_u_87 == true then
+                v_u_87 = false
+                stopAllAnimations()
+                playAnimation("idle", 0.1, v_u_7)
+            end
+        end
+        if v_u_7.FloorMaterial ~= Enum.Material.Air and (v_u_8 ~= "Stopping" or v_u_1:FindFirstChild("HumanoidRootPart").CFrame.LookVector:Dot(v_u_7.MoveDirection) > 0.45) then
+            if v95 > 0.01 and (v95 <= 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0)) then
+                v_u_89 = 0
+                v_u_13:StopSustained(0.5)
+                v_u_8 = "Walking"
+            elseif v95 > 15 and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v96 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v96 = v96 * -1
+                end
+                local v_u_97 = game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default and 1 or (v96:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 and 2 or (v96:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 and 3 or 1))
+                if v_u_1:HasTag("Battery") or v_u_8 == "Running" and (v_u_8 ~= "RunningStart" or v_u_89 == v_u_97) then
+                    if v_u_8 == "Running" then
+                        v_u_89 = 0
+                    end
+                else
+                    stopAllAnimations()
+                    if v_u_97 == 2 then
+                        v_u_89 = 2
+                        playAnimation("runStartRight", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 3 then
+                        v_u_89 = 3
+                        playAnimation("runStartLeft", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    elseif v_u_97 == 1 then
+                        v_u_89 = 1
+                        playAnimation("runStart", 0, v_u_7)
+                        v_u_8 = "RunningStart"
+                    else
+                        v_u_8 = "RunningStart"
+                    end
+                    if v_u_20 and v_u_8 == "RunningStart" then
+                        v_u_20.Priority = Enum.AnimationPriority.Action
+                        v_u_20.Stopped:Once(function()
+                            -- upvalues: (ref) v_u_8, (ref) v_u_89, (ref) v_u_97, (ref) v_u_20
+                            if v_u_8 == "RunningStart" and v_u_89 == v_u_97 then
+                                if v_u_20 then
+                                    v_u_20.TimePosition = 0
+                                end
+                                v_u_8 = "Running"
+                                v_u_89 = 0
+                            end
+                        end)
+                    end
+                end
+            else
+                v_u_89 = 0
+                if v_u_25[v_u_18] == nil and (v_u_8 ~= "Standing" or v95 > 12) and (v_u_8 ~= "Stopping" and v_u_8 ~= "WalkStopping") then
+                    if (v_u_8 == "Standing" and v95 > 12 or (v_u_8 == "Running" or v_u_8 == "RunningStart") and v95 > 21) and v_u_7.MoveDirection == Vector3.new(0, 0, 0) then
+                        v_u_8 = "Stopping"
+                        stopAllAnimations()
+                        playAnimation("stop", 0, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    elseif v_u_8 == "Walking" and (v_u_1:GetAttribute("Crouching") == false and (v95 > 2 and v_u_7.MoveDirection == Vector3.new(0, 0, 0))) then
+                        v_u_8 = "WalkStopping"
+                        stopAllAnimations()
+                        playAnimation("stopWalk", 0.1, v_u_7)
+                        if v_u_20 then
+                            v_u_20.Priority = Enum.AnimationPriority.Action2
+                            v_u_20.Stopped:Once(function()
+                                -- upvalues: (ref) v_u_8, (ref) v_u_88, (ref) v_u_1, (ref) v_u_7
+                                v_u_8 = "Standing"
+                                v_u_88 = false
+                                if v_u_8 == "Standing" then
+                                    if v_u_1:GetAttribute("Crouching") == true then
+                                        playAnimation("Crouchidle", 0.1, v_u_7)
+                                        return
+                                    end
+                                    playAnimation("idle", 0.1, v_u_7)
+                                end
+                            end)
+                        else
+                            v_u_8 = "Standing"
+                            if v_u_1:GetAttribute("Crouching") == true then
+                                playAnimation("Crouchidle", 0.1, v_u_7)
+                            else
+                                playAnimation("idle", 0.1, v_u_7)
+                            end
+                        end
+                    else
+                        if v_u_1:GetAttribute("Crouching") == true then
+                            playAnimation("Crouchidle", 0.1, v_u_7)
+                        else
+                            playAnimation("idle", 0.1, v_u_7)
+                        end
+                        v_u_8 = "Standing"
+                    end
+                end
+            end
+        end
+        if v_u_8 == "FreeFall" and v_u_50 <= 0 then
+            playAnimation("fall", 0.3, v_u_7)
+        else
+            if v_u_8 == "Seated" then
+                playAnimation("sit", 0.5, v_u_7)
+                return
+            end
+            if v_u_8 == "Walking" or v_u_8 == "WalkStopping" and v_u_7.MoveDirection ~= Vector3.new(0, 0, 0) then
+                local v98 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v98 = v98 * -1
+                end
+                if v_u_1:GetAttribute("Crouching") == true then
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("CrouchwalkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 6)
+                else
+                    if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForwardLeft", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, -1)).Unit) > 0.95 then
+                        playAnimation("walkForward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkRight", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(0, 0, 1)).Unit) > 0.95 then
+                        playAnimation("walkBackward", 0.3, v_u_7)
+                    elseif v98:Dot((Vector3.new(-1, 0, 0)).Unit) > 0.95 then
+                        playAnimation("walkLeft", 0.3, v_u_7)
+                    end
+                    if v_u_20 then
+                        v_u_20.Priority = Enum.AnimationPriority.Movement
+                    end
+                    setAnimationSpeed(v95 / 12)
+                end
+            elseif v_u_8 == "Running" then
+                local v99 = v_u_1:FindFirstChild("HumanoidRootPart").CFrame:VectorToObjectSpace(v_u_7.MoveDirection)
+                if v_u_1:HasTag("Confusion") then
+                    v99 = v99 * -1
+                end
+                if game:GetService("UserInputService").MouseBehavior == Enum.MouseBehavior.Default then
+                    playAnimation("runForward", 0.1, v_u_7)
+                elseif v99:Dot((Vector3.new(1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runRight", 0.3, v_u_7)
+                elseif v99:Dot((Vector3.new(-1, 0, -1)).Unit) > 0.9 then
+                    playAnimation("runLeft", 0.3, v_u_7)
+                else
+                    playAnimation("runForward", 0.3, v_u_7)
+                end
+                if v_u_20 then
+                    v_u_20.Priority = Enum.AnimationPriority.Movement
+                end
+                setAnimationSpeed(v95 / 24)
+            elseif v_u_8 == "Dead" or (v_u_8 == "GettingUp" or (v_u_8 == "FallingDown" or (v_u_8 == "Seated" or v_u_8 == "PlatformStanding"))) then
+                stopAllAnimations()
+                v94 = true
+                v92 = 1
+                v91 = 0.1
+            end
+        end
+        if v94 then
+            local v100 = p90 * v92
+            local v101 = v91 * math.sin(v100)
+            v_u_3:SetDesiredAngle(v101 + 0)
+            v_u_4:SetDesiredAngle(v101 - 0)
+            v_u_5:SetDesiredAngle(-v101)
+            v_u_6:SetDesiredAngle(-v101)
+        end
+        if v_u_7.Health <= v_u_9 then
+            if v_u_88 == false then
+                v_u_88 = true
+                if game:GetService("Players").LocalPlayer:GetAttribute("CameraShake") == true then
+                    v_u_13:ShakeSustain(v_u_13.Presets.Injured)
+                end
+            end
+        elseif v_u_88 == true then
+            v_u_88 = false
+            v_u_13:StopSustained(1)
+        end
+        v_u_86 = v_u_7.Health
+        local v102 = getTool()
+        if v102 and v102:FindFirstChild("Handle") then
+            local v103 = getToolAnim(v102)
+            if v103 then
+                v_u_48 = v103.Value
+                v103.Parent = nil
+                v_u_49 = p90 + 0.3
+            end
+            if v_u_49 < p90 then
+                v_u_49 = 0
+                v_u_48 = "None"
+            end
+            animateTool()
+        else
+            stopToolAnimations()
+            v_u_48 = "None"
+            v_u_68 = nil
+            v_u_49 = 0
+        end
+    end
+end
+v_u_7.Died:connect(onDied)
+v_u_7.Jumping:connect(onJumping)
+v_u_7.Climbing:connect(onClimbing)
+v_u_7.GettingUp:connect(onGettingUp)
+v_u_7.FreeFalling:connect(onFreeFall)
+v_u_7.FallingDown:connect(onFallingDown)
+v_u_7.Seated:connect(onSeated)
+v_u_7.PlatformStanding:connect(onPlatformStanding)
+v_u_7.Swimming:connect(onSwimming)
+playAnimation("idle", 0.1, v_u_7)
+local _ = "Standing"
+while v_u_1.Parent ~= nil do
+    local _, v104 = wait()
+    move(v104)
+end
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Elevator.On Respawn
+-- Decompiled with Velocity Script Decompiler
+local v1 = game:GetService("ReplicatedStorage")
+local v_u_2 = game:GetService("RunService")
+game:GetService("TweenService")
+local v_u_3 = game:GetService("ContentProvider")
+local v_u_4 = game:GetService("Players").LocalPlayer.PlayerGui
+repeat
+    task.wait()
+until game:IsLoaded() and (game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"))
+task.wait(0.01)
+if script:WaitForChild("Check", 10):InvokeServer(game:GetService("Players").LocalPlayer) == true then
+    script:WaitForChild("RemoteEvent", 10):FireServer(true)
+    script.Parent.Parent:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame
+else
+    local v_u_5 = v_u_4:WaitForChild("UI", 10):WaitForChild("Transitions"):WaitForChild("Lobby"):FindFirstChild("LobbyUIContainer") or v_u_4:WaitForChild("UI", 10):WaitForChild("UI"):WaitForChild("LobbyUIContainer", 10)
+    if v_u_5:FindFirstChild("Buttons") then
+        v_u_5.Buttons.Visible = true
+    end
+    v_u_5.Visible = false
+    script:WaitForChild("RemoteEvent", 10):FireServer(false)
+    v_u_3:PreloadAsync({
+        workspace:WaitForChild("Lobby"),
+        script:WaitForChild("Animation"),
+        script:WaitForChild("ElevatorIntro"),
+        script:WaitForChild("WaitAnimation")
+    })
+    require(v1:WaitForChild("Modules"):WaitForChild("Warp"))
+    local v6 = require(v1:WaitForChild("Modules"):WaitForChild("Cutscenes"))
+    local v7 = require(v1:WaitForChild("Modules"):WaitForChild("Maid"))
+    local v_u_8 = script.Parent.Parent
+    local v9 = workspace.LoadingSFX
+    v9:Play()
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = true
+    v_u_8:WaitForChild("Humanoid").AutoRotate = false
+    v_u_8:AddTag("CantMove")
+    v_u_8:AddTag("Cutscene")
+    game:GetService("Players").LocalPlayer:AddTag("Cutscene")
+    function lerp(p10, p11, p12)
+        return p10 + (p11 - p10) * p12
+    end
+    local v_u_13 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator")
+    v_u_13:PivotTo(CFrame.new(483.989, 61.528, 109.666))
+    local v_u_14 = workspace:WaitForChild("Lobby"):WaitForChild("Shaft")
+    v_u_14:PivotTo(CFrame.new(484.935, 277.252, 109.744))
+    local v_u_15 = Instance.new("CFrameValue")
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    local v_u_16 = Instance.new("CFrameValue")
+    v_u_16.Value = CFrame.new(0, 200, 0)
+    local v_u_17 = v_u_14:GetPivot()
+    local v_u_18 = v_u_13:GetPivot()
+    local v19 = next
+    local v20, v21 = v_u_8:GetDescendants()
+    for _, v22 in v19, v20, v21 do
+        if v22:IsA("BasePart") then
+            v22.LocalTransparencyModifier = v22.Transparency
+        end
+    end
+    local v23 = workspace:WaitForChild("Lobby"):WaitForChild("Elevator"):WaitForChild("Elevator Doors"):WaitForChild("DoorRoot")
+    v23.LDoor.DesiredAngle = 0
+    v23.RDoor.DesiredAngle = 0
+    local v_u_24 = workspace.CurrentCamera
+    local v_u_25 = v6.ElevatorAlone
+    local v_u_26 = v_u_25.CameraRig:Clone()
+    v_u_26:PivotTo(workspace:WaitForChild("Lobby"):WaitForChild("Camera Position").CFrame)
+    v_u_26.Parent = workspace.IGNORE
+    v_u_26:FindFirstChild(v_u_25.RootPart)
+    local v_u_27 = v_u_26:FindFirstChild(v_u_25.CameraPart)
+    v_u_24.CameraType = Enum.CameraType.Scriptable
+    local v_u_28 = v_u_24.CFrame
+    local _ = v_u_24.FieldOfView
+    local function v29()
+        -- upvalues: (copy) v_u_14, (copy) v_u_17, (copy) v_u_15, (copy) v_u_13, (copy) v_u_18, (copy) v_u_16, (copy) v_u_26, (copy) v_u_8
+        v_u_14:PivotTo(v_u_17 * v_u_15.Value)
+        v_u_13:PivotTo(v_u_18 * v_u_16.Value)
+        v_u_26:PivotTo(workspace:FindFirstChild("Lobby"):WaitForChild("Camera Position").CFrame * v_u_16.Value)
+        v_u_8:WaitForChild("HumanoidRootPart").CFrame = workspace:WaitForChild("Lobby"):WaitForChild("Player Position").CFrame * v_u_16.Value
+    end
+    local v30 = game:GetService("RunService").Stepped:Connect(v29)
+    local v31 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(script.Animation)
+    v31:Play()
+    local v32 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("WaitAnimation"))
+    v32:Play()
+    local v33
+    if game:GetService("Players").LocalPlayer:HasTag("LOADED") then
+        v33 = true
+    else
+        local v_u_34 = false
+        game:GetService("Players").LocalPlayer:AddTag("LOADED")
+        game:GetService("Players").LocalPlayer:SetAttribute("LOADED", false)
+        task.spawn(function()
+            -- upvalues: (copy) v_u_15, (copy) v_u_4, (copy) v_u_25, (copy) v_u_13, (copy) v_u_3, (ref) v_u_34
+            local v_u_35 = game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0), {
+                ["Value"] = CFrame.new(0, 100, 0)
+            })
+            v_u_35:Play()
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = true
+            local v_u_36 = {
+                v_u_25.Animation,
+                game:GetService("ReplicatedStorage"),
+                game:GetService("StarterGui"),
+                game:GetService("Workspace")
+            }
+            local v37 = 0
+            local v_u_38 = 0
+            for _, v39 in next, v_u_36 do
+                local v40 = next
+                local v41, v42 = v39:GetDescendants()
+                for _, v43 in v40, v41, v42 do
+                    if v43:IsA("Sound") or (v43:IsA("Animation") or (v43:IsA("MeshPart") or (v43:IsA("ImageLabel") or (v43:IsA("ImageButton") or (v43:IsA("Decal") or (v43:IsA("Texture") or (v43:IsA("ParticleEmitter") or v43:IsA("SurfaceAppearance")))))))) then
+                        v37 = v37 + 1
+                    end
+                end
+            end
+            local v_u_44 = false
+            local v_u_45 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_15, (copy) v_u_35, (ref) v_u_44
+                repeat
+                    v_u_15.Value = CFrame.new(0, 0, 0)
+                    v_u_35:Play()
+                    v_u_35.Completed:Wait()
+                until v_u_44 == true
+            end)
+            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "Loading assets (0/" .. v37 .. ")"
+            local v_u_46 = nil
+            if game:GetService("RunService"):IsStudio() then
+                if v_u_44 == false then
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                    v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                    v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                        -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                        v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                        v_u_45 = true
+                    end)
+                end
+            else
+                task.delay(10, function()
+                    -- upvalues: (ref) v_u_44, (ref) v_u_4, (ref) v_u_13, (ref) v_u_46, (ref) v_u_45
+                    if v_u_44 == false then
+                        v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = true
+                        v_u_13:FindFirstChild("Button").Attachment.shine:Emit(1)
+                        v_u_46 = v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading"):WaitForChild("Button").MouseButton1Click:Once(function()
+                            -- upvalues: (ref) v_u_4, (ref) v_u_13, (ref) v_u_45
+                            v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                            v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                            v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                            v_u_45 = true
+                        end)
+                    end
+                end)
+            end
+            local v_u_47 = false
+            task.spawn(function()
+                -- upvalues: (ref) v_u_3, (copy) v_u_36, (ref) v_u_38, (ref) v_u_47, (ref) v_u_4
+                if game:GetService("UserInputService").TouchEnabled or game:GetService("UserInputService").GamepadEnabled then
+                    task.wait(8)
+                else
+                    v_u_3:PreloadAsync(v_u_36, function(_, _)
+                        -- upvalues: (ref) v_u_38
+                        v_u_38 = v_u_38 + 1
+                    end)
+                end
+                v_u_47 = true
+                v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+            end)
+            local v48 = v_u_47
+            local v49 = 0
+            while true do
+                if tick() - v49 > 0.1 then
+                    v49 = tick()
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = "\nLoading assets (" .. v_u_38 .. "/" .. v_u_38 + game:GetService("ContentProvider").RequestQueueSize .. ")"
+                end
+                task.wait()
+                if v_u_45 or v48 then
+                    v_u_47 = true
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading"):WaitForChild("Loading").Text = ""
+                    v_u_44 = true
+                    v_u_35.Completed:Wait()
+                    if v_u_46 then
+                        v_u_46:Disconnect()
+                    end
+                    v_u_4:WaitForChild("UI"):WaitForChild("SkipLoading").Enabled = false
+                    v_u_13:FindFirstChild("Button").Attachment.PointLight.Enabled = false
+                    v_u_4:WaitForChild("UI"):WaitForChild("UI"):WaitForChild("Loading").Visible = false
+                    v_u_35:Cancel()
+                    v_u_34 = true
+                    v_u_15.Value = CFrame.new(0, -8, 0)
+                    return
+                end
+            end
+        end)
+        v33 = v_u_34
+    end
+    repeat
+        v_u_24.CFrame = v_u_27.CFrame
+        v_u_24.FieldOfView = 70
+        task.wait()
+    until v33 == true
+    local v50 = v_u_26:FindFirstChild("AnimationController"):WaitForChild("Animator"):LoadAnimation(v_u_25.Animation)
+    repeat
+        task.wait()
+    until v50.Length > 0
+    v32:Stop(0.25)
+    v31:Stop(0.25)
+    local v_u_51 = v6.ElevatorAlone
+    local v_u_52 = v7.new()
+    v50:Play()
+    v_u_52:Mark(v50)
+    task.delay(7, v_u_26.Destroy, v_u_26)
+    v9:Stop()
+    workspace.LandingSFX:Play()
+    local v53 = v_u_8:WaitForChild("Humanoid"):LoadAnimation(script:WaitForChild("ElevatorIntro"))
+    v53:Play()
+    task.spawn(function()
+        -- upvalues: (copy) v_u_2, (copy) v_u_24, (copy) v_u_27, (copy) v_u_51, (copy) v_u_52
+        local v_u_54 = 0.1
+        v_u_52:Mark((v_u_2.PreSimulation:Connect(function(p55)
+            -- upvalues: (ref) v_u_24, (ref) v_u_54, (ref) v_u_27, (ref) v_u_51
+            v_u_24.CameraType = Enum.CameraType.Scriptable
+            v_u_54 = v_u_54 + p55 * 60
+            v_u_24.CFrame = v_u_27.CFrame
+            if v_u_51.FOV then
+                local v56 = v_u_54
+                if v_u_51.FOV[math.ceil(v56)] then
+                    local v57 = v_u_54
+                    v_u_24.FieldOfView = v_u_51.FOV[math.ceil(v57)]
+                end
+            end
+        end)))
+    end)
+    task.delay(v50.Length, function()
+        -- upvalues: (copy) v_u_24, (copy) v_u_28, (copy) v_u_52
+        v_u_24.CFrame = v_u_28
+        v_u_24.CameraType = Enum.CameraType.Custom
+        game:GetService("Players").LocalPlayer:RemoveTag("Cutscene")
+        v_u_52:Sweep()
+    end)
+    game:GetService("TweenService"):Create(v_u_15, TweenInfo.new(0, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    game:GetService("TweenService"):Create(v_u_16, TweenInfo.new(3.65, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["Value"] = CFrame.new(0, 0, 0)
+    }):Play()
+    task.wait(4)
+    v_u_15.Value = CFrame.new(0, 0, 0)
+    v_u_16.Value = CFrame.new(0, 0, 0)
+    v29()
+    v_u_15:Destroy()
+    v_u_16:Destroy()
+    v30:Disconnect()
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+        ["DesiredAngle"] = 0.6
+    }):Play()
+    task.wait(3)
+    game:GetService("TweenService"):Create(v23.LDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    game:GetService("TweenService"):Create(v23.RDoor, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+        ["DesiredAngle"] = 0
+    }):Play()
+    if v53.IsPlaying then
+        v53.Stopped:Wait()
+    end
+    v_u_8:RemoveTag("CantMove")
+    v_u_8:RemoveTag("Cutscene")
+    v_u_8:WaitForChild("HumanoidRootPart").Anchored = false
+    v_u_8:WaitForChild("Humanoid").AutoRotate = true
+    script.Ambience:Play()
+    v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby")
+    v_u_5.Visible = true
+    v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby").GroupTransparency = 1
+    game:GetService("TweenService"):Create(v_u_4:WaitForChild("UI"):WaitForChild("Transitions"):WaitForChild("Lobby"), TweenInfo.new(0.5), {
+        ["GroupTransparency"] = 0
+    }):Play()
+    task.delay(0.5, function()
+        -- upvalues: (copy) v_u_5, (copy) v_u_4
+        v_u_5.Parent = v_u_4:WaitForChild("UI"):WaitForChild("UI")
+    end)
+    script.RemoteEvent:FireServer(true)
+end
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Elevator.On Respawn.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Voice
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Voice.AudioDeviceInput.Mute
+-- Decompiled with Velocity Script Decompiler
+if game:GetService("Players"):GetPlayerFromCharacter(script.Parent.Parent.Parent) == game:GetService("Players").LocalPlayer then
+    script.Parent.Volume = 0
+end
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Client
+-- Decompiled with Velocity Script Decompiler
+local v_u_1 = require(game:GetService("ReplicatedStorage").Modules.ToolKit)
+local v2 = { "Torso", "Head", "Glow" }
+for _, v_u_3 in script.Parent:GetDescendants() do
+    if not v_u_3.Parent:IsA("Accessory") and (v_u_3:IsA("BasePart") and not table.find(v2, v_u_3.Name)) then
+        v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        v_u_3:GetPropertyChangedSignal("LocalTransparencyModifier"):Connect(function()
+            -- upvalues: (copy) v_u_3
+            v_u_3.LocalTransparencyModifier = v_u_3.Transparency
+        end)
+    end
+end
+local v_u_4 = {
+    ["Character"] = script.Parent,
+    ["Humanoid"] = script.Parent:FindFirstChildOfClass("Humanoid"),
+    ["RootPart"] = script.Parent:WaitForChild("HumanoidRootPart")
+}
+local v_u_5 = game:GetService("UserInputService")
+local v_u_6 = v_u_4.Character:WaitForChild("Torso", 100):FindFirstChild("Neck")
+local v_u_7 = v_u_6.C0.Y
+local v_u_8 = CFrame.new
+local v_u_9 = CFrame.Angles
+local v_u_10 = math.asin
+v_u_4.State = "Standing"
+Instance.new("NumberValue")
+local v_u_11 = script:WaitForChild("Replicator")
+function castRay(p12, p13, p14)
+    local v15 = RaycastParams.new()
+    v15.FilterDescendantsInstances = {
+        p12,
+        workspace.IGNORE,
+        workspace.PLAYERS,
+        workspace.Terrain
+    }
+    local v16 = workspace:Raycast(p13, p14, v15)
+    local v17 = v16 and v16.Position or p13 + p14
+    return (p13 - v17).Magnitude, p13, v17, v16
+end
+game:GetService("RunService"):BindToRenderStep("CameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
+    -- upvalues: (copy) v_u_4, (copy) v_u_5
+    if workspace.CurrentCamera.CameraSubject == v_u_4.Humanoid then
+        local v18 = (workspace.CurrentCamera.CFrame.p - workspace.CurrentCamera.Focus.p).magnitude
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 > 2 then
+            local v19, _, _, _ = castRay(v_u_4.Character, v_u_4.RootPart.Position, v_u_4.RootPart.CFrame.RightVector * 1.75)
+            local v20 = v_u_4.RootPart.CFrame.RightVector * v19
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0 + v20)
+            }):Play()
+            return
+        end
+        if v_u_5.MouseBehavior == Enum.MouseBehavior.LockCenter and v18 <= 2 then
+            local v21 = v_u_4.Character:WaitForChild("Head").CFrame.p - v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0.5
+            local v22 = v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 1.25 - v21
+            local _, _, v23, v24 = castRay(v_u_4.Character, v21, v22)
+            if v24 then
+                local _ = v23 - (v22.Magnitude == 0 and Vector3.new(0, 0, 0) or v22.Unit) * 0.1
+            end
+            game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0), {
+                ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v23)
+            }):Play()
+            return
+        end
+        game:GetService("TweenService"):Create(v_u_4.Humanoid, TweenInfo.new(0.3), {
+            ["CameraOffset"] = (v_u_4.RootPart.CFrame - Vector3.new(0, -1, 0)):pointToObjectSpace(v_u_4.Character:WaitForChild("Head").CFrame.p + v_u_4.Character:WaitForChild("Head").CFrame.LookVector * 0)
+        }):Play()
+    end
+end)
+local v_u_25 = 0
+local function v_u_29(p26)
+    -- upvalues: (copy) v_u_4, (copy) v_u_6, (copy) v_u_8, (copy) v_u_7, (copy) v_u_9, (ref) v_u_25, (copy) v_u_11, (copy) v_u_10
+    if game:GetService("Players"):GetPlayerFromCharacter(v_u_4.Character) == game:GetService("Players").LocalPlayer then
+        if v_u_4.Character:HasTag("Cutscene") then
+            v_u_6.C0 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793)
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v_u_6.C0 })
+            end
+        else
+            local v27 = v_u_4.RootPart.CFrame:toObjectSpace(game:GetService("Workspace").CurrentCamera.CFrame).lookVector
+            local v28
+            if v_u_6 then
+                v28 = v_u_8(0, v_u_7, 0) * v_u_9(4.71238898038469, 0, 3.141592653589793) * v_u_9(0, 0, -v_u_10(v27.x)) * v_u_9(-v_u_10(v27.y), 0, 0)
+                v_u_6.C0 = v_u_6.C0:Lerp(v28, 0.9 * p26 * 15)
+            else
+                v28 = nil
+            end
+            v_u_25 = v_u_25 + p26
+            if v_u_25 > 0.25 then
+                v_u_25 = 0
+                v_u_11:FireServer({ v_u_6 }, { v28 or v_u_6.C0 })
+            end
+        end
+    else
+        return
+    end
+end
+local v_u_30 = nil
+local v_u_31 = 0
+local v_u_32 = v_u_4.Character:WaitForChild("Torso").AssemblyLinearVelocity
+local v_u_33 = workspace.CurrentCamera
+local v_u_34 = nil
+local v_u_35 = 0
+local v_u_36 = 0
+local v_u_37 = nil
+v_u_37 = game:GetService("RunService").Stepped:Connect(function(_, p38)
+    -- upvalues: (copy) v_u_4, (ref) v_u_37, (copy) v_u_29, (copy) v_u_1, (ref) v_u_30, (ref) v_u_32, (ref) v_u_31, (copy) v_u_33, (ref) v_u_36, (ref) v_u_34, (ref) v_u_35
+    if v_u_4.Character == nil then
+        v_u_37:Disconnect()
+    else
+        v_u_29(p38)
+        if v_u_4.Character:GetAttribute("Ragdoll") then
+            local _, _, _, v39, _, v40 = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, Vector3.new(-0, -3, -0), nil, v_u_30)
+            if not v_u_30 then
+                v_u_30 = v40
+            end
+            local v41 = v_u_4.Character.Torso.AssemblyLinearVelocity
+            if not v_u_32 then
+                v_u_32 = v41
+            end
+            if v39 and ((v41 - v_u_32).Y > 4 and tick() - v_u_31 > 0.2) then
+                v_u_31 = tick()
+                local v_u_42 = script["FloorHit" .. math.random(3)]:Clone()
+                v_u_42.Parent = v_u_4.Character:FindFirstChild("HumanoidRootPart")
+                v_u_42:Play()
+                task.spawn(function()
+                    -- upvalues: (copy) v_u_42
+                    if not v_u_42.IsLoaded then
+                        v_u_42.Loaded:Wait()
+                    end
+                    task.delay(v_u_42.TimeLength / v_u_42.PlaybackSpeed, v_u_42.Destroy, v_u_42)
+                end)
+            end
+            v_u_32 = v41
+        else
+            v_u_32 = nil
+        end
+        local v43 = next
+        local v44, v45 = workspace.PLAYERS.KILLER:GetChildren()
+        for _, v46 in v43, v44, v45 do
+            if v46:FindFirstChild("HumanoidRootPart") and v46 ~= v_u_4.Character then
+                local v47 = v_u_4.Character.HumanoidRootPart.Position
+                local v48 = v46.HumanoidRootPart.Position
+                local v49 = v_u_33.CFrame.Position
+                local v50 = v46.HumanoidRootPart.CFrame.LookVector:Dot((v47 - v48).Unit)
+                local _, v51 = v_u_33:WorldToViewportPoint(v48)
+                local v52 = (v48 - v47).Magnitude
+                local v53 = 1 - 8 / (v52 / 2 + 1)
+                local v54 = math.min(0.9, v53)
+                if v52 < 150 and (v51 and v_u_36 < 0.25 or v_u_36 > 0.25) and (v54 < v50 and not (v46:HasTag("Imitation") or v46:HasTag("UNDETECTABLE"))) then
+                    local _, _, _, v55, v56 = v_u_1.Obstruction:CastObstruction(v49, v48 - v49, v_u_34)
+                    if not v_u_34 then
+                        v_u_34 = v56
+                    end
+                    local _, _, _, v57, _ = v_u_1.Obstruction:CastObstruction(v_u_4.Character.HumanoidRootPart.Position, v48 - v47, v_u_34)
+                    if v57 or v55 then
+                        v_u_36 = 0
+                    else
+                        if v_u_36 > 0.25 then
+                            if tick() - v_u_35 > 10 then
+                                script.InView["InView" .. math.random(3)]:Play()
+                            end
+                            v_u_35 = tick()
+                        end
+                        v_u_36 = v_u_36 + p38
+                    end
+                else
+                    v_u_36 = 0
+                    v_u_34 = nil
+                end
+            end
+        end
+    end
+end)
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Client.Server
+-- Decompiled with Velocity Script Decompiler
+-- Failed to decompile
+Error:
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.StepSFX
+-- Decompiled with Velocity Script Decompiler
+if script.Parent:FindFirstChildOfClass("Humanoid") then
+    local function v_u_7()
+        if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial ~= Enum.Material.Air then
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Carpet then
+                local v_u_1 = script.Steps:FindFirstChild("carpet"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("carpet"):GetChildren())]:Clone()
+                v_u_1.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_1.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_1.Volume = v_u_1.Volume / 2
+                end
+                if not v_u_1.IsLoaded then
+                    v_u_1.Loaded:Wait()
+                end
+                v_u_1:Play()
+                task.delay(v_u_1.TimeLength, function()
+                    -- upvalues: (copy) v_u_1
+                    v_u_1:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Foil then
+                local v_u_2 = script.Steps:FindFirstChild("inflatable"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("inflatable"):GetChildren())]:Clone()
+                v_u_2.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_2.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_2.Volume = v_u_2.Volume / 2
+                end
+                if not v_u_2.IsLoaded then
+                    v_u_2.Loaded:Wait()
+                end
+                v_u_2:Play()
+                task.delay(v_u_2.TimeLength, function()
+                    -- upvalues: (copy) v_u_2
+                    v_u_2:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.DiamondPlate or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Metal or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.CorrodedMetal) then
+                local v_u_3 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_3.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_3.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_3.Volume = v_u_3.Volume / 2
+                end
+                if not v_u_3.IsLoaded then
+                    v_u_3.Loaded:Wait()
+                end
+                v_u_3:Play()
+                task.delay(v_u_3.TimeLength, function()
+                    -- upvalues: (copy) v_u_3
+                    v_u_3:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Concrete then
+                local v_u_4 = script.Steps:FindFirstChild("metal"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("metal"):GetChildren())]:Clone()
+                v_u_4.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_4.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_4.Volume = v_u_4.Volume / 2
+                end
+                if not v_u_4.IsLoaded then
+                    v_u_4.Loaded:Wait()
+                end
+                v_u_4:Play()
+                task.delay(v_u_4.TimeLength, function()
+                    -- upvalues: (copy) v_u_4
+                    v_u_4:Destroy()
+                end)
+                return
+            end
+            if script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Grass or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Ground or (script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.LeafyGrass or script.Parent:FindFirstChildOfClass("Humanoid").FloorMaterial == Enum.Material.Mud)) then
+                local v_u_5 = script.Steps:FindFirstChild("grass").walking:GetChildren()[math.random(1, #script.Steps:FindFirstChild("grass").walking:GetChildren())]:Clone()
+                v_u_5.Parent = script.Parent:FindFirstChild("Torso")
+                v_u_5.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+                if script.Parent:GetAttribute("Crouching") == true then
+                    v_u_5.Volume = v_u_5.Volume / 2
+                end
+                if not v_u_5.IsLoaded then
+                    v_u_5.Loaded:Wait()
+                end
+                v_u_5:Play()
+                task.delay(v_u_5.TimeLength, function()
+                    -- upvalues: (copy) v_u_5
+                    v_u_5:Destroy()
+                end)
+                return
+            end
+            local v_u_6 = script.Steps:FindFirstChild("misc"):GetChildren()[math.random(1, #script.Steps:FindFirstChild("misc"):GetChildren())]:Clone()
+            v_u_6.Parent = script.Parent:FindFirstChild("Torso")
+            v_u_6.PlaybackSpeed = Random.new():NextNumber(0.9, 1.1)
+            if script.Parent:GetAttribute("Crouching") == true then
+                v_u_6.Volume = v_u_6.Volume / 2
+            end
+            if not v_u_6.IsLoaded then
+                v_u_6.Loaded:Wait()
+            end
+            v_u_6:Play()
+            task.delay(v_u_6.TimeLength, function()
+                -- upvalues: (copy) v_u_6
+                v_u_6:Destroy()
+            end)
+        end
+    end
+    script.Parent:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator").AnimationPlayed:Connect(function(p8)
+        -- upvalues: (copy) v_u_7
+        local v_u_9 = p8:GetMarkerReachedSignal("Step"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("UNDETECTABLE") then
+                v_u_7()
+            end
+        end)
+        local v_u_10 = p8:GetMarkerReachedSignal("Step2"):Connect(function()
+            -- upvalues: (ref) v_u_7
+            if not script.Parent:HasTag("INVIS") then
+                v_u_7()
+            end
+        end)
+        p8.Stopped:Once(function()
+            -- upvalues: (ref) v_u_9, (ref) v_u_10
+            v_u_9:Disconnect()
+            v_u_10:Disconnect()
+        end)
+    end)
+end
+
+-- PATH: Workspace.IGNORE.Toxic_Gamer201852.Movement
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 local v_u_2 = game:GetService("TweenService")
@@ -47555,7 +49750,7 @@ local v4 = {
             ["Name"] = "Mode: Speed",
             ["Icon"] = "rbxassetid://107856551357803",
             ["CustomIconPlacement"] = UDim2.new(0.11, 0, 0.458, 0),
-            ["Desc"] = "+25% Speed, -<c>StaminaRemove<> Max Stamina. Unlocks Leap."
+            ["Desc"] = "+25% Speed, -50% Stamina Regen, -50% Stamina. Unlocks Leap."
         },
         {
             ["Name"] = "Mode: Stealth",
@@ -70592,9 +72787,9 @@ v_u_9.Rope.Button.MouseButton1Up:Connect(function()
 end)
 local v130 = next
 local v131, v132 = v_u_7:GetDescendants()
-local v_u_133 = v_u_129
+local v_u_133 = v_u_126
 local v_u_134 = v_u_125
-local v_u_135 = v_u_126
+local v_u_135 = v_u_129
 local v136 = {}
 local v_u_137 = false
 for _, v138 in v130, v131, v132 do
@@ -70618,9 +72813,9 @@ v_u_2:Create(v_u_7, TweenInfo.new(0.5), {
 }):Play()
 local v_u_142 = false
 v_u_1.InputEnded:Connect(function(p143, _)
-    -- upvalues: (ref) v_u_133, (ref) v_u_142
+    -- upvalues: (ref) v_u_135, (ref) v_u_142
     if p143.UserInputType == Enum.UserInputType.MouseButton1 then
-        v_u_133 = false
+        v_u_135 = false
     end
     if p143.UserInputType == Enum.UserInputType.Gamepad1 then
         v_u_142 = true
@@ -70630,7 +72825,7 @@ v_u_1.InputEnded:Connect(function(p143, _)
     end
 end)
 v_u_3.Heartbeat:Connect(function(_)
-    -- upvalues: (copy) v_u_12, (copy) v_u_14, (copy) v_u_10, (copy) v_u_2, (copy) v_u_92, (copy) v_u_97, (copy) v_u_9, (copy) v_u_123, (ref) v_u_133, (ref) v_u_124, (copy) v_u_5, (ref) v_u_135, (ref) v_u_134, (ref) v_u_142, (ref) v_u_137, (copy) v_u_6, (copy) v_u_127, (copy) v_u_128, (copy) v_u_7
+    -- upvalues: (copy) v_u_12, (copy) v_u_14, (copy) v_u_10, (copy) v_u_2, (copy) v_u_92, (copy) v_u_97, (copy) v_u_9, (copy) v_u_123, (ref) v_u_135, (ref) v_u_124, (copy) v_u_5, (ref) v_u_133, (ref) v_u_134, (ref) v_u_142, (ref) v_u_137, (copy) v_u_6, (copy) v_u_127, (copy) v_u_128, (copy) v_u_7
     if not v_u_12.Wires then
         local v144 = true
         for _, v145 in next, v_u_14 do
@@ -70671,8 +72866,8 @@ v_u_3.Heartbeat:Connect(function(_)
     end
     if v_u_12.Switches and v_u_12.Wires then
         local v150
-        if v_u_133 and v_u_124 < 100 then
-            v150 = v_u_5.Y - v_u_135
+        if v_u_135 and v_u_124 < 100 then
+            v150 = v_u_5.Y - v_u_133
             if (v_u_142 and 14 or 25) < v_u_5.Y - v_u_134 and (v150 > 0 and not v_u_137) then
                 v_u_137 = true
                 task.delay(v_u_142 and 0.2 or 0.1, function()
@@ -71802,6 +73997,12 @@ return {
 -- Failed to decompile
 Error:
 
+-- PATH: StarterGui.UI.MainServer.Client
+-- Decompiled with Velocity Script Decompiler
+function script.Parent.RemoteFunction.OnClientInvoke()
+    return script.Parent.Parent.UI.LobbyUIContainer.Settings.Holder.List.ScrollingFrame.CODE.TextBox.Text
+end
+
 -- PATH: StarterGui.UI.Main
 -- Decompiled with Velocity Script Decompiler
 workspace:WaitForChild("Lobby"):WaitForChild("TV"):WaitForChild("Screen"):WaitForChild("Board").Parent = game:GetService("Players").LocalPlayer.PlayerGui.UI
@@ -72091,61 +74292,45 @@ local v_u_71 = v2.Client("Side")
 local v72 = v2.Client("ScreenEffect")
 local v_u_73 = v_u_71:Invoke(999, "Data")
 local v_u_74 = require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Dialogues"))
-local function v_u_80()
+local function v_u_81(p75, p76)
+    if p76 == 0 then
+        return p75.Keypoints[1].Value
+    end
+    if p76 == 1 then
+        return p75.Keypoints[#p75.Keypoints].Value
+    end
+    for v77 = 1, #p75.Keypoints - 1 do
+        local v78 = p75.Keypoints[v77]
+        local v79 = p75.Keypoints[v77 + 1]
+        if v78.Time <= p76 and p76 < v79.Time then
+            local v80 = (p76 - v78.Time) / (v79.Time - v78.Time)
+            return Color3.new((v79.Value.R - v78.Value.R) * v80 + v78.Value.R, (v79.Value.G - v78.Value.G) * v80 + v78.Value.G, (v79.Value.B - v78.Value.B) * v80 + v78.Value.B)
+        end
+    end
+end
+local function v_u_87()
     -- upvalues: (copy) v_u_14
-    local v75 = next
-    local v76, v77 = v_u_14.LMS:GetDescendants()
-    for _, v78 in v75, v76, v77 do
-        if v78:IsA("GuiObject") then
-            local v79 = {
-                ["BackgroundTransparency"] = 1
+    local v82 = next
+    local v83, v84 = v_u_14.LMS:GetDescendants()
+    for _, v85 in v82, v83, v84 do
+        if v85:IsA("GuiObject") then
+            local v86 = {
+                ["BackgroundTransparency"] = v85:GetAttribute("BackgroundTransparency")
             }
-            if v78:IsA("ImageButton") or v78:IsA("ImageLabel") then
-                v79.ImageTransparency = 1
+            if v85:IsA("ImageButton") or v85:IsA("ImageLabel") then
+                v86.ImageTransparency = v85:GetAttribute("ImageTransparency")
             end
-            game:GetService("TweenService"):Create(v78, TweenInfo.new(1), v79):Play()
+            game:GetService("TweenService"):Create(v85, TweenInfo.new(0.1), v86):Play()
         end
     end
 end
-local function v_u_86()
-    -- upvalues: (copy) v_u_14
-    local v81 = next
-    local v82, v83 = v_u_14.LMS:GetDescendants()
-    for _, v84 in v81, v82, v83 do
-        if v84:IsA("GuiObject") then
-            local v85 = {
-                ["BackgroundTransparency"] = v84:GetAttribute("BackgroundTransparency")
-            }
-            if v84:IsA("ImageButton") or v84:IsA("ImageLabel") then
-                v85.ImageTransparency = v84:GetAttribute("ImageTransparency")
-            end
-            game:GetService("TweenService"):Create(v84, TweenInfo.new(0.1), v85):Play()
-        end
-    end
-end
-local function v_u_93(p87, p88)
-    if p88 == 0 then
-        return p87.Keypoints[1].Value
-    end
-    if p88 == 1 then
-        return p87.Keypoints[#p87.Keypoints].Value
-    end
-    for v89 = 1, #p87.Keypoints - 1 do
-        local v90 = p87.Keypoints[v89]
-        local v91 = p87.Keypoints[v89 + 1]
-        if v90.Time <= p88 and p88 < v91.Time then
-            local v92 = (p88 - v90.Time) / (v91.Time - v90.Time)
-            return Color3.new((v91.Value.R - v90.Value.R) * v92 + v90.Value.R, (v91.Value.G - v90.Value.G) * v92 + v90.Value.G, (v91.Value.B - v90.Value.B) * v92 + v90.Value.B)
-        end
-    end
-end
-local function v_u_143(p94)
+local function v_u_137(p88)
     -- upvalues: (copy) v_u_13, (ref) v_u_17, (copy) v_u_14, (copy) v_u_42
     if v_u_13.Spectate.Visible ~= true and (workspace.GAME.CURRENTMAP.Value ~= nil and game:GetService("ReplicatedStorage").Lightings:FindFirstChild(workspace.GAME.CURRENTMAP.Value)) then
         v_u_17 = true
         v_u_13.Visible = true
         v_u_14.Visible = false
-        if p94 then
+        if p88 then
             script.Parent.sfx.Spectate:Play()
             v_u_42()
             v_u_13.Spectate.Visible = true
@@ -72156,85 +74341,145 @@ local function v_u_143(p94)
         else
             v_u_13.Spectate.Back.Visible = true
         end
-        for _, v95 in game:GetService("Lighting"):GetChildren() do
-            v95:Destroy()
+        for _, v89 in game:GetService("Lighting"):GetChildren() do
+            v89:Destroy()
         end
-        local v96 = game:GetService("ReplicatedStorage").Lightings:FindFirstChild(workspace.GAME.CURRENTMAP.Value):Clone()
-        for _, v97 in v96:FindFirstChild("Lighting"):GetChildren() do
-            game:GetService("Lighting")[v97.Name] = v97.Value
+        local v90 = game:GetService("ReplicatedStorage").Lightings:FindFirstChild(workspace.GAME.CURRENTMAP.Value):Clone()
+        for _, v91 in v90:FindFirstChild("Lighting"):GetChildren() do
+            game:GetService("Lighting")[v91.Name] = v91.Value
         end
-        for _, v98 in v96:GetChildren() do
-            v98.Parent = game:GetService("Lighting")
+        for _, v92 in v90:GetChildren() do
+            v92.Parent = game:GetService("Lighting")
         end
         if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TouchGui") then
             game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TouchGui").Enabled = false
         end
         v_u_13.Spectate.User.Username.Text = ""
         v_u_13.Spectate.User.Display.Text = ""
-        local v_u_99 = {}
-        local v_u_100 = {}
-        local v_u_101 = 1
-        for _, v_u_102 in workspace.PLAYERS.ALIVE:GetChildren() do
-            table.insert(v_u_99, v_u_102)
-            v_u_100[#v_u_100 + 1] = v_u_102:FindFirstChildOfClass("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
-                -- upvalues: (copy) v_u_102, (copy) v_u_99, (ref) v_u_101, (ref) v_u_13
-                if v_u_102:FindFirstChildOfClass("Humanoid").Health <= 0 and table.find(v_u_99, v_u_102) then
-                    if v_u_99[v_u_101] == v_u_102 then
+        local v_u_93 = {}
+        local v_u_94 = {}
+        local v_u_95 = 1
+        for _, v_u_96 in workspace.PLAYERS.ALIVE:GetChildren() do
+            table.insert(v_u_93, v_u_96)
+            v_u_94[#v_u_94 + 1] = v_u_96:FindFirstChildOfClass("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
+                -- upvalues: (copy) v_u_96, (copy) v_u_93, (ref) v_u_95, (ref) v_u_13
+                if v_u_96:FindFirstChildOfClass("Humanoid").Health <= 0 and table.find(v_u_93, v_u_96) then
+                    if v_u_93[v_u_95] == v_u_96 then
                         v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2").ImageTransparency = 0
                         game:GetService("TweenService"):Create(v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2"), TweenInfo.new(0.5), {
                             ["ImageTransparency"] = 0.98
                         }):Play()
-                        if v_u_99[v_u_101 + 1] then
-                            v_u_101 = v_u_101 + 1
-                            workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                            local v103 = workspace.CurrentCamera.CameraSubject
-                            if v103 then
-                                v103 = workspace.CurrentCamera.CameraSubject.RootPart
+                        if v_u_93[v_u_95 + 1] then
+                            v_u_95 = v_u_95 + 1
+                            workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                            local v97 = workspace.CurrentCamera.CameraSubject
+                            if v97 then
+                                v97 = workspace.CurrentCamera.CameraSubject.RootPart
                             end
-                            if v103 then
-                                game:GetService("Players").LocalPlayer.ReplicationFocus = v103
+                            if v97 then
+                                game:GetService("Players").LocalPlayer.ReplicationFocus = v97
                             end
-                        elseif v_u_99[v_u_101 - 1] then
-                            v_u_101 = v_u_101 - 1
-                            workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                            local v104 = workspace.CurrentCamera.CameraSubject
-                            if v104 then
-                                v104 = workspace.CurrentCamera.CameraSubject.RootPart
+                        elseif v_u_93[v_u_95 - 1] then
+                            v_u_95 = v_u_95 - 1
+                            workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                            local v98 = workspace.CurrentCamera.CameraSubject
+                            if v98 then
+                                v98 = workspace.CurrentCamera.CameraSubject.RootPart
                             end
-                            if v104 then
-                                game:GetService("Players").LocalPlayer.ReplicationFocus = v104
+                            if v98 then
+                                game:GetService("Players").LocalPlayer.ReplicationFocus = v98
                             end
-                        elseif v_u_99[#v_u_99] then
-                            v_u_101 = #v_u_99
-                            workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                            local v105 = workspace.CurrentCamera.CameraSubject
-                            if v105 then
-                                v105 = workspace.CurrentCamera.CameraSubject.RootPart
+                        elseif v_u_93[#v_u_93] then
+                            v_u_95 = #v_u_93
+                            workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                            local v99 = workspace.CurrentCamera.CameraSubject
+                            if v99 then
+                                v99 = workspace.CurrentCamera.CameraSubject.RootPart
                             end
-                            if v105 then
-                                game:GetService("Players").LocalPlayer.ReplicationFocus = v105
+                            if v99 then
+                                game:GetService("Players").LocalPlayer.ReplicationFocus = v99
                             end
-                        elseif v_u_99[v_u_101] == v_u_102 then
+                        elseif v_u_93[v_u_95] == v_u_96 then
                             v_u_13.Spectate.Nosignal.Visible = true
                         end
                     end
-                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                    v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
-                    table.remove(v_u_99, table.find(v_u_99, v_u_102))
+                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                    v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
+                    table.remove(v_u_93, table.find(v_u_93, v_u_96))
                 end
             end)
-            v_u_100[#v_u_100 + 1] = v_u_102:GetPropertyChangedSignal("Parent"):Connect(function()
-                -- upvalues: (copy) v_u_102, (copy) v_u_99, (ref) v_u_101, (ref) v_u_13
-                if v_u_102.Parent == nil and table.find(v_u_99, v_u_102) then
-                    if v_u_99[v_u_101] == v_u_102 then
+            v_u_94[#v_u_94 + 1] = v_u_96:GetPropertyChangedSignal("Parent"):Connect(function()
+                -- upvalues: (copy) v_u_96, (copy) v_u_93, (ref) v_u_95, (ref) v_u_13
+                if v_u_96.Parent == nil and table.find(v_u_93, v_u_96) then
+                    if v_u_93[v_u_95] == v_u_96 then
                         v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2").ImageTransparency = 0
                         game:GetService("TweenService"):Create(v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2"), TweenInfo.new(0.5), {
                             ["ImageTransparency"] = 0.98
                         }):Play()
                     end
-                    if v_u_99[v_u_101 + 1] then
-                        v_u_101 = v_u_101 + 1
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
+                    if v_u_93[v_u_95 + 1] then
+                        v_u_95 = v_u_95 + 1
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v100 = workspace.CurrentCamera.CameraSubject
+                        if v100 then
+                            v100 = workspace.CurrentCamera.CameraSubject.RootPart
+                        end
+                        if v100 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v100
+                        end
+                    elseif v_u_93[v_u_95 - 1] then
+                        v_u_95 = v_u_95 - 1
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v101 = workspace.CurrentCamera.CameraSubject
+                        if v101 then
+                            v101 = workspace.CurrentCamera.CameraSubject.RootPart
+                        end
+                        if v101 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v101
+                        end
+                    elseif v_u_93[#v_u_93] then
+                        v_u_95 = #v_u_93
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v102 = workspace.CurrentCamera.CameraSubject
+                        if v102 then
+                            v102 = workspace.CurrentCamera.CameraSubject.RootPart
+                        end
+                        if v102 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v102
+                        end
+                    elseif v_u_93[v_u_95] == v_u_96 then
+                        v_u_13.Spectate.Nosignal.Visible = true
+                    end
+                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                    v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
+                    table.remove(v_u_93, table.find(v_u_93, v_u_96))
+                end
+            end)
+        end
+        for _, v_u_103 in workspace.PLAYERS.KILLER:GetChildren() do
+            table.insert(v_u_93, v_u_103)
+            v_u_94[#v_u_94 + 1] = v_u_103.ChildRemoved:Connect(function()
+                -- upvalues: (copy) v_u_103
+                local v104 = v_u_103:FindFirstChildOfClass("Humanoid")
+                if v104 then
+                    task.wait(0.5)
+                    v104.CameraOffset = Vector3.new(0, 0, 0)
+                end
+            end)
+            v_u_94[#v_u_94 + 1] = v_u_103.ChildAdded:Connect(function()
+                -- upvalues: (copy) v_u_103
+                local v105 = v_u_103:FindFirstChildOfClass("Humanoid")
+                if v105 then
+                    task.wait(0.5)
+                    v105.CameraOffset = Vector3.new(0, 0, 0)
+                end
+            end)
+            v_u_94[#v_u_94 + 1] = v_u_103:FindFirstChildOfClass("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
+                -- upvalues: (copy) v_u_103, (copy) v_u_93, (ref) v_u_95, (ref) v_u_13
+                if v_u_103:FindFirstChildOfClass("Humanoid").Health <= 0 and table.find(v_u_93, v_u_103) then
+                    if v_u_93[v_u_95 + 1] then
+                        v_u_95 = v_u_95 + 1
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
                         local v106 = workspace.CurrentCamera.CameraSubject
                         if v106 then
                             v106 = workspace.CurrentCamera.CameraSubject.RootPart
@@ -72242,9 +74487,9 @@ local function v_u_143(p94)
                         if v106 then
                             game:GetService("Players").LocalPlayer.ReplicationFocus = v106
                         end
-                    elseif v_u_99[v_u_101 - 1] then
-                        v_u_101 = v_u_101 - 1
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
+                    elseif v_u_93[v_u_95 - 1] then
+                        v_u_95 = v_u_95 - 1
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
                         local v107 = workspace.CurrentCamera.CameraSubject
                         if v107 then
                             v107 = workspace.CurrentCamera.CameraSubject.RootPart
@@ -72252,9 +74497,9 @@ local function v_u_143(p94)
                         if v107 then
                             game:GetService("Players").LocalPlayer.ReplicationFocus = v107
                         end
-                    elseif v_u_99[#v_u_99] then
-                        v_u_101 = #v_u_99
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
+                    elseif v_u_93[#v_u_93] then
+                        v_u_95 = #v_u_93
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
                         local v108 = workspace.CurrentCamera.CameraSubject
                         if v108 then
                             v108 = workspace.CurrentCamera.CameraSubject.RootPart
@@ -72262,311 +74507,251 @@ local function v_u_143(p94)
                         if v108 then
                             game:GetService("Players").LocalPlayer.ReplicationFocus = v108
                         end
-                    elseif v_u_99[v_u_101] == v_u_102 then
+                    elseif v_u_93[v_u_95] == v_u_103 then
                         v_u_13.Spectate.Nosignal.Visible = true
                     end
-                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                    v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
-                    table.remove(v_u_99, table.find(v_u_99, v_u_102))
+                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                    v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
+                    table.remove(v_u_93, table.find(v_u_93, v_u_103))
+                end
+            end)
+            v_u_94[#v_u_94 + 1] = v_u_103:GetPropertyChangedSignal("Parent"):Connect(function()
+                -- upvalues: (copy) v_u_103, (copy) v_u_93, (ref) v_u_95, (ref) v_u_13
+                if v_u_103.Parent == nil and table.find(v_u_93, v_u_103) then
+                    if v_u_93[v_u_95 + 1] then
+                        v_u_95 = v_u_95 + 1
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v109 = workspace.CurrentCamera.CameraSubject
+                        if v109 then
+                            v109 = workspace.CurrentCamera.CameraSubject.RootPart
+                        end
+                        if v109 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v109
+                        end
+                    elseif v_u_93[v_u_95 - 1] then
+                        v_u_95 = v_u_95 - 1
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v110 = workspace.CurrentCamera.CameraSubject
+                        if v110 then
+                            v110 = workspace.CurrentCamera.CameraSubject.RootPart
+                        end
+                        if v110 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v110
+                        end
+                    elseif v_u_93[#v_u_93] then
+                        v_u_95 = #v_u_93
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v111 = workspace.CurrentCamera.CameraSubject
+                        if v111 then
+                            v111 = workspace.CurrentCamera.CameraSubject.RootPart
+                        end
+                        if v111 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v111
+                        end
+                    elseif v_u_93[v_u_95] == v_u_103 then
+                        v_u_13.Spectate.Nosignal.Visible = true
+                    end
+                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                    v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
+                    table.remove(v_u_93, table.find(v_u_93, v_u_103))
                 end
             end)
         end
-        for _, v_u_109 in workspace.PLAYERS.KILLER:GetChildren() do
-            table.insert(v_u_99, v_u_109)
-            v_u_100[#v_u_100 + 1] = v_u_109.ChildRemoved:Connect(function()
-                -- upvalues: (copy) v_u_109
-                local v110 = v_u_109:FindFirstChildOfClass("Humanoid")
-                if v110 then
-                    task.wait(0.5)
-                    v110.CameraOffset = Vector3.new(0, 0, 0)
-                end
-            end)
-            v_u_100[#v_u_100 + 1] = v_u_109.ChildAdded:Connect(function()
-                -- upvalues: (copy) v_u_109
-                local v111 = v_u_109:FindFirstChildOfClass("Humanoid")
-                if v111 then
-                    task.wait(0.5)
-                    v111.CameraOffset = Vector3.new(0, 0, 0)
-                end
-            end)
-            v_u_100[#v_u_100 + 1] = v_u_109:FindFirstChildOfClass("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
-                -- upvalues: (copy) v_u_109, (copy) v_u_99, (ref) v_u_101, (ref) v_u_13
-                if v_u_109:FindFirstChildOfClass("Humanoid").Health <= 0 and table.find(v_u_99, v_u_109) then
-                    if v_u_99[v_u_101 + 1] then
-                        v_u_101 = v_u_101 + 1
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v112 = workspace.CurrentCamera.CameraSubject
-                        if v112 then
-                            v112 = workspace.CurrentCamera.CameraSubject.RootPart
-                        end
-                        if v112 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v112
-                        end
-                    elseif v_u_99[v_u_101 - 1] then
-                        v_u_101 = v_u_101 - 1
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v113 = workspace.CurrentCamera.CameraSubject
-                        if v113 then
-                            v113 = workspace.CurrentCamera.CameraSubject.RootPart
-                        end
-                        if v113 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v113
-                        end
-                    elseif v_u_99[#v_u_99] then
-                        v_u_101 = #v_u_99
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v114 = workspace.CurrentCamera.CameraSubject
-                        if v114 then
-                            v114 = workspace.CurrentCamera.CameraSubject.RootPart
-                        end
-                        if v114 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v114
-                        end
-                    elseif v_u_99[v_u_101] == v_u_109 then
-                        v_u_13.Spectate.Nosignal.Visible = true
-                    end
-                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                    v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
-                    table.remove(v_u_99, table.find(v_u_99, v_u_109))
-                end
-            end)
-            v_u_100[#v_u_100 + 1] = v_u_109:GetPropertyChangedSignal("Parent"):Connect(function()
-                -- upvalues: (copy) v_u_109, (copy) v_u_99, (ref) v_u_101, (ref) v_u_13
-                if v_u_109.Parent == nil and table.find(v_u_99, v_u_109) then
-                    if v_u_99[v_u_101 + 1] then
-                        v_u_101 = v_u_101 + 1
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v115 = workspace.CurrentCamera.CameraSubject
-                        if v115 then
-                            v115 = workspace.CurrentCamera.CameraSubject.RootPart
-                        end
-                        if v115 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v115
-                        end
-                    elseif v_u_99[v_u_101 - 1] then
-                        v_u_101 = v_u_101 - 1
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v116 = workspace.CurrentCamera.CameraSubject
-                        if v116 then
-                            v116 = workspace.CurrentCamera.CameraSubject.RootPart
-                        end
-                        if v116 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v116
-                        end
-                    elseif v_u_99[#v_u_99] then
-                        v_u_101 = #v_u_99
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v117 = workspace.CurrentCamera.CameraSubject
-                        if v117 then
-                            v117 = workspace.CurrentCamera.CameraSubject.RootPart
-                        end
-                        if v117 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v117
-                        end
-                    elseif v_u_99[v_u_101] == v_u_109 then
-                        v_u_13.Spectate.Nosignal.Visible = true
-                    end
-                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                    v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
-                    table.remove(v_u_99, table.find(v_u_99, v_u_109))
-                end
-            end)
-        end
-        if v_u_99[1] then
-            v_u_13.Spectate.User.Display.Text = v_u_99[1]:FindFirstChildOfClass("Humanoid").DisplayName
-            v_u_13.Spectate.User.Username.Text = v_u_99[1].Name
-            workspace.CurrentCamera.CameraSubject = v_u_99[1]:FindFirstChildOfClass("Humanoid")
-            local v118 = workspace.CurrentCamera.CameraSubject
-            if v118 then
-                v118 = workspace.CurrentCamera.CameraSubject.RootPart
+        if v_u_93[1] then
+            v_u_13.Spectate.User.Display.Text = v_u_93[1]:FindFirstChildOfClass("Humanoid").DisplayName
+            v_u_13.Spectate.User.Username.Text = v_u_93[1].Name
+            workspace.CurrentCamera.CameraSubject = v_u_93[1]:FindFirstChildOfClass("Humanoid")
+            local v112 = workspace.CurrentCamera.CameraSubject
+            if v112 then
+                v112 = workspace.CurrentCamera.CameraSubject.RootPart
             end
-            if v118 then
-                game:GetService("Players").LocalPlayer.ReplicationFocus = v118
+            if v112 then
+                game:GetService("Players").LocalPlayer.ReplicationFocus = v112
             end
         else
             v_u_13.Spectate.Nosignal.Visible = true
         end
-        local v_u_119 = nil
-        local v_u_120 = nil
-        local v_u_121 = nil
-        local v_u_122 = nil
-        local v_u_123 = nil
-        local v_u_124 = nil
-        local function v132()
-            -- upvalues: (ref) v_u_17, (copy) v_u_100, (ref) v_u_13, (ref) v_u_119, (ref) v_u_120, (ref) v_u_121, (ref) v_u_122, (ref) v_u_123, (ref) v_u_124
+        local v_u_113 = nil
+        local v_u_114 = nil
+        local v_u_115 = nil
+        local v_u_116 = nil
+        local v_u_117 = nil
+        local v_u_118 = nil
+        local function v126()
+            -- upvalues: (ref) v_u_17, (copy) v_u_94, (ref) v_u_13, (ref) v_u_113, (ref) v_u_114, (ref) v_u_115, (ref) v_u_116, (ref) v_u_117, (ref) v_u_118
             v_u_17 = false
-            for _, v125 in v_u_100 do
-                v125:Disconnect()
+            for _, v119 in v_u_94 do
+                v119:Disconnect()
             end
-            for _, v126 in v_u_13.Buttons:GetChildren() do
-                v126.Visible = true
+            for _, v120 in v_u_13.Buttons:GetChildren() do
+                v120.Visible = true
             end
             v_u_13.Spectate.Visible = false
             v_u_13.Currency.Visible = true
             if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TouchGui") then
                 game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TouchGui").Enabled = true
             end
-            for _, v127 in game:GetService("Lighting"):GetChildren() do
-                v127:Destroy()
+            for _, v121 in game:GetService("Lighting"):GetChildren() do
+                v121:Destroy()
             end
-            local v128 = game:GetService("ReplicatedStorage").Lightings:FindFirstChild("Lobby"):Clone()
-            for _, v129 in v128:FindFirstChild("Lighting"):GetChildren() do
-                game:GetService("Lighting")[v129.Name] = v129.Value
+            local v122 = game:GetService("ReplicatedStorage").Lightings:FindFirstChild("Lobby"):Clone()
+            for _, v123 in v122:FindFirstChild("Lighting"):GetChildren() do
+                game:GetService("Lighting")[v123.Name] = v123.Value
             end
-            for _, v130 in v128:GetChildren() do
-                v130.Parent = game:GetService("Lighting")
+            for _, v124 in v122:GetChildren() do
+                v124.Parent = game:GetService("Lighting")
             end
             workspace.CurrentCamera.CameraSubject = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-            local v131 = workspace.CurrentCamera.CameraSubject
-            if v131 then
-                v131 = workspace.CurrentCamera.CameraSubject.RootPart
+            local v125 = workspace.CurrentCamera.CameraSubject
+            if v125 then
+                v125 = workspace.CurrentCamera.CameraSubject.RootPart
             end
-            if v131 then
-                game:GetService("Players").LocalPlayer.ReplicationFocus = v131
+            if v125 then
+                game:GetService("Players").LocalPlayer.ReplicationFocus = v125
             end
-            v_u_119:Disconnect()
-            v_u_120:Disconnect()
-            v_u_121:Disconnect()
-            v_u_122:Disconnect()
-            v_u_123:Disconnect()
-            v_u_124:Disconnect()
+            v_u_113:Disconnect()
+            v_u_114:Disconnect()
+            v_u_115:Disconnect()
+            v_u_116:Disconnect()
+            v_u_117:Disconnect()
+            v_u_118:Disconnect()
         end
-        v_u_119 = v_u_13.Spectate.User.Next.Button.MouseButton1Click:Connect(function()
-            -- upvalues: (copy) v_u_99, (ref) v_u_13, (ref) v_u_101
-            if v_u_99[1] then
+        v_u_113 = v_u_13.Spectate.User.Next.Button.MouseButton1Click:Connect(function()
+            -- upvalues: (copy) v_u_93, (ref) v_u_13, (ref) v_u_95
+            if v_u_93[1] then
                 v_u_13.Spectate.Nosignal.Visible = false
                 v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2").ImageTransparency = 0
                 game:GetService("TweenService"):Create(v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2"), TweenInfo.new(0.5), {
                     ["ImageTransparency"] = 0.98
                 }):Play()
-                v_u_101 = v_u_101 + 1
-                if v_u_101 > #v_u_99 then
-                    v_u_101 = 1
+                v_u_95 = v_u_95 + 1
+                if v_u_95 > #v_u_93 then
+                    v_u_95 = 1
                 end
-                if v_u_99[v_u_101] then
-                    workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                    local v133 = workspace.CurrentCamera.CameraSubject
-                    if v133 then
-                        v133 = workspace.CurrentCamera.CameraSubject.RootPart
+                if v_u_93[v_u_95] then
+                    workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                    local v127 = workspace.CurrentCamera.CameraSubject
+                    if v127 then
+                        v127 = workspace.CurrentCamera.CameraSubject.RootPart
                     end
-                    if v133 then
-                        game:GetService("Players").LocalPlayer.ReplicationFocus = v133
+                    if v127 then
+                        game:GetService("Players").LocalPlayer.ReplicationFocus = v127
                     end
-                    local v134 = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                    if v134 then
-                        v134.CameraOffset = Vector3.new(0, 0, 0)
+                    local v128 = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                    if v128 then
+                        v128.CameraOffset = Vector3.new(0, 0, 0)
                     end
-                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                    v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
+                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                    v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
                     script.Parent.sfx.Spectate:Play()
                 end
             end
         end)
-        v_u_120 = v_u_13.Spectate.User.Previous.Button.MouseButton1Click:Connect(function()
-            -- upvalues: (copy) v_u_99, (ref) v_u_13, (ref) v_u_101
-            if v_u_99[1] then
+        v_u_114 = v_u_13.Spectate.User.Previous.Button.MouseButton1Click:Connect(function()
+            -- upvalues: (copy) v_u_93, (ref) v_u_13, (ref) v_u_95
+            if v_u_93[1] then
                 v_u_13.Spectate.Nosignal.Visible = false
                 v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2").ImageTransparency = 0
                 game:GetService("TweenService"):Create(v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2"), TweenInfo.new(0.5), {
                     ["ImageTransparency"] = 0.98
                 }):Play()
-                v_u_101 = v_u_101 - 1
-                if v_u_101 < 1 then
-                    v_u_101 = #v_u_99
+                v_u_95 = v_u_95 - 1
+                if v_u_95 < 1 then
+                    v_u_95 = #v_u_93
                 end
-                if v_u_99[v_u_101] then
-                    workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                    local v135 = workspace.CurrentCamera.CameraSubject
-                    if v135 then
-                        v135 = workspace.CurrentCamera.CameraSubject.RootPart
+                if v_u_93[v_u_95] then
+                    workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                    local v129 = workspace.CurrentCamera.CameraSubject
+                    if v129 then
+                        v129 = workspace.CurrentCamera.CameraSubject.RootPart
                     end
-                    if v135 then
-                        game:GetService("Players").LocalPlayer.ReplicationFocus = v135
+                    if v129 then
+                        game:GetService("Players").LocalPlayer.ReplicationFocus = v129
                     end
-                    local v136 = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                    if v136 then
-                        v136.CameraOffset = Vector3.new(0, 0, 0)
+                    local v130 = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                    if v130 then
+                        v130.CameraOffset = Vector3.new(0, 0, 0)
                     end
-                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                    v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
+                    v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                    v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
                     script.Parent.sfx.Spectate:Play()
                 end
             end
         end)
-        v_u_121 = v_u_13.Spectate.Back.Button.MouseButton1Click:Once(function()
+        v_u_115 = v_u_13.Spectate.Back.Button.MouseButton1Click:Once(function()
             -- upvalues: (ref) v_u_17
             v_u_17 = false
         end)
-        v_u_122 = game:GetService("UserInputService").InputBegan:Connect(function(p137, p138)
-            -- upvalues: (copy) v_u_99, (ref) v_u_13, (ref) v_u_101
-            if p138 then
+        v_u_116 = game:GetService("UserInputService").InputBegan:Connect(function(p131, p132)
+            -- upvalues: (copy) v_u_93, (ref) v_u_13, (ref) v_u_95
+            if p132 then
                 return
-            elseif v_u_99[1] then
-                if p137.KeyCode == Enum.KeyCode.E then
+            elseif v_u_93[1] then
+                if p131.KeyCode == Enum.KeyCode.E then
                     v_u_13.Spectate.Nosignal.Visible = false
                     v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2").ImageTransparency = 0
                     game:GetService("TweenService"):Create(v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2"), TweenInfo.new(0.5), {
                         ["ImageTransparency"] = 0.98
                     }):Play()
-                    v_u_101 = v_u_101 - 1
-                    if v_u_101 < 1 then
-                        v_u_101 = #v_u_99
+                    v_u_95 = v_u_95 - 1
+                    if v_u_95 < 1 then
+                        v_u_95 = #v_u_93
                     end
-                    if v_u_99[v_u_101] then
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v139 = workspace.CurrentCamera.CameraSubject
-                        if v139 then
-                            v139 = workspace.CurrentCamera.CameraSubject.RootPart
+                    if v_u_93[v_u_95] then
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v133 = workspace.CurrentCamera.CameraSubject
+                        if v133 then
+                            v133 = workspace.CurrentCamera.CameraSubject.RootPart
                         end
-                        if v139 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v139
+                        if v133 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v133
                         end
-                        local v140 = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        if v140 then
-                            v140.CameraOffset = Vector3.new(0, 0, 0)
+                        local v134 = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        if v134 then
+                            v134.CameraOffset = Vector3.new(0, 0, 0)
                         end
-                        v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                        v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
+                        v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                        v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
                         script.Parent.sfx.Spectate:Play()
                         return
                     end
-                elseif p137.KeyCode == Enum.KeyCode.Q then
+                elseif p131.KeyCode == Enum.KeyCode.Q then
                     v_u_13.Spectate.Nosignal.Visible = false
                     v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2").ImageTransparency = 0
                     game:GetService("TweenService"):Create(v_u_13:FindFirstChild("Spectate"):FindFirstChild("Static"):FindFirstChild("Static2"), TweenInfo.new(0.5), {
                         ["ImageTransparency"] = 0.98
                     }):Play()
-                    v_u_101 = v_u_101 + 1
-                    if v_u_101 > #v_u_99 then
-                        v_u_101 = 1
+                    v_u_95 = v_u_95 + 1
+                    if v_u_95 > #v_u_93 then
+                        v_u_95 = 1
                     end
-                    if v_u_99[v_u_101] then
-                        workspace.CurrentCamera.CameraSubject = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        local v141 = workspace.CurrentCamera.CameraSubject
-                        if v141 then
-                            v141 = workspace.CurrentCamera.CameraSubject.RootPart
+                    if v_u_93[v_u_95] then
+                        workspace.CurrentCamera.CameraSubject = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        local v135 = workspace.CurrentCamera.CameraSubject
+                        if v135 then
+                            v135 = workspace.CurrentCamera.CameraSubject.RootPart
                         end
-                        if v141 then
-                            game:GetService("Players").LocalPlayer.ReplicationFocus = v141
+                        if v135 then
+                            game:GetService("Players").LocalPlayer.ReplicationFocus = v135
                         end
-                        local v142 = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid")
-                        if v142 then
-                            v142.CameraOffset = Vector3.new(0, 0, 0)
+                        local v136 = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid")
+                        if v136 then
+                            v136.CameraOffset = Vector3.new(0, 0, 0)
                         end
-                        v_u_13.Spectate.User.Username.Text = "@" .. v_u_99[v_u_101].Name
-                        v_u_13.Spectate.User.Display.Text = v_u_99[v_u_101]:FindFirstChildOfClass("Humanoid").DisplayName
+                        v_u_13.Spectate.User.Username.Text = "@" .. v_u_93[v_u_95].Name
+                        v_u_13.Spectate.User.Display.Text = v_u_93[v_u_95]:FindFirstChildOfClass("Humanoid").DisplayName
                         script.Parent.sfx.Spectate:Play()
                     end
                 end
             end
         end)
-        v_u_123 = game:GetService("Workspace").GAME.MODE:GetPropertyChangedSignal("Value"):Connect(function()
+        v_u_117 = game:GetService("Workspace").GAME.MODE:GetPropertyChangedSignal("Value"):Connect(function()
             -- upvalues: (ref) v_u_13
             if workspace.GAME.MODE.Value ~= "GAME" then
                 v_u_13.Spectate.Nosignal.Visible = true
             end
         end)
-        v_u_124 = v_u_13.Spectate:GetPropertyChangedSignal("Visible"):Connect(function()
+        v_u_118 = v_u_13.Spectate:GetPropertyChangedSignal("Visible"):Connect(function()
             -- upvalues: (ref) v_u_13, (ref) v_u_17
             if v_u_13.Spectate.Visible == false then
                 v_u_17 = false
@@ -72575,7 +74760,23 @@ local function v_u_143(p94)
         repeat
             task.wait(0.01)
         until v_u_17 == false
-        v132()
+        v126()
+    end
+end
+local function v_u_143()
+    -- upvalues: (copy) v_u_14
+    local v138 = next
+    local v139, v140 = v_u_14.LMS:GetDescendants()
+    for _, v141 in v138, v139, v140 do
+        if v141:IsA("GuiObject") then
+            local v142 = {
+                ["BackgroundTransparency"] = 1
+            }
+            if v141:IsA("ImageButton") or v141:IsA("ImageLabel") then
+                v142.ImageTransparency = 1
+            end
+            game:GetService("TweenService"):Create(v141, TweenInfo.new(1), v142):Play()
+        end
     end
 end
 for _, v144 in workspace.PLAYERS.ALIVE:GetChildren() do
@@ -72590,7 +74791,7 @@ workspace.PLAYERS.ALIVE.ChildAdded:Connect(function(p145)
     end
 end)
 v72:Connect(function(p146)
-    -- upvalues: (copy) v_u_14, (copy) v_u_143, (ref) v_u_17, (copy) v_u_38, (copy) v_u_86, (copy) v_u_80
+    -- upvalues: (copy) v_u_14, (copy) v_u_137, (ref) v_u_17, (copy) v_u_38, (copy) v_u_87, (copy) v_u_143
     if p146[1] == "TimerBreak" then
         for _ = 1, p146[5] do
             local v_u_147 = script:WaitForChild("Effects"):WaitForChild("Triangle"):Clone()
@@ -72627,17 +74828,17 @@ v72:Connect(function(p146)
         end
         return
     elseif p146[1] == "Spectate" then
-        v_u_143(true)
+        v_u_137(true)
         return
     elseif p146[1] == "SpectateDisable" then
         v_u_17 = false
     elseif p146[1] == "LMS" then
         v_u_38()
-        v_u_86()
+        v_u_87()
         v_u_14.LMS.Visible = true
         task.delay(4, function()
-            -- upvalues: (ref) v_u_80, (ref) v_u_14
-            v_u_80()
+            -- upvalues: (ref) v_u_143, (ref) v_u_14
+            v_u_143()
             task.delay(1, function()
                 -- upvalues: (ref) v_u_14
                 v_u_14.LMS.Visible = false
@@ -72646,7 +74847,7 @@ v72:Connect(function(p146)
     end
 end)
 function Dialogue(p158, p159)
-    -- upvalues: (copy) v_u_74, (copy) v_u_12, (copy) v_u_93
+    -- upvalues: (copy) v_u_74, (copy) v_u_12, (copy) v_u_81
     if v_u_74[p158] and v_u_74[p158].Texts[p159] then
         for _, v_u_160 in v_u_74[p158].Texts[p159] do
             if v_u_160[3].SoundId ~= "rbxassetid://0" then
@@ -72714,7 +74915,7 @@ function Dialogue(p158, p159)
                 else
                     local v180 = v_u_160[2]
                     if typeof(v180) == "ColorSequence" then
-                        v_u_176.text.TextColor3 = v_u_93(v_u_160[2], v_u_175 / #v_u_160[1])
+                        v_u_176.text.TextColor3 = v_u_81(v_u_160[2], v_u_175 / #v_u_160[1])
                     else
                         if v_u_160[2].Text then
                             v_u_176.text.TextColor3 = v_u_160[2].Text
@@ -72723,7 +74924,7 @@ function Dialogue(p158, p159)
                             v_u_176.text.UIStroke.Enabled = true
                             local v181 = v_u_160[2].Stroke
                             if typeof(v181) == "ColorSequence" then
-                                v_u_176.text.UIStroke.Color = v_u_93(v_u_160[2].Stroke, v_u_175 / #v_u_160[1])
+                                v_u_176.text.UIStroke.Color = v_u_81(v_u_160[2].Stroke, v_u_175 / #v_u_160[1])
                             else
                                 v_u_176.text.UIStroke.Color = v_u_160[2].Stroke
                             end
@@ -73318,15 +75519,15 @@ v_u_15:GetPropertyChangedSignal("Visible"):Connect(function()
         game:GetService("GamepadService"):EnableGamepadCursor(v_u_15)
     end
 end)
-local v_u_271 = v_u_261
-local v_u_272 = v_u_262
-local v_u_273 = v_u_267
+local v_u_271 = v_u_263
+local v_u_272 = v_u_269
+local v_u_273 = v_u_261
 local v_u_274 = v_u_268
 local v_u_275 = v_u_265
 local v_u_276 = v_u_264
-local v_u_277 = v_u_263
-local v_u_278 = v_u_269
-local v_u_279 = v_u_266
+local v_u_277 = v_u_267
+local v_u_278 = v_u_266
+local v_u_279 = v_u_262
 for _, v280 in v_u_15.Holder.List.Animatronics.ScrollingFrame:GetChildren() do
     if v280:IsA("Frame") then
         v280:Destroy()
@@ -73339,20 +75540,20 @@ for _, v281 in v_u_15.Holder.List.Survivors.ScrollingFrame:GetChildren() do
 end
 local v_u_282 = nil
 local function v_u_299(p283, p284)
-    -- upvalues: (ref) v_u_277, (ref) v_u_282, (ref) v_u_276, (ref) v_u_275, (copy) v_u_7, (ref) v_u_274
-    if v_u_277 and v_u_277.Name == p283 .. (p284 or "") then
+    -- upvalues: (ref) v_u_271, (ref) v_u_282, (ref) v_u_276, (ref) v_u_275, (copy) v_u_7, (ref) v_u_274
+    if v_u_271 and v_u_271.Name == p283 .. (p284 or "") then
         return
     else
-        if v_u_277 then
-            v_u_277:Destroy()
-            v_u_277 = nil
+        if v_u_271 then
+            v_u_271:Destroy()
+            v_u_271 = nil
         end
         if v_u_282 then
             v_u_282:Destroy()
         end
         v_u_276 = p283
         v_u_275 = p284
-        local v285 = v_u_277
+        local v285 = v_u_271
         local v286, v287
         if p283:match("Survivor") then
             local v288 = string.split(p283, "-")
@@ -73381,16 +75582,16 @@ local function v_u_299(p283, p284)
             end
         end
         if v287:FindFirstChild("StarterCharacter") then
-            v_u_277 = v287:FindFirstChild("StarterCharacter"):Clone()
-            v_u_277.Name = p283 .. (p284 or "")
-            v_u_277.Parent = workspace.MAPS.ShopModel
+            v_u_271 = v287:FindFirstChild("StarterCharacter"):Clone()
+            v_u_271.Name = p283 .. (p284 or "")
+            v_u_271.Parent = workspace.MAPS.ShopModel
         else
-            v_u_277 = game:GetService("ReplicatedStorage").Dummy:Clone()
-            v_u_277.Name = p283 .. (p284 or "")
-            v_u_277.Parent = workspace.MAPS.ShopModel
+            v_u_271 = game:GetService("ReplicatedStorage").Dummy:Clone()
+            v_u_271.Name = p283 .. (p284 or "")
+            v_u_271.Parent = workspace.MAPS.ShopModel
             local v290 = v_u_7.Character:FindFirstChildOfClass("Humanoid"):GetAppliedDescription()
-            v_u_277.Humanoid:ApplyDescription(v290)
-            v_u_277.Humanoid.DisplayName = ""
+            v_u_271.Humanoid:ApplyDescription(v290)
+            v_u_271.Humanoid.DisplayName = ""
         end
         v_u_282 = nil
         if v287 and v287:FindFirstChild("Assets") then
@@ -73411,40 +75612,40 @@ local function v_u_299(p283, p284)
                 if v292:HasTag("ASSET") then
                     local v293 = v292:Clone()
                     v293:FindFirstChild("Weld").Enabled = true
-                    v293:FindFirstChild("Weld").Part0 = v_u_277:FindFirstChild(v293:GetAttribute("WeldTo"))
-                    v293.Parent = v_u_277
+                    v293:FindFirstChild("Weld").Part0 = v_u_271:FindFirstChild(v293:GetAttribute("WeldTo"))
+                    v293.Parent = v_u_271
                     for _, v294 in v293:GetChildren() do
                         if v294:GetAttribute("Attach") then
-                            v294.Part0 = v_u_277:FindFirstChild(v294:GetAttribute("Attach"))
+                            v294.Part0 = v_u_271:FindFirstChild(v294:GetAttribute("Attach"))
                         end
                     end
                 elseif v292.Name == "Idle1" or v292.Name == "Idle" then
-                    v_u_274 = v_u_277.Humanoid:LoadAnimation(v292)
+                    v_u_274 = v_u_271.Humanoid:LoadAnimation(v292)
                     v_u_274.Priority = Enum.AnimationPriority.Action2
                     v_u_274:Play(0)
                 end
             end
         end
-        for _, v295 in v_u_277:GetDescendants() do
+        for _, v295 in v_u_271:GetDescendants() do
             if v295:IsA("SpotLight") then
                 v295.Enabled = false
             end
         end
         if v287:FindFirstChild("Animate") then
-            v_u_274 = v_u_277:FindFirstChildOfClass("Humanoid"):LoadAnimation(v287.Animate.idle:FindFirstChildOfClass("Animation"))
+            v_u_274 = v_u_271:FindFirstChildOfClass("Humanoid"):LoadAnimation(v287.Animate.idle:FindFirstChildOfClass("Animation"))
             v_u_274.Priority = Enum.AnimationPriority.Action
             v_u_274:Play(0)
         else
-            v_u_274 = v_u_277:FindFirstChildOfClass("Humanoid"):LoadAnimation(v286.Animate.idle:FindFirstChildOfClass("Animation"))
+            v_u_274 = v_u_271:FindFirstChildOfClass("Humanoid"):LoadAnimation(v286.Animate.idle:FindFirstChildOfClass("Animation"))
             v_u_274.Priority = Enum.AnimationPriority.Action
             v_u_274:Play(0)
         end
         if v_u_282:FindFirstChild("Spawn") then
-            local v_u_296 = v_u_277:FindFirstChildOfClass("Humanoid"):LoadAnimation(v_u_282:FindFirstChild("Spawn"))
+            local v_u_296 = v_u_271:FindFirstChildOfClass("Humanoid"):LoadAnimation(v_u_282:FindFirstChild("Spawn"))
             v_u_296.Priority = Enum.AnimationPriority.Action4
             if v_u_282:FindFirstChild("SpawnSFX") then
                 local v_u_297 = v_u_282:FindFirstChild("SpawnSFX"):Clone()
-                v_u_297.Parent = v_u_277
+                v_u_297.Parent = v_u_271
                 task.spawn(function()
                     -- upvalues: (copy) v_u_297, (copy) v_u_296
                     if v_u_297.IsLoaded == false and v_u_297.SoundId ~= "rbxassetid://0" then
@@ -73461,32 +75662,32 @@ local function v_u_299(p283, p284)
                 v_u_296:Play(0)
             end
         end
-        if v_u_277 then
-            v_u_277.HumanoidRootPart.Anchored = true
+        if v_u_271 then
+            v_u_271.HumanoidRootPart.Anchored = true
         end
         if v285 then
             v285:Destroy()
         end
-        local v_u_298 = v_u_277
+        local v_u_298 = v_u_271
         if v287:FindFirstChild("StarterCharacter") then
             task.delay(0.05, function()
-                -- upvalues: (ref) v_u_277, (copy) v_u_298
-                if v_u_277 and (v_u_277.Parent and v_u_298 == v_u_277) then
-                    v_u_277.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_277.Humanoid.HipHeight, 0)
+                -- upvalues: (ref) v_u_271, (copy) v_u_298
+                if v_u_271 and (v_u_271.Parent and v_u_298 == v_u_271) then
+                    v_u_271.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_271.Humanoid.HipHeight, 0)
                 end
             end)
         else
             task.delay(0.05, function()
-                -- upvalues: (ref) v_u_277, (copy) v_u_298
-                if v_u_277 and (v_u_277.Parent and v_u_298 == v_u_277) then
-                    v_u_277.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_277.Humanoid.HipHeight + 3, 0)
+                -- upvalues: (ref) v_u_271, (copy) v_u_298
+                if v_u_271 and (v_u_271.Parent and v_u_298 == v_u_271) then
+                    v_u_271.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_271.Humanoid.HipHeight + 3, 0)
                 end
             end)
         end
     end
 end
 local function v_u_300()
-    -- upvalues: (ref) v_u_73, (copy) v_u_71, (copy) v_u_4, (ref) v_u_279, (copy) v_u_15, (copy) v_u_299, (ref) v_u_273, (ref) v_u_278, (ref) v_u_274, (ref) v_u_275, (copy) v_u_18, (ref) v_u_277
+    -- upvalues: (ref) v_u_73, (copy) v_u_71, (copy) v_u_4, (ref) v_u_278, (copy) v_u_15, (copy) v_u_299, (ref) v_u_277, (ref) v_u_272, (ref) v_u_274, (ref) v_u_275, (copy) v_u_18, (ref) v_u_271
     -- failed to decompile
 end
 v_u_15.Holder.Expanded.Page.Skins.Search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -73519,18 +75720,18 @@ v_u_15.Holder.Search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
     end
 end)
 v_u_13.Buttons.Holder.Shop.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_12, (ref) v_u_272, (ref) v_u_271, (copy) v_u_15, (copy) v_u_11, (copy) v_u_18, (copy) v_u_300, (copy) v_u_299
+    -- upvalues: (copy) v_u_12, (ref) v_u_279, (ref) v_u_273, (copy) v_u_15, (copy) v_u_11, (copy) v_u_18, (copy) v_u_300, (copy) v_u_299
     v_u_12.EmoteWheel.Visible = false
     if game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere") then
-        v_u_272 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
-        v_u_272.Parent = nil
+        v_u_279 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
+        v_u_279.Parent = nil
     end
-    if not v_u_271 then
-        v_u_271 = script:WaitForChild("ShopAtmosphere"):Clone()
+    if not v_u_273 then
+        v_u_273 = script:WaitForChild("ShopAtmosphere"):Clone()
     end
     task.spawn(function()
-        -- upvalues: (ref) v_u_271
-        v_u_271.Parent = game:GetService("Lighting")
+        -- upvalues: (ref) v_u_273
+        v_u_273.Parent = game:GetService("Lighting")
     end)
     for _, v305 in v_u_15.Holder.Expanded.Page.Emotes.ScrollingFrame:GetChildren() do
         if v305:IsA("Frame") and v305.Name ~= "Spacing" then
@@ -73604,17 +75805,17 @@ v_u_13.Buttons.Holder.Shop.Button.MouseButton1Click:Connect(function()
     v_u_299("Springtrap", game:GetService("ReplicatedStorage").Characters:FindFirstChild("Springtrap"):GetAttribute("Default"))
 end)
 local function v_u_319()
-    -- upvalues: (copy) v_u_15, (copy) v_u_12, (ref) v_u_272, (ref) v_u_271, (copy) v_u_299
+    -- upvalues: (copy) v_u_15, (copy) v_u_12, (ref) v_u_279, (ref) v_u_273, (copy) v_u_299
     v_u_15.Visible = true
     v_u_12.sfx.Click:Play()
     if game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere") then
-        v_u_272 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
-        v_u_272.Parent = nil
+        v_u_279 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
+        v_u_279.Parent = nil
     end
-    if not v_u_271 then
-        v_u_271 = script:WaitForChild("ShopAtmosphere"):Clone()
+    if not v_u_273 then
+        v_u_273 = script:WaitForChild("ShopAtmosphere"):Clone()
     end
-    v_u_271.Parent = game:GetService("Lighting")
+    v_u_273.Parent = game:GetService("Lighting")
     for _, v316 in v_u_15.Holder.Expanded.Page.Emotes.ScrollingFrame:GetChildren() do
         if v316:IsA("Frame") and v316.Name ~= "Spacing" then
             v316:Destroy()
@@ -73641,12 +75842,12 @@ v_u_15.Currency.List.Currency.Plus.MouseButton1Click:Connect(function()
     v_u_319()
 end)
 v_u_15:FindFirstChild("Button"):FindFirstChild("Back"):FindFirstChild("Button").MouseButton1Click:Connect(function()
-    -- upvalues: (ref) v_u_272, (ref) v_u_271
-    if v_u_272 then
-        v_u_272.Parent = game:GetService("Lighting")
-        v_u_272 = nil
+    -- upvalues: (ref) v_u_279, (ref) v_u_273
+    if v_u_279 then
+        v_u_279.Parent = game:GetService("Lighting")
+        v_u_279 = nil
     end
-    v_u_271.Parent = nil
+    v_u_273.Parent = nil
 end)
 local v_u_320 = nil
 local v_u_321 = ""
@@ -73656,13 +75857,13 @@ local v_u_324 = nil
 local v_u_325 = nil
 local v_u_326 = nil
 v_u_16:GetPropertyChangedSignal("Visible"):Connect(function()
-    -- upvalues: (copy) v_u_16, (ref) v_u_271, (ref) v_u_272, (ref) v_u_320, (ref) v_u_321, (ref) v_u_322, (ref) v_u_323, (ref) v_u_324, (ref) v_u_326, (ref) v_u_325
+    -- upvalues: (copy) v_u_16, (ref) v_u_273, (ref) v_u_279, (ref) v_u_320, (ref) v_u_321, (ref) v_u_322, (ref) v_u_323, (ref) v_u_324, (ref) v_u_326, (ref) v_u_325
     if v_u_16.Visible == false then
         game:GetService("GamepadService"):DisableGamepadCursor()
-        v_u_271.Parent = nil
-        if v_u_272 then
-            v_u_272.Parent = game:GetService("Lighting")
-            v_u_272 = nil
+        v_u_273.Parent = nil
+        if v_u_279 then
+            v_u_279.Parent = game:GetService("Lighting")
+            v_u_279 = nil
         end
         if v_u_320 then
             v_u_320:Destroy()
@@ -74387,17 +76588,17 @@ v_u_16.Selected.Cosmetics.Skins.Equip.Button.MouseButton1Click:Connect(function(
     end
 end)
 v_u_13.Buttons.Holder.Inventory.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_12, (ref) v_u_73, (copy) v_u_71, (ref) v_u_272, (ref) v_u_271, (copy) v_u_16, (copy) v_u_11, (copy) v_u_409
+    -- upvalues: (copy) v_u_12, (ref) v_u_73, (copy) v_u_71, (ref) v_u_279, (ref) v_u_273, (copy) v_u_16, (copy) v_u_11, (copy) v_u_409
     v_u_12.EmoteWheel.Visible = false
     v_u_73 = v_u_71:Invoke(999, "Data")
     if game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere") then
-        v_u_272 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
-        v_u_272.Parent = nil
+        v_u_279 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
+        v_u_279.Parent = nil
     end
-    if not (v_u_271 and v_u_271.Parent) then
-        v_u_271 = script:WaitForChild("ShopAtmosphere"):Clone()
+    if not (v_u_273 and v_u_273.Parent) then
+        v_u_273 = script:WaitForChild("ShopAtmosphere"):Clone()
     end
-    v_u_271.Parent = game:GetService("Lighting")
+    v_u_273.Parent = game:GetService("Lighting")
     for _, v421 in v_u_16.List.List.Survivors.ScrollingFrame:GetChildren() do
         if v421:IsA("Frame") and v421.Name ~= "Spacing" then
             v421:Destroy()
@@ -74496,8 +76697,8 @@ v_u_16.Selected.Cosmetics.Emotes.Search.TextBox:GetPropertyChangedSignal("Text")
     end
 end)
 v_u_13.Buttons.Holder.Spectate.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_143
-    v_u_143()
+    -- upvalues: (copy) v_u_137
+    v_u_137()
 end)
 script.Parent.UI.MobileOverlay.Holder.Shiftlock.Button.MouseButton1Click:Connect(function()
     -- upvalues: (copy) v_u_7
@@ -93210,12 +95411,18 @@ return v_u_23
 -- Decompiled with Velocity Script Decompiler
 require(script.Parent:WaitForChild("PlayerModule"))
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.MainServer
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.MainServer
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.Main
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.MainServer.Client
+-- Decompiled with Velocity Script Decompiler
+function script.Parent.RemoteFunction.OnClientInvoke()
+    return script.Parent.Parent.UI.LobbyUIContainer.Settings.Holder.List.ScrollingFrame.CODE.TextBox.Text
+end
+
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.Main
 -- Decompiled with Velocity Script Decompiler
 workspace:WaitForChild("Lobby"):WaitForChild("TV"):WaitForChild("Screen"):WaitForChild("Board").Parent = game:GetService("Players").LocalPlayer.PlayerGui.UI
 local v_u_1 = game:GetService("TweenService")
@@ -93959,35 +96166,35 @@ local function v_u_130()
         end
     end
 end
-local function v_u_136()
-    -- upvalues: (copy) v_u_14
-    local v131 = next
-    local v132, v133 = v_u_14.LMS:GetDescendants()
-    for _, v134 in v131, v132, v133 do
-        if v134:IsA("GuiObject") then
-            local v135 = {
-                ["BackgroundTransparency"] = 1
-            }
-            if v134:IsA("ImageButton") or v134:IsA("ImageLabel") then
-                v135.ImageTransparency = 1
-            end
-            game:GetService("TweenService"):Create(v134, TweenInfo.new(1), v135):Play()
+local function v_u_137(p131, p132)
+    if p132 == 0 then
+        return p131.Keypoints[1].Value
+    end
+    if p132 == 1 then
+        return p131.Keypoints[#p131.Keypoints].Value
+    end
+    for v133 = 1, #p131.Keypoints - 1 do
+        local v134 = p131.Keypoints[v133]
+        local v135 = p131.Keypoints[v133 + 1]
+        if v134.Time <= p132 and p132 < v135.Time then
+            local v136 = (p132 - v134.Time) / (v135.Time - v134.Time)
+            return Color3.new((v135.Value.R - v134.Value.R) * v136 + v134.Value.R, (v135.Value.G - v134.Value.G) * v136 + v134.Value.G, (v135.Value.B - v134.Value.B) * v136 + v134.Value.B)
         end
     end
 end
-local function v_u_143(p137, p138)
-    if p138 == 0 then
-        return p137.Keypoints[1].Value
-    end
-    if p138 == 1 then
-        return p137.Keypoints[#p137.Keypoints].Value
-    end
-    for v139 = 1, #p137.Keypoints - 1 do
-        local v140 = p137.Keypoints[v139]
-        local v141 = p137.Keypoints[v139 + 1]
-        if v140.Time <= p138 and p138 < v141.Time then
-            local v142 = (p138 - v140.Time) / (v141.Time - v140.Time)
-            return Color3.new((v141.Value.R - v140.Value.R) * v142 + v140.Value.R, (v141.Value.G - v140.Value.G) * v142 + v140.Value.G, (v141.Value.B - v140.Value.B) * v142 + v140.Value.B)
+local function v_u_143()
+    -- upvalues: (copy) v_u_14
+    local v138 = next
+    local v139, v140 = v_u_14.LMS:GetDescendants()
+    for _, v141 in v138, v139, v140 do
+        if v141:IsA("GuiObject") then
+            local v142 = {
+                ["BackgroundTransparency"] = 1
+            }
+            if v141:IsA("ImageButton") or v141:IsA("ImageLabel") then
+                v142.ImageTransparency = 1
+            end
+            game:GetService("TweenService"):Create(v141, TweenInfo.new(1), v142):Play()
         end
     end
 end
@@ -94003,7 +96210,7 @@ workspace.PLAYERS.ALIVE.ChildAdded:Connect(function(p145)
     end
 end)
 v72:Connect(function(p146)
-    -- upvalues: (copy) v_u_14, (copy) v_u_124, (ref) v_u_17, (copy) v_u_38, (copy) v_u_130, (copy) v_u_136
+    -- upvalues: (copy) v_u_14, (copy) v_u_124, (ref) v_u_17, (copy) v_u_38, (copy) v_u_130, (copy) v_u_143
     if p146[1] == "TimerBreak" then
         for _ = 1, p146[5] do
             local v_u_147 = script:WaitForChild("Effects"):WaitForChild("Triangle"):Clone()
@@ -94049,8 +96256,8 @@ v72:Connect(function(p146)
         v_u_130()
         v_u_14.LMS.Visible = true
         task.delay(4, function()
-            -- upvalues: (ref) v_u_136, (ref) v_u_14
-            v_u_136()
+            -- upvalues: (ref) v_u_143, (ref) v_u_14
+            v_u_143()
             task.delay(1, function()
                 -- upvalues: (ref) v_u_14
                 v_u_14.LMS.Visible = false
@@ -94059,7 +96266,7 @@ v72:Connect(function(p146)
     end
 end)
 function Dialogue(p158, p159)
-    -- upvalues: (copy) v_u_74, (copy) v_u_12, (copy) v_u_143
+    -- upvalues: (copy) v_u_74, (copy) v_u_12, (copy) v_u_137
     if v_u_74[p158] and v_u_74[p158].Texts[p159] then
         for _, v_u_160 in v_u_74[p158].Texts[p159] do
             if v_u_160[3].SoundId ~= "rbxassetid://0" then
@@ -94127,7 +96334,7 @@ function Dialogue(p158, p159)
                 else
                     local v180 = v_u_160[2]
                     if typeof(v180) == "ColorSequence" then
-                        v_u_176.text.TextColor3 = v_u_143(v_u_160[2], v_u_175 / #v_u_160[1])
+                        v_u_176.text.TextColor3 = v_u_137(v_u_160[2], v_u_175 / #v_u_160[1])
                     else
                         if v_u_160[2].Text then
                             v_u_176.text.TextColor3 = v_u_160[2].Text
@@ -94136,7 +96343,7 @@ function Dialogue(p158, p159)
                             v_u_176.text.UIStroke.Enabled = true
                             local v181 = v_u_160[2].Stroke
                             if typeof(v181) == "ColorSequence" then
-                                v_u_176.text.UIStroke.Color = v_u_143(v_u_160[2].Stroke, v_u_175 / #v_u_160[1])
+                                v_u_176.text.UIStroke.Color = v_u_137(v_u_160[2].Stroke, v_u_175 / #v_u_160[1])
                             else
                                 v_u_176.text.UIStroke.Color = v_u_160[2].Stroke
                             end
@@ -94731,15 +96938,15 @@ v_u_15:GetPropertyChangedSignal("Visible"):Connect(function()
         game:GetService("GamepadService"):EnableGamepadCursor(v_u_15)
     end
 end)
-local v_u_271 = v_u_269
-local v_u_272 = v_u_266
-local v_u_273 = v_u_261
-local v_u_274 = v_u_262
-local v_u_275 = v_u_268
-local v_u_276 = v_u_265
-local v_u_277 = v_u_264
-local v_u_278 = v_u_263
-local v_u_279 = v_u_267
+local v_u_271 = v_u_268
+local v_u_272 = v_u_265
+local v_u_273 = v_u_264
+local v_u_274 = v_u_269
+local v_u_275 = v_u_266
+local v_u_276 = v_u_261
+local v_u_277 = v_u_263
+local v_u_278 = v_u_267
+local v_u_279 = v_u_262
 for _, v280 in v_u_15.Holder.List.Animatronics.ScrollingFrame:GetChildren() do
     if v280:IsA("Frame") then
         v280:Destroy()
@@ -94752,20 +96959,20 @@ for _, v281 in v_u_15.Holder.List.Survivors.ScrollingFrame:GetChildren() do
 end
 local v_u_282 = nil
 local function v_u_299(p283, p284)
-    -- upvalues: (ref) v_u_278, (ref) v_u_282, (ref) v_u_277, (ref) v_u_276, (copy) v_u_7, (ref) v_u_275
-    if v_u_278 and v_u_278.Name == p283 .. (p284 or "") then
+    -- upvalues: (ref) v_u_277, (ref) v_u_282, (ref) v_u_273, (ref) v_u_272, (copy) v_u_7, (ref) v_u_271
+    if v_u_277 and v_u_277.Name == p283 .. (p284 or "") then
         return
     else
-        if v_u_278 then
-            v_u_278:Destroy()
-            v_u_278 = nil
+        if v_u_277 then
+            v_u_277:Destroy()
+            v_u_277 = nil
         end
         if v_u_282 then
             v_u_282:Destroy()
         end
-        v_u_277 = p283
-        v_u_276 = p284
-        local v285 = v_u_278
+        v_u_273 = p283
+        v_u_272 = p284
+        local v285 = v_u_277
         local v286, v287
         if p283:match("Survivor") then
             local v288 = string.split(p283, "-")
@@ -94794,16 +97001,16 @@ local function v_u_299(p283, p284)
             end
         end
         if v287:FindFirstChild("StarterCharacter") then
-            v_u_278 = v287:FindFirstChild("StarterCharacter"):Clone()
-            v_u_278.Name = p283 .. (p284 or "")
-            v_u_278.Parent = workspace.MAPS.ShopModel
+            v_u_277 = v287:FindFirstChild("StarterCharacter"):Clone()
+            v_u_277.Name = p283 .. (p284 or "")
+            v_u_277.Parent = workspace.MAPS.ShopModel
         else
-            v_u_278 = game:GetService("ReplicatedStorage").Dummy:Clone()
-            v_u_278.Name = p283 .. (p284 or "")
-            v_u_278.Parent = workspace.MAPS.ShopModel
+            v_u_277 = game:GetService("ReplicatedStorage").Dummy:Clone()
+            v_u_277.Name = p283 .. (p284 or "")
+            v_u_277.Parent = workspace.MAPS.ShopModel
             local v290 = v_u_7.Character:FindFirstChildOfClass("Humanoid"):GetAppliedDescription()
-            v_u_278.Humanoid:ApplyDescription(v290)
-            v_u_278.Humanoid.DisplayName = ""
+            v_u_277.Humanoid:ApplyDescription(v290)
+            v_u_277.Humanoid.DisplayName = ""
         end
         v_u_282 = nil
         if v287 and v287:FindFirstChild("Assets") then
@@ -94824,40 +97031,40 @@ local function v_u_299(p283, p284)
                 if v292:HasTag("ASSET") then
                     local v293 = v292:Clone()
                     v293:FindFirstChild("Weld").Enabled = true
-                    v293:FindFirstChild("Weld").Part0 = v_u_278:FindFirstChild(v293:GetAttribute("WeldTo"))
-                    v293.Parent = v_u_278
+                    v293:FindFirstChild("Weld").Part0 = v_u_277:FindFirstChild(v293:GetAttribute("WeldTo"))
+                    v293.Parent = v_u_277
                     for _, v294 in v293:GetChildren() do
                         if v294:GetAttribute("Attach") then
-                            v294.Part0 = v_u_278:FindFirstChild(v294:GetAttribute("Attach"))
+                            v294.Part0 = v_u_277:FindFirstChild(v294:GetAttribute("Attach"))
                         end
                     end
                 elseif v292.Name == "Idle1" or v292.Name == "Idle" then
-                    v_u_275 = v_u_278.Humanoid:LoadAnimation(v292)
-                    v_u_275.Priority = Enum.AnimationPriority.Action2
-                    v_u_275:Play(0)
+                    v_u_271 = v_u_277.Humanoid:LoadAnimation(v292)
+                    v_u_271.Priority = Enum.AnimationPriority.Action2
+                    v_u_271:Play(0)
                 end
             end
         end
-        for _, v295 in v_u_278:GetDescendants() do
+        for _, v295 in v_u_277:GetDescendants() do
             if v295:IsA("SpotLight") then
                 v295.Enabled = false
             end
         end
         if v287:FindFirstChild("Animate") then
-            v_u_275 = v_u_278:FindFirstChildOfClass("Humanoid"):LoadAnimation(v287.Animate.idle:FindFirstChildOfClass("Animation"))
-            v_u_275.Priority = Enum.AnimationPriority.Action
-            v_u_275:Play(0)
+            v_u_271 = v_u_277:FindFirstChildOfClass("Humanoid"):LoadAnimation(v287.Animate.idle:FindFirstChildOfClass("Animation"))
+            v_u_271.Priority = Enum.AnimationPriority.Action
+            v_u_271:Play(0)
         else
-            v_u_275 = v_u_278:FindFirstChildOfClass("Humanoid"):LoadAnimation(v286.Animate.idle:FindFirstChildOfClass("Animation"))
-            v_u_275.Priority = Enum.AnimationPriority.Action
-            v_u_275:Play(0)
+            v_u_271 = v_u_277:FindFirstChildOfClass("Humanoid"):LoadAnimation(v286.Animate.idle:FindFirstChildOfClass("Animation"))
+            v_u_271.Priority = Enum.AnimationPriority.Action
+            v_u_271:Play(0)
         end
         if v_u_282:FindFirstChild("Spawn") then
-            local v_u_296 = v_u_278:FindFirstChildOfClass("Humanoid"):LoadAnimation(v_u_282:FindFirstChild("Spawn"))
+            local v_u_296 = v_u_277:FindFirstChildOfClass("Humanoid"):LoadAnimation(v_u_282:FindFirstChild("Spawn"))
             v_u_296.Priority = Enum.AnimationPriority.Action4
             if v_u_282:FindFirstChild("SpawnSFX") then
                 local v_u_297 = v_u_282:FindFirstChild("SpawnSFX"):Clone()
-                v_u_297.Parent = v_u_278
+                v_u_297.Parent = v_u_277
                 task.spawn(function()
                     -- upvalues: (copy) v_u_297, (copy) v_u_296
                     if v_u_297.IsLoaded == false and v_u_297.SoundId ~= "rbxassetid://0" then
@@ -94874,32 +97081,32 @@ local function v_u_299(p283, p284)
                 v_u_296:Play(0)
             end
         end
-        if v_u_278 then
-            v_u_278.HumanoidRootPart.Anchored = true
+        if v_u_277 then
+            v_u_277.HumanoidRootPart.Anchored = true
         end
         if v285 then
             v285:Destroy()
         end
-        local v_u_298 = v_u_278
+        local v_u_298 = v_u_277
         if v287:FindFirstChild("StarterCharacter") then
             task.delay(0.05, function()
-                -- upvalues: (ref) v_u_278, (copy) v_u_298
-                if v_u_278 and (v_u_278.Parent and v_u_298 == v_u_278) then
-                    v_u_278.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_278.Humanoid.HipHeight, 0)
+                -- upvalues: (ref) v_u_277, (copy) v_u_298
+                if v_u_277 and (v_u_277.Parent and v_u_298 == v_u_277) then
+                    v_u_277.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_277.Humanoid.HipHeight, 0)
                 end
             end)
         else
             task.delay(0.05, function()
-                -- upvalues: (ref) v_u_278, (copy) v_u_298
-                if v_u_278 and (v_u_278.Parent and v_u_298 == v_u_278) then
-                    v_u_278.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_278.Humanoid.HipHeight + 3, 0)
+                -- upvalues: (ref) v_u_277, (copy) v_u_298
+                if v_u_277 and (v_u_277.Parent and v_u_298 == v_u_277) then
+                    v_u_277.HumanoidRootPart.CFrame = workspace.MAPS.ShopModel.GoToPosition.CFrame * CFrame.new(0, v_u_277.Humanoid.HipHeight + 3, 0)
                 end
             end)
         end
     end
 end
 local function v_u_300()
-    -- upvalues: (ref) v_u_73, (copy) v_u_71, (copy) v_u_4, (ref) v_u_272, (copy) v_u_15, (copy) v_u_299, (ref) v_u_279, (ref) v_u_271, (ref) v_u_275, (ref) v_u_276, (copy) v_u_18, (ref) v_u_278
+    -- upvalues: (ref) v_u_73, (copy) v_u_71, (copy) v_u_4, (ref) v_u_275, (copy) v_u_15, (copy) v_u_299, (ref) v_u_278, (ref) v_u_274, (ref) v_u_271, (ref) v_u_272, (copy) v_u_18, (ref) v_u_277
     -- failed to decompile
 end
 v_u_15.Holder.Expanded.Page.Skins.Search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -94932,18 +97139,18 @@ v_u_15.Holder.Search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
     end
 end)
 v_u_13.Buttons.Holder.Shop.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_12, (ref) v_u_274, (ref) v_u_273, (copy) v_u_15, (copy) v_u_11, (copy) v_u_18, (copy) v_u_300, (copy) v_u_299
+    -- upvalues: (copy) v_u_12, (ref) v_u_279, (ref) v_u_276, (copy) v_u_15, (copy) v_u_11, (copy) v_u_18, (copy) v_u_300, (copy) v_u_299
     v_u_12.EmoteWheel.Visible = false
     if game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere") then
-        v_u_274 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
-        v_u_274.Parent = nil
+        v_u_279 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
+        v_u_279.Parent = nil
     end
-    if not v_u_273 then
-        v_u_273 = script:WaitForChild("ShopAtmosphere"):Clone()
+    if not v_u_276 then
+        v_u_276 = script:WaitForChild("ShopAtmosphere"):Clone()
     end
     task.spawn(function()
-        -- upvalues: (ref) v_u_273
-        v_u_273.Parent = game:GetService("Lighting")
+        -- upvalues: (ref) v_u_276
+        v_u_276.Parent = game:GetService("Lighting")
     end)
     for _, v305 in v_u_15.Holder.Expanded.Page.Emotes.ScrollingFrame:GetChildren() do
         if v305:IsA("Frame") and v305.Name ~= "Spacing" then
@@ -95017,17 +97224,17 @@ v_u_13.Buttons.Holder.Shop.Button.MouseButton1Click:Connect(function()
     v_u_299("Springtrap", game:GetService("ReplicatedStorage").Characters:FindFirstChild("Springtrap"):GetAttribute("Default"))
 end)
 local function v_u_319()
-    -- upvalues: (copy) v_u_15, (copy) v_u_12, (ref) v_u_274, (ref) v_u_273, (copy) v_u_299
+    -- upvalues: (copy) v_u_15, (copy) v_u_12, (ref) v_u_279, (ref) v_u_276, (copy) v_u_299
     v_u_15.Visible = true
     v_u_12.sfx.Click:Play()
     if game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere") then
-        v_u_274 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
-        v_u_274.Parent = nil
+        v_u_279 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
+        v_u_279.Parent = nil
     end
-    if not v_u_273 then
-        v_u_273 = script:WaitForChild("ShopAtmosphere"):Clone()
+    if not v_u_276 then
+        v_u_276 = script:WaitForChild("ShopAtmosphere"):Clone()
     end
-    v_u_273.Parent = game:GetService("Lighting")
+    v_u_276.Parent = game:GetService("Lighting")
     for _, v316 in v_u_15.Holder.Expanded.Page.Emotes.ScrollingFrame:GetChildren() do
         if v316:IsA("Frame") and v316.Name ~= "Spacing" then
             v316:Destroy()
@@ -95054,12 +97261,12 @@ v_u_15.Currency.List.Currency.Plus.MouseButton1Click:Connect(function()
     v_u_319()
 end)
 v_u_15:FindFirstChild("Button"):FindFirstChild("Back"):FindFirstChild("Button").MouseButton1Click:Connect(function()
-    -- upvalues: (ref) v_u_274, (ref) v_u_273
-    if v_u_274 then
-        v_u_274.Parent = game:GetService("Lighting")
-        v_u_274 = nil
+    -- upvalues: (ref) v_u_279, (ref) v_u_276
+    if v_u_279 then
+        v_u_279.Parent = game:GetService("Lighting")
+        v_u_279 = nil
     end
-    v_u_273.Parent = nil
+    v_u_276.Parent = nil
 end)
 local v_u_320 = nil
 local v_u_321 = ""
@@ -95069,13 +97276,13 @@ local v_u_324 = nil
 local v_u_325 = nil
 local v_u_326 = nil
 v_u_16:GetPropertyChangedSignal("Visible"):Connect(function()
-    -- upvalues: (copy) v_u_16, (ref) v_u_273, (ref) v_u_274, (ref) v_u_320, (ref) v_u_321, (ref) v_u_322, (ref) v_u_323, (ref) v_u_324, (ref) v_u_326, (ref) v_u_325
+    -- upvalues: (copy) v_u_16, (ref) v_u_276, (ref) v_u_279, (ref) v_u_320, (ref) v_u_321, (ref) v_u_322, (ref) v_u_323, (ref) v_u_324, (ref) v_u_326, (ref) v_u_325
     if v_u_16.Visible == false then
         game:GetService("GamepadService"):DisableGamepadCursor()
-        v_u_273.Parent = nil
-        if v_u_274 then
-            v_u_274.Parent = game:GetService("Lighting")
-            v_u_274 = nil
+        v_u_276.Parent = nil
+        if v_u_279 then
+            v_u_279.Parent = game:GetService("Lighting")
+            v_u_279 = nil
         end
         if v_u_320 then
             v_u_320:Destroy()
@@ -95800,17 +98007,17 @@ v_u_16.Selected.Cosmetics.Skins.Equip.Button.MouseButton1Click:Connect(function(
     end
 end)
 v_u_13.Buttons.Holder.Inventory.Button.MouseButton1Click:Connect(function()
-    -- upvalues: (copy) v_u_12, (ref) v_u_73, (copy) v_u_71, (ref) v_u_274, (ref) v_u_273, (copy) v_u_16, (copy) v_u_11, (copy) v_u_409
+    -- upvalues: (copy) v_u_12, (ref) v_u_73, (copy) v_u_71, (ref) v_u_279, (ref) v_u_276, (copy) v_u_16, (copy) v_u_11, (copy) v_u_409
     v_u_12.EmoteWheel.Visible = false
     v_u_73 = v_u_71:Invoke(999, "Data")
     if game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere") then
-        v_u_274 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
-        v_u_274.Parent = nil
+        v_u_279 = game:GetService("Lighting"):FindFirstChildOfClass("Atmosphere")
+        v_u_279.Parent = nil
     end
-    if not (v_u_273 and v_u_273.Parent) then
-        v_u_273 = script:WaitForChild("ShopAtmosphere"):Clone()
+    if not (v_u_276 and v_u_276.Parent) then
+        v_u_276 = script:WaitForChild("ShopAtmosphere"):Clone()
     end
-    v_u_273.Parent = game:GetService("Lighting")
+    v_u_276.Parent = game:GetService("Lighting")
     for _, v421 in v_u_16.List.List.Survivors.ScrollingFrame:GetChildren() do
         if v421:IsA("Frame") and v421.Name ~= "Spacing" then
             v421:Destroy()
@@ -96336,12 +98543,12 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.Main.Server
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.Main.Server
 -- Decompiled with Velocity Script Decompiler
 -- Failed to decompile
 Error:
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.Main.ShopCards.SelectionCards.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.Main.ShopCards.SelectionCards.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -96441,7 +98648,7 @@ v_u_10:WaitForChild("Button").MouseButton1Click:Connect(function()
     v_u_10.Visible = false
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Layout
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Layout
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("UserInputService")
 local v2 = script.Parent:WaitForChild("UIListLayout")
@@ -96464,7 +98671,7 @@ else
     print("PC Layout")
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -96644,7 +98851,7 @@ for _, v_u_34 in pairs(v1:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Inventory.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Inventory.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = game.Players.LocalPlayer
@@ -96690,7 +98897,7 @@ script.Parent.MouseButton1Click:Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Shop.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Shop.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = game.Players.LocalPlayer
@@ -96736,7 +98943,7 @@ script.Parent.MouseButton1Click:Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Spectate.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Spectate.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = game.Players.LocalPlayer
@@ -96817,7 +99024,7 @@ v7.MouseButton1Click:Connect(function()
     v_u_5:WaitForChild("Buttons").Visible = true
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Settings.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Buttons.Holder.Settings.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = game.Players.LocalPlayer.PlayerGui
@@ -96933,7 +99140,7 @@ v6.MouseButton1Click:Connect(function()
     v_u_24()
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Buttons.ClickEffect.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Buttons.ClickEffect.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = game.Players.LocalPlayer:GetMouse()
@@ -96966,7 +99173,7 @@ v_u_2.Button1Down:Connect(function()
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Sensor.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Sensor.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("Players")
 local v2 = game:GetService("RunService")
@@ -97017,7 +99224,7 @@ v2.RenderStepped:Connect(function(p13)
     v_u_12 = v15
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Skins.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Skins.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local _ = script.Parent
@@ -97105,7 +99312,7 @@ v7:WaitForChild("Button").MouseButton1Click:Connect(function()
     v_u_24(v_u_4:WaitForChild("Holder"):WaitForChild("Name"))
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Skins.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Skins.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -97210,7 +99417,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Info.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Info.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local _ = script.Parent
@@ -97285,7 +99492,7 @@ v7:WaitForChild("Button").MouseButton1Click:Connect(function()
     v_u_21(v_u_4:WaitForChild("Holder"):WaitForChild("Name"))
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Info.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Holder.Buttons.Info.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -97390,7 +99597,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Cosmetics.TabButtons.Page
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Cosmetics.TabButtons.Page
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -97481,7 +99688,7 @@ for _, v_u_12 in pairs(script.Parent:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Cosmetics.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Cosmetics.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -97586,7 +99793,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Information.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Selected.Information.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -97692,7 +99899,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.List.TabButtons.Page
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.List.TabButtons.Page
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent.Parent:WaitForChild("List")
 local v_u_2 = v_u_1:WaitForChild("UIPageLayout")
@@ -97779,7 +99986,7 @@ for _, v_u_13 in pairs(script.Parent:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.List.List.Animatronics.ScrollingFrame.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.List.List.Animatronics.ScrollingFrame.Animations
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -97854,7 +100061,7 @@ for _, v_u_12 in pairs(v2:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Button.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Button.Animations
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -97993,7 +100200,7 @@ for _, v18 in pairs(v1:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Button.Back.Button.Close
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Inventory.Button.Back.Button.Close
 -- Decompiled with Velocity Script Decompiler
 game:GetService("TweenService")
 local v_u_1 = game.Players.LocalPlayer
@@ -98012,7 +100219,7 @@ script.Parent.MouseButton1Click:Connect(function()
     v_u_1:RemoveTag("Cutscene")
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Settings.Holder.Topbar.Close.Button.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Settings.Holder.Topbar.Close.Button.Animate
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -98116,7 +100323,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.Expanded.TabButtons.Page
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.Expanded.TabButtons.Page
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent.Parent:WaitForChild("Page")
 local v_u_2 = v_u_1:WaitForChild("UIPageLayout")
@@ -98202,7 +100409,7 @@ for _, v_u_13 in pairs(script.Parent:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.Expanded.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.Expanded.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -98307,7 +100514,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.List.Animatronics.ScrollingFrame.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.List.Animatronics.ScrollingFrame.Animations
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -98382,7 +100589,7 @@ for _, v_u_12 in pairs(v2:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.TabButtons.Page
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.TabButtons.Page
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent.Parent:WaitForChild("List")
 local v_u_2 = v_u_1:WaitForChild("UIPageLayout")
@@ -98470,7 +100677,7 @@ for _, v_u_13 in pairs(script.Parent:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.Robux.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.Robux.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -98575,7 +100782,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.Back.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.Back.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local _ = script.Parent
@@ -98692,7 +100899,7 @@ v_u_11:WaitForChild("Button").MouseButton1Click:Connect(function()
     v_u_23(v_u_10, v_u_10:WaitForChild("Text"), "Robux Shop")
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -98797,7 +101004,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -98857,7 +101064,7 @@ if game:GetService("UserInputService").TouchEnabled then
     }):Play()
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Glimmer.Shine
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Glimmer.Shine
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -98881,7 +101088,7 @@ while true do
     task.wait(math.random(6, 8.2))
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Glimmer.Shine
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Glimmer.Shine
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -98905,7 +101112,7 @@ while true do
     task.wait(math.random(3, 4.2))
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Gift.Gift.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Gift.Gift.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -98976,7 +101183,7 @@ v_u_6:WaitForChild("Button").MouseButton1Click:Connect(function()
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Gift.Gift.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.2500.Button.Gift.Gift.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -99078,7 +101285,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.375.Button.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.375.Button.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = script.Parent
@@ -99133,7 +101340,7 @@ if game:GetService("UserInputService").TouchEnabled then
     }):Play()
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.375.Button.Gift.Gift.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.375.Button.Gift.Gift.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -99204,7 +101411,7 @@ v_u_6:WaitForChild("Button").MouseButton1Click:Connect(function()
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.375.Button.Gift.Gift.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.375.Button.Gift.Gift.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -99306,7 +101513,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.750.Button.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.750.Button.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = script.Parent
@@ -99361,7 +101568,7 @@ if game:GetService("UserInputService").TouchEnabled then
     }):Play()
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.750.Button.Gift.Gift.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.750.Button.Gift.Gift.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -99432,7 +101639,7 @@ v_u_6:WaitForChild("Button").MouseButton1Click:Connect(function()
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.750.Button.Gift.Gift.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.750.Button.Gift.Gift.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -99534,7 +101741,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.1500.Button.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.1500.Button.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = script.Parent
@@ -99589,7 +101796,7 @@ if game:GetService("UserInputService").TouchEnabled then
     }):Play()
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.1500.Button.Gift.Gift.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.1500.Button.Gift.Gift.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -99660,7 +101867,7 @@ v_u_6:WaitForChild("Button").MouseButton1Click:Connect(function()
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.1500.Button.Gift.Gift.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Scraps.1500.Button.Gift.Gift.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -99762,14 +101969,14 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Glow.Tween
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Glow.Tween
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 game:GetService("TweenService"):Create(v1, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
     ["ImageTransparency"] = 0.6
 }):Play()
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -99835,7 +102042,7 @@ v_u_2:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Text.Glimmer.Shine
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Text.Glimmer.Shine
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -99859,7 +102066,7 @@ while true do
     task.wait(math.random(6, 8.2))
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Border.UIGradient.Rotate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Border.UIGradient.Rotate
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v2 = game:GetService("TweenService")
@@ -99871,7 +102078,7 @@ while true do
     task.wait(4.4)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Container.Gloss.Effect
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Container.Gloss.Effect
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v2 = game:GetService("TweenService")
@@ -99883,7 +102090,7 @@ while true do
     task.wait(3, 5)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Container.Gift.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Container.Gift.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -99954,7 +102161,7 @@ v_u_6:WaitForChild("Button").MouseButton1Click:Connect(function()
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Container.Gift.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.Gamepass.VIP.Frame.Container.Gift.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -100056,14 +102263,14 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Glow.Tween
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Glow.Tween
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 game:GetService("TweenService"):Create(v1, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
     ["ImageTransparency"] = 0.6
 }):Play()
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -100129,7 +102336,7 @@ v_u_2:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Text.Glimmer.Shine
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Text.Glimmer.Shine
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -100153,7 +102360,7 @@ while true do
     task.wait(math.random(6, 8.2))
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Text.Glimmer.Shine
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Text.Glimmer.Shine
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -100177,7 +102384,7 @@ while true do
     task.wait(math.random(6, 8.2))
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Border.UIGradient.Rotate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Border.UIGradient.Rotate
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v2 = game:GetService("TweenService")
@@ -100189,7 +102396,7 @@ while true do
     task.wait(4.4)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Container.Gloss.Effect
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Container.Gloss.Effect
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v2 = game:GetService("TweenService")
@@ -100201,7 +102408,7 @@ while true do
     task.wait(3, 5)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Container.Gift.Button.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Container.Gift.Button.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v2 = script.Parent
@@ -100272,7 +102479,7 @@ v_u_6:WaitForChild("Button").MouseButton1Click:Connect(function()
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Container.Gift.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Holder.RobuxFrame.ScrollingFrame.2nd Emote Page.2nd Emote Page.Frame.Container.Gift.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -100374,7 +102581,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Button.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Button.Animations
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -100514,7 +102721,7 @@ for _, v18 in pairs(v1:GetChildren()) do
     end
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Button.Back.Button.Close
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Button.Back.Button.Close
 -- Decompiled with Velocity Script Decompiler
 game:GetService("TweenService")
 local v_u_1 = game.Players.LocalPlayer
@@ -100542,7 +102749,7 @@ v_u_1:GetAttributeChangedSignal("TEAM"):Connect(function()
     v_u_4()
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Sensor.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Sensor.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("Players")
 local v2 = game:GetService("RunService")
@@ -100593,7 +102800,7 @@ v2.RenderStepped:Connect(function(p13)
     v_u_12 = v15
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.Gifting.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.Gifting.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -100699,14 +102906,14 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Holder.GamepassContainer.Glow.Tween
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Holder.GamepassContainer.Glow.Tween
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 game:GetService("TweenService"):Create(v1, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
     ["ImageTransparency"] = 0.6
 }):Play()
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Holder.Robux.Button.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Holder.Robux.Button.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = script.Parent
@@ -100744,7 +102951,7 @@ v_u_2:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Holder.Screws.Button.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Holder.Screws.Button.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = script.Parent
@@ -100782,7 +102989,7 @@ v_u_2:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Shop.WayToPurchase.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -100887,7 +103094,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Static.Static.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Static.Static.LocalScript
 -- Decompiled with Velocity Script Decompiler
 while true do
     script.Parent.Rotation = 0
@@ -100898,7 +103105,7 @@ while true do
     script.Parent.Size = UDim2.new(math.random(1, 10), 0, 1, 0)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Static.Line.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Static.Line.Animate
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("TweenService")
 while true do
@@ -100909,7 +103116,7 @@ while true do
     task.wait(math.random(4, 10))
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Static.Static2.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Static.Static2.LocalScript
 -- Decompiled with Velocity Script Decompiler
 while true do
     script.Parent.Rotation = 0
@@ -100920,7 +103127,7 @@ while true do
     script.Parent.Size = UDim2.new(math.random(1, 10), 0, 1, 0)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Spectate.User.Previous.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Spectate.User.Previous.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -101025,7 +103232,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Spectate.User.Next.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Spectate.User.Next.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -101130,7 +103337,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Spectate.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -101236,7 +103443,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Currency.Holder.List.Currency.Plus.Open
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Currency.Holder.List.Currency.Plus.Open
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = game.Players.LocalPlayer
@@ -101282,7 +103489,7 @@ script.Parent.MouseButton1Click:Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.Warning.Holder.OK.Button.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.Warning.Holder.OK.Button.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = script.Parent
@@ -101340,7 +103547,7 @@ v_u_2:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.DailyRewards.Holder.Topbar.Close.Button.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.DailyRewards.Holder.Topbar.Close.Button.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v_u_2 = game:GetService("TweenService")
@@ -101453,7 +103660,7 @@ v_u_4:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.LobbyUIContainer.DailyRewards.Holder.Claim.Button.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.LobbyUIContainer.DailyRewards.Holder.Claim.Button.LocalScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("TweenService")
 local v_u_2 = script.Parent
@@ -101466,7 +103673,7 @@ v_u_2:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.UI.GameStats.Back.Button.Holder.Animations
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.UI.GameStats.Back.Button.Holder.Animations
 -- Decompiled with Velocity Script Decompiler
 local _ = script.Parent
 local v_u_1 = game:GetService("TweenService")
@@ -101571,7 +103778,7 @@ v_u_3:GetPropertyChangedSignal("GuiState"):Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.Transitions.Transition.IntermissionLoading.Clock.Animation
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.Transitions.Transition.IntermissionLoading.Clock.Animation
 -- Decompiled with Velocity Script Decompiler
 game:GetService("TweenService"):Create(script.Parent.Big, TweenInfo.new(2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, (1 / 0)), {
     ["Rotation"] = 360
@@ -101580,7 +103787,7 @@ game:GetService("TweenService"):Create(script.Parent.Small, TweenInfo.new(6, Enu
     ["Rotation"] = 360
 }):Play()
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.EmoteWheel.Wheel1.4Emotes.Button1.ViewportFrame.WorldModel.Rig.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.EmoteWheel.Wheel1.4Emotes.Button1.ViewportFrame.WorldModel.Rig.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v2 = v_u_1:WaitForChild("Torso")
@@ -102136,7 +104343,7 @@ while v_u_1.Parent ~= nil do
     move(v93)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.EmoteWheel.Wheel1.4Emotes.Button3.ViewportFrame.WorldModel.Rig.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.EmoteWheel.Wheel1.4Emotes.Button3.ViewportFrame.WorldModel.Rig.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v2 = v_u_1:WaitForChild("Torso")
@@ -102692,7 +104899,7 @@ while v_u_1.Parent ~= nil do
     move(v93)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.EmoteWheel.Wheel2.4Emotes.Button4.ViewportFrame.WorldModel.Rig.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.EmoteWheel.Wheel2.4Emotes.Button4.ViewportFrame.WorldModel.Rig.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v2 = v_u_1:WaitForChild("Torso")
@@ -103248,7 +105455,7 @@ while v_u_1.Parent ~= nil do
     move(v93)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.EmoteWheel.Wheel2.4Emotes.Button2.ViewportFrame.WorldModel.Rig.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.EmoteWheel.Wheel2.4Emotes.Button2.ViewportFrame.WorldModel.Rig.Animate
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = script.Parent
 local v2 = v_u_1:WaitForChild("Torso")
@@ -103804,7 +106011,7 @@ while v_u_1.Parent ~= nil do
     move(v93)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.Board.Static.Static.LocalScript
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.Board.Static.Static.LocalScript
 -- Decompiled with Velocity Script Decompiler
 while true do
     script.Parent.Rotation = 0
@@ -103815,7 +106022,7 @@ while true do
     script.Parent.Size = UDim2.new(math.random(1, 10), 0, 1, 0)
 end
 
--- PATH: Players.Kurbywtw.PlayerGui.UI.Board.Static2.Line.Animate
+-- PATH: Players.Toxic_Gamer201852.PlayerGui.UI.Board.Static2.Line.Animate
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("TweenService")
 while true do
@@ -103826,7 +106033,7 @@ while true do
     task.wait(math.random(4, 10))
 end
 
--- PATH: Players.Kurbywtw.PlayerScripts.Client
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.Client
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 game:GetService("GroupService")
@@ -104161,7 +106368,7 @@ workspace.DescendantAdded:Connect(function(p61)
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerScripts.CutsceneHandler
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.CutsceneHandler
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("ReplicatedStorage")
 local v_u_2 = game:GetService("RunService")
@@ -104240,7 +106447,7 @@ v6:Connect(function(p10, p11, p_u_12, p_u_13, p14, p_u_15)
     end)
 end)
 
--- PATH: Players.Kurbywtw.PlayerScripts.ProximityPromptScript
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.ProximityPromptScript
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("UserInputService")
 local v2 = game:GetService("ProximityPromptService")
@@ -104853,7 +107060,7 @@ v2.PromptShown:Connect(function(p205, p206)
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerScripts.TestersClientLog
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.TestersClientLog
 -- Decompiled with Velocity Script Decompiler
 game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("TestersLogEvent").OnClientEvent:Connect(function(p1, p2)
     if p2 == Enum.MessageType.MessageWarning then
@@ -104869,7 +107076,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("Test
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerScripts.BetterChatHead
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.BetterChatHead
 -- Decompiled with Velocity Script Decompiler
 game:GetService("TextChatService").BubbleChatConfiguration.AdorneeName = "ChatHeadAttachment"
 local v_u_1 = game:GetService("Players")
@@ -104915,7 +107122,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
     end
 end)
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = {}
 v_u_1.__index = v_u_1
@@ -104938,7 +107145,7 @@ function v_u_1.GetClickToMoveController(p6)
 end
 return v_u_1.new()
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = {}
 v_u_1.__index = v_u_1
@@ -105467,7 +107674,7 @@ end
 v_u_1.new()
 return {}
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.CameraUtils
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.CameraUtils
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("Players")
 local v_u_2 = game:GetService("UserInputService")
@@ -105702,7 +107909,7 @@ function v_u_4.restoreRotationType()
 end
 return v_u_4
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.CameraToggleStateController
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.CameraToggleStateController
 -- Decompiled with Velocity Script Decompiler
 game:GetService("Players")
 game:GetService("UserInputService")
@@ -105770,7 +107977,7 @@ return function(p9)
     v_u_8 = p9
 end
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.LegacyCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.LegacyCamera
 -- Decompiled with Velocity Script Decompiler
 Vector2.new()
 require(script.Parent:WaitForChild("CameraUtils"))
@@ -105857,7 +108064,7 @@ function v_u_4.Update(p10, p11)
 end
 return v_u_4
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.VRCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.VRCamera
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("Players")
 local v_u_2 = game:GetService("VRService")
@@ -106158,7 +108365,7 @@ function v_u_4.LeaveFirstPerson(p117)
 end
 return v_u_4
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.Poppercam
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.Poppercam
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent.Parent:WaitForChild("CommonUtils")
 local v2 = require(v1:WaitForChild("FlagUtil"))
@@ -106242,7 +108449,7 @@ function v_u_45.CharacterRemoving(_, _, _) end
 function v_u_45.OnCameraSubjectChanged(_, _) end
 return v_u_45
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.BaseCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.BaseCamera
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("Players")
 local v_u_2 = game:GetService("UserInputService")
@@ -106848,7 +109055,7 @@ function v_u_17.GetCameraHeight(p138)
 end
 return v_u_17
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.TransparencyController
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.TransparencyController
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("VRService")
 local v_u_2 = {
@@ -107052,7 +109259,7 @@ function v_u_7.Update(p36, p37)
 end
 return v_u_7
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.Invisicam
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.Invisicam
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("Players")
 local v2 = script.Parent.Parent:WaitForChild("CommonUtils")
@@ -107530,7 +109737,7 @@ function v_u_54.Update(p_u_166, _, p167, p168)
 end
 return v_u_54
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.BaseOcclusion
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.BaseOcclusion
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = {}
 v_u_1.__index = v_u_1
@@ -107561,7 +109768,7 @@ function v_u_1.Update(_, _, p3, p4)
 end
 return v_u_1
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.OrbitalCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.OrbitalCamera
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = require(script.Parent:WaitForChild("CameraUtils"))
 local v_u_2 = require(script.Parent:WaitForChild("CameraInput"))
@@ -107820,7 +110027,7 @@ function v_u_5.Update(p75, p76)
 end
 return v_u_5
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.VRVehicleCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.VRVehicleCamera
 -- Decompiled with Velocity Script Decompiler
 local v1, v2 = pcall(function()
     return UserSettings():IsUserFeatureEnabled("UserVRVehicleCamera2")
@@ -108177,7 +110384,7 @@ function v_u_19.UpdateComfortCamera(p130, p131)
 end
 return v_u_19
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.MouseLockController
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.MouseLockController
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent.Parent:WaitForChild("CommonUtils")
 require(v1:WaitForChild("FlagUtil"))
@@ -108333,7 +110540,7 @@ function v_u_7.EnableMouseLock(p37, p38)
 end
 return v_u_7
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.ZoomController
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.ZoomController
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = require(script:WaitForChild("Popper"))
 local v_u_2 = math.clamp
@@ -108431,7 +110638,7 @@ return {
     end
 }
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.ZoomController.Popper
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.ZoomController.Popper
 -- Decompiled with Velocity Script Decompiler
 local v1 = game:GetService("Players")
 local v2 = script.Parent.Parent.Parent:WaitForChild("CommonUtils")
@@ -108877,7 +111084,7 @@ return function(p140, p141, p142)
     return v143
 end
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.ClassicCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.ClassicCamera
 -- Decompiled with Velocity Script Decompiler
 Vector2.new(0, 0)
 local v_u_1 = 0
@@ -109051,7 +111258,7 @@ function v_u_11.Update(p25, p26)
 end
 return v_u_11
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.VRBaseCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.VRBaseCamera
 -- Decompiled with Velocity Script Decompiler
 local v1, v2 = pcall(function()
     return UserSettings():IsUserFeatureEnabled("UserVRVehicleCamera2")
@@ -109375,7 +111582,7 @@ function v_u_14.getRotation(p79, p80)
 end
 return v_u_14
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.CameraUI
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.CameraUI
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("StarterGui")
 local v_u_2 = false
@@ -109406,7 +111613,7 @@ local v_u_6 = {
 }
 return v_u_6
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.VehicleCamera
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.VehicleCamera
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = { 0, 15, 30 }
 local v2 = game:GetService("Players")
@@ -109563,7 +111770,7 @@ end
 function v_u_15.ApplyVRTransform(_) end
 return v_u_15
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.VehicleCamera.VehicleCameraConfig
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.VehicleCamera.VehicleCameraConfig
 -- Decompiled with Velocity Script Decompiler
 return {
     ["pitchStiffness"] = 0.5,
@@ -109586,7 +111793,7 @@ return {
     ["verticalCenterOffset"] = 0.33
 }
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.VehicleCamera.VehicleCameraCore
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.VehicleCamera.VehicleCameraCore
 -- Decompiled with Velocity Script Decompiler
 local v1 = require(script.Parent.Parent.CameraUtils)
 local v_u_2 = require(script.Parent.VehicleCameraConfig)
@@ -109725,7 +111932,7 @@ function v_u_78.setTransform(p87, p88)
 end
 return v_u_78
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CameraModule.CameraInput
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CameraModule.CameraInput
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("ContextActionService")
 local v_u_2 = game:GetService("UserInputService")
@@ -110164,7 +112371,7 @@ function v44.disableCameraToggleInput()
 end
 return v44
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = {}
 v_u_1.__index = v_u_1
@@ -110750,7 +112957,7 @@ function v_u_1.GetClickToMoveController(p139)
 end
 return v_u_1.new()
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.Gamepad
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.Gamepad
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("UserInputService")
 local v_u_2 = game:GetService("ContextActionService")
@@ -110915,7 +113122,7 @@ function v_u_5.DisconnectGamepadConnectionListeners(p29)
 end
 return v_u_5
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.ClickToMoveDisplay
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.ClickToMoveDisplay
 -- Decompiled with Velocity Script Decompiler
 local v1 = {}
 local v_u_2 = "rbxasset://textures/ui/traildot.png"
@@ -111381,7 +113588,7 @@ function v1.GetWaypointsAlwaysOnTop()
 end
 return v1
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.TouchThumbstick
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.TouchThumbstick
 -- Decompiled with Velocity Script Decompiler
 game:GetService("Players")
 local v_u_1 = game:GetService("GuiService")
@@ -111549,7 +113756,7 @@ function v_u_4.Create(p_u_13, p_u_14)
 end
 return v_u_4
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.DynamicThumbstick
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.DynamicThumbstick
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = Enum.ContextActionPriority.High.Value
 local v_u_2 = {
@@ -112076,7 +114283,7 @@ function v_u_19.Create(p_u_88, p_u_89)
 end
 return v_u_19
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.TouchJump
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.TouchJump
 -- Decompiled with Velocity Script Decompiler
 game:GetService("Players")
 local v_u_1 = game:GetService("GuiService")
@@ -112232,7 +114439,7 @@ function v_u_7.Create(p_u_26)
 end
 return v_u_7
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.PathDisplay
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.PathDisplay
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent.Parent:WaitForChild("CommonUtils")
 local v_u_2 = require(v1:WaitForChild("FlagUtil")).getUserFlag("UserRaycastUpdateAPI")
@@ -112353,7 +114560,7 @@ function v_u_4.renderPath()
 end
 return v_u_4
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.BaseCharacterController
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.BaseCharacterController
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent.Parent:WaitForChild("CommonUtils")
 local v_u_2 = require(v1:WaitForChild("ConnectionUtil"))
@@ -112386,7 +114593,7 @@ function v_u_4.Enable(_, _)
 end
 return v_u_4
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.Keyboard
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.Keyboard
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("UserInputService")
 local v_u_2 = game:GetService("ContextActionService")
@@ -112522,7 +114729,7 @@ function v_u_5.ConnectFocusEventListeners(p_u_25)
 end
 return v_u_5
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.ClickToMoveController
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.ClickToMoveController
 -- Decompiled with Velocity Script Decompiler
 local v1, v2 = pcall(function()
     return UserSettings():IsUserFeatureEnabled("UserExcludeNonCollidableForPathfinding")
@@ -113864,7 +116071,7 @@ function v_u_246.MoveTo(_, p316, p317, p318)
 end
 return v_u_246
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.VRNavigation
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.VRNavigation
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("VRService")
 local v_u_2 = game:GetService("UserInputService")
@@ -114293,7 +116500,7 @@ function v_u_17.Enable(p_u_87, p88)
 end
 return v_u_17
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.ControlModule.VehicleController
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.ControlModule.VehicleController
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("ContextActionService")
 local v_u_2 = {}
@@ -114427,7 +116634,7 @@ function v_u_2.SetupAutoPilot(p42)
 end
 return v_u_2
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CommonUtils.ConnectionUtil
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CommonUtils.ConnectionUtil
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = {}
 v_u_1.__index = v_u_1
@@ -114467,7 +116674,7 @@ function v_u_1.disconnectAll(p12)
 end
 return v_u_1
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CommonUtils.CameraWrapper
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CommonUtils.CameraWrapper
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = require(script.Parent.ConnectionUtil)
 local v_u_2 = {}
@@ -114527,7 +116734,7 @@ function v_u_2.getCamera(p15)
 end
 return v_u_2
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CommonUtils.FlagUtil
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CommonUtils.FlagUtil
 -- Decompiled with Velocity Script Decompiler
 return {
     ["getUserFlag"] = function(p_u_1)
@@ -114539,7 +116746,7 @@ return {
     end
 }
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerModule.CommonUtils.CharacterUtil
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerModule.CommonUtils.CharacterUtil
 -- Decompiled with Velocity Script Decompiler
 local v_u_1 = game:GetService("Players")
 local v2 = script.Parent
@@ -114637,11 +116844,11 @@ local v_u_23 = {
 }
 return v_u_23
 
--- PATH: Players.Kurbywtw.PlayerScripts.PlayerScriptsLoader
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.PlayerScriptsLoader
 -- Decompiled with Velocity Script Decompiler
 require(script.Parent:WaitForChild("PlayerModule"))
 
--- PATH: Players.Kurbywtw.PlayerScripts.SmartBone-Actors.RootPart - BD426EB6-1C84-480A-97BF-719CA8561502.Runtime
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.SmartBone-Actors.RootPart - 5BE58572-499F-4F6A-9029-15BC164BDEFA.Runtime
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v_u_2 = nil
@@ -114769,7 +116976,7 @@ local v38 = v17.Heartbeat:ConnectParallel(function(p35)
 end)
 table.insert(v_u_7, v38)
 
--- PATH: Players.Kurbywtw.PlayerScripts.SmartBone-Actors.RootPart - 762E2ED7-6FF3-409B-86C6-4D88A786D3B2.Runtime
+-- PATH: Players.Toxic_Gamer201852.PlayerScripts.SmartBone-Actors.RootPart - A6174793-25C0-4830-8C53-C58B445BBAEF.Runtime
 -- Decompiled with Velocity Script Decompiler
 local v1 = script.Parent
 local v_u_2 = nil
